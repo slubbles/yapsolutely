@@ -48,11 +48,18 @@ Before placing a real call, run the production preflight against the live stack:
 
 - `YAPS_RUNTIME_SECRET=... npm run preflight:prod`
 
+For a webhook-and-persistence smoke test against production:
+
+- `npm run smoke:prod`
+
 Optional overrides:
 
 - `YAPS_WEB_URL`
 - `YAPS_VOICE_URL`
 - `YAPS_PHONE_NUMBER`
+- `YAPS_CALLER_NUMBER`
+- `YAPS_SSH_SCRIPT`
+- `YAPS_REMOTE_REPO_PATH`
 
 By default the script targets the current live MVP hosts and seeded number.
 
@@ -90,6 +97,7 @@ Implementation has moved well past the initial scaffold and now includes:
 - Use `plan/masterplan.md` to see the next incomplete critical-path objective.
 - Use the settings screen in `apps/web` to confirm readiness before live validation.
 - Run `npm run preflight:prod` before the final human phone test and Loom capture.
+- Run `npm run smoke:prod` when you want repeatable proof that simulated inbound/status webhooks still persist call rows and transcript events in production.
 - Keep secrets in `.env` locally and in host environment-variable dashboards in production.
 - Treat `credentials/` as local sensitive scratch space only; it is ignored from git.
 

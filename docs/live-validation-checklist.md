@@ -21,6 +21,8 @@ Prove the MVP finish line end to end:
 
 Before placing a live call, confirm:
 
+- `YAPS_RUNTIME_SECRET=... npm run preflight:prod` passes
+- `npm run smoke:prod` passes if VPS SSH access is available
 - the production seed exists or equivalent dashboard records exist
 - the target agent has:
   - system prompt
@@ -129,6 +131,7 @@ If the call fails, inspect:
 
 Check:
 
+- `npm run smoke:prod`
 - runtime can reach web app
 - `RUNTIME_SHARED_SECRET` matches
 - web envs are correct
@@ -172,6 +175,7 @@ Check:
 
 Check:
 
+- `npm run preflight:prod`
 - `GET /api/runtime/resolve-agent?phoneNumber=...` with the runtime secret
 - seeded phone number row exists
 - agent is both `ACTIVE` and `isActive=true`

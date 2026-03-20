@@ -705,12 +705,12 @@ The app no longer looks like a generic starter and has a distinctive Yapsolutely
 
 ### Tasks
 
-- [ ] Deploy web app
-- [ ] Deploy voice runtime
-- [ ] Set production environment variables
-- [ ] Configure Twilio webhook to production URL
+- [x] Deploy web app
+- [x] Deploy voice runtime
+- [x] Set production environment variables
+- [x] Configure Twilio webhook to production URL
 - [ ] Verify one live agent end-to-end
-- [ ] Verify transcript persistence in production
+- [x] Verify transcript persistence in production
 - [ ] Record Loom/demo walkthrough
 - [x] Write setup / handoff notes
 
@@ -831,7 +831,7 @@ Includes:
 | 11. Browser-based test experience | not started | intentionally later |
 | 12. Flow builder | not started | key differentiator, later after core works |
 | 13. Visual design evolution | not started | shadcn-first, custom later |
-| 14. Deployment and demo readiness | in progress | web + voice are deployed to the VPS behind Caddy, production Postgres is now live in the stack, the Twilio voice webhook is configured, seeded agent/number resolution works publicly, simulated calls persist in production, and operator-facing preflight/handoff docs now exist; remaining work is final real-call validation plus Loom proof |
+| 14. Deployment and demo readiness | in progress | web + voice are deployed to the VPS behind Caddy, production Postgres is live in the stack, the Twilio voice webhook is configured, seeded agent/number resolution works publicly, automated preflight + smoke scripts now verify readiness and simulated transcript persistence, and operator-facing handoff docs now exist; remaining work is final real-call validation plus Loom proof |
 | 15. Phase 2 roadmap | planning complete | known at high level |
 
 ---

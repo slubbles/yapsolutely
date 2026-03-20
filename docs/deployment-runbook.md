@@ -192,12 +192,18 @@ Success means:
 For a repeatable operator-side check from the repo root, run:
 
 - `YAPS_RUNTIME_SECRET=... npm run preflight:prod`
+- `npm run smoke:prod`
 
 Optional overrides:
 
 - `YAPS_WEB_URL`
 - `YAPS_VOICE_URL`
 - `YAPS_PHONE_NUMBER`
+- `YAPS_CALLER_NUMBER`
+- `YAPS_SSH_SCRIPT`
+- `YAPS_REMOTE_REPO_PATH`
+
+The smoke check additionally verifies that simulated Twilio inbound/status webhooks still create a `Call` row plus `CallEvent` transcript proof in production Postgres.
 
 ---
 

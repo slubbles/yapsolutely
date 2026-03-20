@@ -26,6 +26,10 @@ function hasAuthorizedRuntimeSecret(request: NextRequest) {
   return Boolean(runtimeSecret && providedSecret && providedSecret === runtimeSecret);
 }
 
+function shouldSkipRuntimeProbes(request: NextRequest) {
+  return request.headers.get("x-yapsolutely-readiness-mode") === "embedded";
+}
+
 export async function GET(request: NextRequest) {
   if (!hasAuthorizedSession(request) && !hasAuthorizedRuntimeSecret(request)) {
     return NextResponse.json(
@@ -37,7 +41,9 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  const readiness = await getSettingsReadiness();
+  const readiness = await getSettingsReadiness({
+    includeRuntimeProbes: !shouldSkipRuntimeProbes(request),
+  });
 
   return NextResponse.json(
     {

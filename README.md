@@ -40,6 +40,21 @@ Use these docs during the credential and deployment phase:
 - `docs/credentials-setup.md` — how to collect required credentials and what they cost
 - `docs/deployment-runbook.md` — step-by-step deploy and environment wiring guide
 - `docs/live-validation-checklist.md` — post-deploy live call validation checklist
+- `docs/demo-handoff.md` — operator-facing real-call, dashboard, and Loom walkthrough
+
+## Production preflight
+
+Before placing a real call, run the production preflight against the live stack:
+
+- `YAPS_RUNTIME_SECRET=... npm run preflight:prod`
+
+Optional overrides:
+
+- `YAPS_WEB_URL`
+- `YAPS_VOICE_URL`
+- `YAPS_PHONE_NUMBER`
+
+By default the script targets the current live MVP hosts and seeded number.
 
 ## Current repo shape
 
@@ -74,6 +89,7 @@ Implementation has moved well past the initial scaffold and now includes:
 
 - Use `plan/masterplan.md` to see the next incomplete critical-path objective.
 - Use the settings screen in `apps/web` to confirm readiness before live validation.
+- Run `npm run preflight:prod` before the final human phone test and Loom capture.
 - Keep secrets in `.env` locally and in host environment-variable dashboards in production.
 - Treat `credentials/` as local sensitive scratch space only; it is ignored from git.
 

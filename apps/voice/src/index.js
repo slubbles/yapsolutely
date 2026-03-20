@@ -138,13 +138,16 @@ async function probeWebEndpoint(url, { includeRuntimeSecret = false } = {}) {
   }
 
   try {
+    const headers = {};
+
+    if (includeRuntimeSecret && runtimeSharedSecret) {
+      headers["x-yapsolutely-runtime-secret"] = runtimeSharedSecret;
+      headers["x-yapsolutely-readiness-mode"] = "embedded";
+    }
+
     const response = await fetch(url, {
       method: "GET",
-      headers: includeRuntimeSecret && runtimeSharedSecret
-        ? {
-            "x-yapsolutely-runtime-secret": runtimeSharedSecret,
-          }
-        : undefined,
+      headers: Object.keys(headers).length > 0 ? headers : undefined,
     });
     const data = await response.json().catch(() => null);
 

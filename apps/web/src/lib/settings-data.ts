@@ -58,6 +58,10 @@ export type SettingsReadiness = {
   };
 };
 
+type ReadinessOptions = {
+  includeRuntimeProbes?: boolean;
+};
+
 function hasRealValue(value: string | undefined) {
   if (!value) {
     return false;
@@ -240,13 +244,24 @@ async function probeRuntimeReadiness(voiceBaseUrl: string) {
   }
 }
 
-export async function getSettingsReadiness(): Promise<SettingsReadiness> {
+export async function getSettingsReadiness(options: ReadinessOptions = {}): Promise<SettingsReadiness> {
+  const includeRuntimeProbes = options.includeRuntimeProbes ?? true;
   const runtimeMode = process.env.VOICE_PIPELINE_MODE || "mock";
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
   const voiceBaseUrl = process.env.VOICE_STREAM_BASE_URL || "localhost:3001";
   const voiceWebSocketUrl = process.env.VOICE_STREAM_WSS_URL || "ws://localhost:3001/twilio/stream";
-  const runtimeHealth = await probeRuntimeHealth(voiceBaseUrl);
-  const runtimeReadiness = await probeRuntimeReadiness(voiceBaseUrl);
+  const runtimeHealth = includeRuntimeProbes
+    ? await probeRuntimeHealth(voiceBaseUrl)
+    : {
+        status: "skipped" as const,
+        detail: "Runtime health probing was skipped for an embedded cross-service readiness request.",
+      };
+  const runtimeReadiness = includeRuntimeProbes
+    ? await probeRuntimeReadiness(voiceBaseUrl)
+    : {
+        status: "skipped" as const,
+        detail: "Runtime readiness probing was skipped for an embedded cross-service readiness request.",
+      };
 
   const sections: SettingSection[] = [
     {

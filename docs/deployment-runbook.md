@@ -189,6 +189,16 @@ Success means:
 - runtime readiness can reach the web app
 - web readiness reports no critical missing runtime/deployment values
 
+For a repeatable operator-side check from the repo root, run:
+
+- `YAPS_RUNTIME_SECRET=... npm run preflight:prod`
+
+Optional overrides:
+
+- `YAPS_WEB_URL`
+- `YAPS_VOICE_URL`
+- `YAPS_PHONE_NUMBER`
+
 ---
 
 ## 8) Expected live behavior
@@ -230,3 +240,5 @@ Production deployment is considered successful when:
 4. `+13186108198` resolves to the seeded active agent
 5. inbound and status webhooks persist call records/events in production Postgres
 6. a real live phone call can be placed and reviewed in the dashboard
+
+Use `docs/demo-handoff.md` as the final operator checklist for the real-call and Loom steps that cannot be automated from the repo alone.

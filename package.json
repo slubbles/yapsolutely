@@ -10,6 +10,7 @@
     "dev:voice": "npm run dev -w apps/voice",
     "build:web": "npm run build -w apps/web",
     "lint:web": "npm run lint -w apps/web",
+    "preflight:prod": "node scripts/production-preflight.mjs",
     "build": "npm run build:web",
     "lint": "npm run lint:web",
     "check": "npm run lint && npm run build"

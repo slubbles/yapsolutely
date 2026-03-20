@@ -90,6 +90,8 @@ The goal is **not** to literally rebuild every enterprise Retell feature at once
 - the web app now exposes a fast `/api/health` endpoint plus a gated `/api/readiness` endpoint, making deploy verification and environment checks scriptable beyond the dashboard UI
 - the voice runtime now exposes a gated `/readiness` endpoint that reports runtime config status and probes the web app health/readiness endpoints, making cross-service deploy checks scriptable from both sides
 - the settings area now also surfaces the voice runtime readiness verdict, runtime-missing keys, and runtime-to-web probe results, so deployment status can be reviewed from one in-app screen
+- production now runs on the VPS with `web`, `voice`, and an internal `postgres` service under Docker Compose + Caddy because the prior Supabase direct Postgres path was unreachable from the host
+- the live production database now contains a seeded Karim demo user, active agent, and Twilio number assignment so inbound call resolution works end to end in production
 
 ### What is not done yet
 
@@ -201,7 +203,7 @@ The current execution baseline for Milestone A is:
 - **Web framework:** Next.js App Router + TypeScript + Tailwind CSS
 - **UI scaffold:** `shadcn/ui`-style component approach, treated as temporary scaffold
 - **Voice runtime direction:** Node.js runtime prepared for adaptation from `call-gpt` concepts/base
-- **Database direction:** Supabase Postgres with Prisma planned for the MVP data layer
+- **Database direction:** Prisma on Postgres, with the current production deployment using an internal VPS Postgres service after the prior Supabase direct-connect path proved unreachable from the host
 - **Deployment target:** single Ubuntu VPS running Docker Compose + Caddy, serving both web and voice services with public HTTPS hosts
 - **Source of truth for sequencing:** this master plan
 
@@ -829,7 +831,7 @@ Includes:
 | 11. Browser-based test experience | not started | intentionally later |
 | 12. Flow builder | not started | key differentiator, later after core works |
 | 13. Visual design evolution | not started | shadcn-first, custom later |
-| 14. Deployment and demo readiness | in progress | web + voice are now deployed to the VPS behind Caddy with public HTTPS hosts, the live Twilio voice webhook is configured, and both health endpoints respond publicly; remaining blockers are production DB connectivity plus final end-to-end call/transcript proof |
+| 14. Deployment and demo readiness | in progress | web + voice are deployed to the VPS behind Caddy, production Postgres is now live in the stack, the Twilio voice webhook is configured, seeded agent/number resolution works publicly, and simulated calls now persist in production; remaining work is final real-call validation plus Loom/handoff proof |
 | 15. Phase 2 roadmap | planning complete | known at high level |
 
 ---

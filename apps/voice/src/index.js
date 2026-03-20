@@ -18,6 +18,7 @@ const streamWebSocketUrl =
   process.env.VOICE_STREAM_WSS_URL ||
   `ws${streamBaseUrl.startsWith("https") ? "s" : ""}://${streamBaseUrl.replace(/^https?:\/\//, "")}/twilio/stream`;
 const streamSessions = createSessionStore();
+const pendingInboundContexts = new Map();
 const fallbackAgentName = process.env.DEFAULT_AGENT_NAME || "Yapsolutely Front Desk";
 const fallbackAgentDescription =
   process.env.DEFAULT_AGENT_DESCRIPTION ||
@@ -317,22 +318,9 @@ function buildStreamTwiml({ introLine, greeting, callSid, agent }) {
     ["callSid", callSid || ""],
     ["callerNumber", agent?.callerNumber || ""],
     ["toNumber", agent?.toNumber || ""],
-    ["userId", agent?.userId || ""],
     ["agentId", agent?.id || ""],
     ["agentName", agent?.name || ""],
-    ["agentDescription", agent?.description || ""],
-    ["agentStatus", agent?.status || ""],
-    ["agentIsActive", String(Boolean(agent?.isActive))],
-    ["phoneNumberId", agent?.phoneNumberId || ""],
-    ["phoneNumber", agent?.phoneNumber || ""],
-    ["phoneNumberFriendlyName", agent?.phoneNumberFriendlyName || ""],
     ["firstMessage", greeting || ""],
-    ["systemPrompt", agent?.systemPrompt || ""],
-    ["voiceProvider", agent?.voiceProvider || ""],
-    ["voiceModel", agent?.voiceModel || ""],
-    ["language", agent?.language || ""],
-    ["transferNumber", agent?.transferNumber || ""],
-    ["agentConfig", agent?.config ? JSON.stringify(agent.config) : ""],
   ]
     .filter(([, value]) => value)
     .map(
@@ -352,6 +340,39 @@ ${parameters}
     </Stream>
   </Connect>
 </Response>`;
+}
+
+function registerPendingInboundContext(callSid, agent) {
+  if (!callSid || !agent) {
+    return;
+  }
+
+  pendingInboundContexts.set(callSid, {
+    userId: agent.userId || null,
+    agentId: agent.id || null,
+    agentName: agent.name || null,
+    agentDescription: agent.description || null,
+    agentStatus: agent.status || null,
+    agentIsActive: Boolean(agent.isActive),
+    phoneNumberId: agent.phoneNumberId || null,
+    phoneNumber: agent.phoneNumber || null,
+    phoneNumberFriendlyName: agent.phoneNumberFriendlyName || null,
+    firstMessage: agent.firstMessage || null,
+    systemPrompt: agent.systemPrompt || null,
+    voiceProvider: agent.voiceProvider || null,
+    voiceModel: agent.voiceModel || null,
+    language: agent.language || null,
+    transferNumber: agent.transferNumber || null,
+    agentConfig: agent.config || null,
+  });
+
+  const timeout = setTimeout(() => {
+    pendingInboundContexts.delete(callSid);
+  }, 10 * 60 * 1000);
+
+  if (typeof timeout.unref === "function") {
+    timeout.unref();
+  }
 }
 
 function buildFallbackAgentContext(inboundCall) {
@@ -485,6 +506,14 @@ websocketServer.on("connection", (socket) => {
         startMessage: message,
         pipelineMode: voicePipelineMode,
       });
+
+      const pendingContext = pendingInboundContexts.get(session.callSid);
+
+      if (pendingContext) {
+        Object.assign(session, pendingContext);
+        pendingInboundContexts.delete(session.callSid);
+      }
+
       streamSessions.set(streamSid, session);
 
       if (session.externalCallId) {
@@ -716,6 +745,8 @@ const server = http.createServer((req, res) => {
         callSid: inboundCall.callSid,
         agent: activeAgent,
       });
+
+      registerPendingInboundContext(inboundCall.callSid, activeAgent);
 
       if (resolvedAgent?.agent) {
         try {

@@ -177,6 +177,8 @@ Common interpretations:
 - call record appears but no transcript → STT/media-stream/runtime issue
 - transcript exists but audio sounds broken → TTS or barge-in quality issue
 
+When checking the live `voice` service logs, look for `[yapsolutely-runtime]` warnings first. Those warnings now call out the main silent-failure cases that matter for the demo path, including inbound agent-resolution fallback and failed call/event persistence.
+
 ---
 
 ## Current honest blocker line

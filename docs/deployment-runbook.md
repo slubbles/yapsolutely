@@ -229,6 +229,7 @@ If something breaks, check in this order:
 2. `postgres` healthy state
 3. `web` boot logs
 4. `voice` boot logs
+   - look specifically for `[yapsolutely-runtime]` warnings, which now flag agent-resolution and persistence failures that used to be silent
 5. `RUNTIME_SHARED_SECRET` match between web and voice envs
 6. Twilio webhook URLs
 7. seeded phone number / agent mapping

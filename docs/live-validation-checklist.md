@@ -132,6 +132,7 @@ If the call fails, inspect:
 Check:
 
 - `npm run smoke:prod`
+- `voice` logs for `[yapsolutely-runtime]` warnings about agent resolution or call persistence
 - runtime can reach web app
 - `RUNTIME_SHARED_SECRET` matches
 - web envs are correct
@@ -142,7 +143,7 @@ Check:
 Check:
 
 - Deepgram key
-- runtime logs
+- runtime logs, especially `[yapsolutely-runtime]` warnings
 - media stream connectivity
 - live mode really enabled
 
@@ -152,7 +153,7 @@ Check:
 
 - Anthropic key
 - model config
-- runtime logs for response generation errors
+- runtime logs for response generation errors and `[yapsolutely-runtime]` warnings
 
 ### AI reply exists but caller hears nothing
 
@@ -161,7 +162,7 @@ Check:
 - Deepgram TTS key/model
 - websocket stream path
 - Twilio Media Stream behavior
-- runtime logs
+- runtime logs, especially `[yapsolutely-runtime]` warnings around stream event persistence
 
 ### Tools don’t fire
 
@@ -177,6 +178,7 @@ Check:
 
 - `npm run preflight:prod`
 - `GET /api/runtime/resolve-agent?phoneNumber=...` with the runtime secret
+- `voice` logs for `[yapsolutely-runtime] failed to resolve inbound agent`
 - seeded phone number row exists
 - agent is both `ACTIVE` and `isActive=true`
 - Twilio is sending the expected destination number in the inbound webhook

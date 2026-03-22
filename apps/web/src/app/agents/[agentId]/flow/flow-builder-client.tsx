@@ -1,12 +1,10 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 import {
   ArrowLeft,
   Plus,
   Trash2,
-  ChevronUp,
-  ChevronDown,
   Sparkles,
   Save,
   GripVertical,
@@ -19,9 +17,29 @@ import {
   FileText,
   Loader2,
   Check,
+  ArrowDown,
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragOverlay,
+  type DragStartEvent,
+  type DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  useSortable,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -196,99 +214,143 @@ function BlockPalette({ onAdd }: { onAdd: (type: BlockType) => void }) {
   );
 }
 
-// ─── Single flow block ──────────────────────────
+// ─── Single flow block (sortable) ──────────────────────────
 
-function FlowBlockCard({
+function SortableFlowBlock({
   block,
   index,
   total,
   onUpdate,
   onRemove,
-  onMoveUp,
-  onMoveDown,
 }: {
   block: FlowBlock;
   index: number;
   total: number;
   onUpdate: (id: string, fields: Record<string, string>) => void;
   onRemove: (id: string) => void;
-  onMoveUp: (id: string) => void;
-  onMoveDown: (id: string) => void;
 }) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: block.id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    zIndex: isDragging ? 50 : undefined,
+    opacity: isDragging ? 0.4 : 1,
+  };
+
   const def = getBlockDef(block.type);
   const Icon = def.icon;
 
   return (
-    <div className="bg-surface-panel rounded-card border border-border-soft group">
+    <div ref={setNodeRef} style={style}>
+      <div
+        className={`bg-surface-panel rounded-card border group transition-shadow ${
+          isDragging
+            ? "border-accent-warm/50 shadow-lg ring-2 ring-accent-warm/20"
+            : "border-border-soft hover:shadow-surface-sm"
+        }`}
+      >
+        <div className="flex items-center gap-2 px-4 py-3 border-b border-border-soft">
+          {/* Drag handle */}
+          <button
+            type="button"
+            className="cursor-grab active:cursor-grabbing p-0.5 -ml-1 rounded hover:bg-surface-subtle transition-colors touch-none"
+            {...attributes}
+            {...listeners}
+          >
+            <GripVertical className="w-4 h-4 text-text-subtle/50 hover:text-text-subtle" />
+          </button>
+          <div className={`w-6 h-6 rounded-md flex items-center justify-center ${def.color}`}>
+            <Icon className="w-3 h-3" />
+          </div>
+          <span className="font-body text-[0.78rem] font-medium text-text-strong flex-1">
+            {def.label}
+          </span>
+          <span className="font-mono text-[0.62rem] text-text-subtle/50 tabular-nums mr-2">
+            Step {index + 1}/{total}
+          </span>
+          <button
+            type="button"
+            onClick={() => onRemove(block.id)}
+            className="p-1 rounded hover:bg-red-50 transition-colors opacity-0 group-hover:opacity-100"
+            title="Remove block"
+          >
+            <Trash2 className="w-3.5 h-3.5 text-red-400 hover:text-red-600" />
+          </button>
+        </div>
+        <div className="p-4 space-y-3">
+          {def.fieldConfig.map((field) => (
+            <div key={field.key}>
+              <Label className="font-body text-[0.7rem] text-text-subtle mb-1.5 block">
+                {field.label}
+              </Label>
+              {field.multiline ? (
+                <Textarea
+                  value={block.fields[field.key] ?? ""}
+                  onChange={(e) =>
+                    onUpdate(block.id, { ...block.fields, [field.key]: e.target.value })
+                  }
+                  placeholder={field.placeholder}
+                  rows={3}
+                  className="font-body text-[0.8rem] resize-none"
+                />
+              ) : (
+                <Input
+                  value={block.fields[field.key] ?? ""}
+                  onChange={(e) =>
+                    onUpdate(block.id, { ...block.fields, [field.key]: e.target.value })
+                  }
+                  placeholder={field.placeholder}
+                  className="font-body text-[0.8rem]"
+                />
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Drag overlay (ghost shown while dragging) ──────────────
+
+function DragOverlayBlock({ block }: { block: FlowBlock }) {
+  const def = getBlockDef(block.type);
+  const Icon = def.icon;
+
+  return (
+    <div className="bg-surface-panel rounded-card border border-accent-warm/40 shadow-xl ring-2 ring-accent-warm/20 opacity-90 rotate-1 scale-[1.02]">
       <div className="flex items-center gap-2 px-4 py-3 border-b border-border-soft">
-        <GripVertical className="w-3.5 h-3.5 text-text-subtle/40" />
+        <GripVertical className="w-4 h-4 text-accent-warm" />
         <div className={`w-6 h-6 rounded-md flex items-center justify-center ${def.color}`}>
           <Icon className="w-3 h-3" />
         </div>
         <span className="font-body text-[0.78rem] font-medium text-text-strong flex-1">
           {def.label}
         </span>
-        <span className="font-mono text-[0.62rem] text-text-subtle/50 mr-2">
-          Step {index + 1}
-        </span>
-        <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
-          <button
-            type="button"
-            onClick={() => onMoveUp(block.id)}
-            disabled={index === 0}
-            className="p-1 rounded hover:bg-surface-subtle disabled:opacity-30 transition-colors"
-            title="Move up"
-          >
-            <ChevronUp className="w-3.5 h-3.5 text-text-subtle" />
-          </button>
-          <button
-            type="button"
-            onClick={() => onMoveDown(block.id)}
-            disabled={index === total - 1}
-            className="p-1 rounded hover:bg-surface-subtle disabled:opacity-30 transition-colors"
-            title="Move down"
-          >
-            <ChevronDown className="w-3.5 h-3.5 text-text-subtle" />
-          </button>
-          <button
-            type="button"
-            onClick={() => onRemove(block.id)}
-            className="p-1 rounded hover:bg-red-50 transition-colors"
-            title="Remove block"
-          >
-            <Trash2 className="w-3.5 h-3.5 text-red-400 hover:text-red-600" />
-          </button>
-        </div>
       </div>
-      <div className="p-4 space-y-3">
-        {def.fieldConfig.map((field) => (
-          <div key={field.key}>
-            <Label className="font-body text-[0.7rem] text-text-subtle mb-1.5 block">
-              {field.label}
-            </Label>
-            {field.multiline ? (
-              <Textarea
-                value={block.fields[field.key] ?? ""}
-                onChange={(e) =>
-                  onUpdate(block.id, { ...block.fields, [field.key]: e.target.value })
-                }
-                placeholder={field.placeholder}
-                rows={3}
-                className="font-body text-[0.8rem] resize-none"
-              />
-            ) : (
-              <Input
-                value={block.fields[field.key] ?? ""}
-                onChange={(e) =>
-                  onUpdate(block.id, { ...block.fields, [field.key]: e.target.value })
-                }
-                placeholder={field.placeholder}
-                className="font-body text-[0.8rem]"
-              />
-            )}
-          </div>
-        ))}
+      <div className="p-4">
+        <div className="text-[0.72rem] text-text-subtle italic">{def.description}</div>
       </div>
+    </div>
+  );
+}
+
+// ─── Step connector line ──────────────────────────
+
+function StepConnector() {
+  return (
+    <div className="flex flex-col items-center py-1" aria-hidden="true">
+      <div className="w-px h-3 bg-gradient-to-b from-border-soft to-accent-warm/30" />
+      <ArrowDown className="w-3 h-3 text-accent-warm/40 -my-0.5" />
+      <div className="w-px h-3 bg-gradient-to-b from-accent-warm/30 to-border-soft" />
     </div>
   );
 }
@@ -312,6 +374,15 @@ export default function FlowBuilderClient({
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedPrompt, setGeneratedPrompt] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
+  const [activeId, setActiveId] = useState<string | null>(null);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
+  );
+
+  const blockIds = useMemo(() => blocks.map((b) => b.id), [blocks]);
+  const activeBlock = activeId ? blocks.find((b) => b.id === activeId) ?? null : null;
 
   const addBlock = useCallback((type: BlockType) => {
     const def = getBlockDef(type);
@@ -332,26 +403,25 @@ export default function FlowBuilderClient({
     setSaved(false);
   }, []);
 
-  const moveUp = useCallback((id: string) => {
-    setBlocks((prev) => {
-      const idx = prev.findIndex((b) => b.id === id);
-      if (idx <= 0) return prev;
-      const next = [...prev];
-      [next[idx - 1], next[idx]] = [next[idx], next[idx - 1]];
-      return next;
-    });
-    setSaved(false);
+  const handleDragStart = useCallback((event: DragStartEvent) => {
+    setActiveId(String(event.active.id));
   }, []);
 
-  const moveDown = useCallback((id: string) => {
-    setBlocks((prev) => {
-      const idx = prev.findIndex((b) => b.id === id);
-      if (idx < 0 || idx >= prev.length - 1) return prev;
-      const next = [...prev];
-      [next[idx], next[idx + 1]] = [next[idx + 1], next[idx]];
-      return next;
-    });
-    setSaved(false);
+  const handleDragEnd = useCallback((event: DragEndEvent) => {
+    setActiveId(null);
+    const { active, over } = event;
+    if (over && active.id !== over.id) {
+      setBlocks((prev) => {
+        const oldIndex = prev.findIndex((b) => b.id === active.id);
+        const newIndex = prev.findIndex((b) => b.id === over.id);
+        return arrayMove(prev, oldIndex, newIndex);
+      });
+      setSaved(false);
+    }
+  }, []);
+
+  const handleDragCancel = useCallback(() => {
+    setActiveId(null);
   }, []);
 
   const handleSave = async () => {
@@ -478,7 +548,7 @@ export default function FlowBuilderClient({
                   Start building your flow
                 </h3>
                 <p className="font-body text-[0.78rem] text-text-subtle max-w-sm mx-auto mb-5">
-                  Add blocks from the palette to define how your agent handles calls. Each block is a step in the conversation.
+                  Add blocks from the palette to define how your agent handles calls. Drag to reorder steps.
                 </p>
                 <div className="flex flex-wrap justify-center gap-2">
                   {BLOCK_DEFINITIONS.slice(0, 4).map((def) => {
@@ -499,41 +569,50 @@ export default function FlowBuilderClient({
                 </div>
               </div>
             ) : (
-              <div className="space-y-3">
-                {blocks.map((block, i) => (
-                  <div key={block.id}>
-                    <FlowBlockCard
-                      block={block}
-                      index={i}
-                      total={blocks.length}
-                      onUpdate={updateBlock}
-                      onRemove={removeBlock}
-                      onMoveUp={moveUp}
-                      onMoveDown={moveDown}
-                    />
-                    {i < blocks.length - 1 && (
-                      <div className="flex justify-center py-1">
-                        <div className="w-px h-4 bg-border-soft" />
+              <DndContext
+                sensors={sensors}
+                collisionDetection={closestCenter}
+                onDragStart={handleDragStart}
+                onDragEnd={handleDragEnd}
+                onDragCancel={handleDragCancel}
+              >
+                <SortableContext items={blockIds} strategy={verticalListSortingStrategy}>
+                  <div className="space-y-0">
+                    {blocks.map((block, i) => (
+                      <div key={block.id}>
+                        <SortableFlowBlock
+                          block={block}
+                          index={i}
+                          total={blocks.length}
+                          onUpdate={updateBlock}
+                          onRemove={removeBlock}
+                        />
+                        {i < blocks.length - 1 && <StepConnector />}
                       </div>
-                    )}
+                    ))}
                   </div>
-                ))}
+                </SortableContext>
+
+                <DragOverlay dropAnimation={{
+                  duration: 200,
+                  easing: "cubic-bezier(0.18, 0.67, 0.6, 1.22)",
+                }}>
+                  {activeBlock ? <DragOverlayBlock block={activeBlock} /> : null}
+                </DragOverlay>
 
                 {/* Quick-add after last block */}
-                <div className="flex justify-center pt-2">
-                  <div className="relative">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="rounded-full text-[0.72rem] text-text-subtle border border-dashed border-border-soft px-4 gap-1.5 hover:border-accent-warm/40 hover:text-accent-warm"
-                      onClick={() => addBlock("custom")}
-                    >
-                      <Plus className="w-3.5 h-3.5" />
-                      Add step
-                    </Button>
-                  </div>
+                <div className="flex justify-center pt-4">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="rounded-full text-[0.72rem] text-text-subtle border border-dashed border-border-soft px-4 gap-1.5 hover:border-accent-warm/40 hover:text-accent-warm"
+                    onClick={() => addBlock("custom")}
+                  >
+                    <Plus className="w-3.5 h-3.5" />
+                    Add step
+                  </Button>
                 </div>
-              </div>
+              </DndContext>
             )}
 
             {/* Generated prompt result */}

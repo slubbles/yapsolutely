@@ -11,7 +11,8 @@ import { Separator } from "@/components/ui/separator";
 export default function SignUpPage() {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
-  const [errors, setErrors] = useState<{ fullName?: string; email?: string }>({});
+  const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState<{ fullName?: string; email?: string; password?: string }>({});
   const [isLoading, setIsLoading] = useState(false);
 
   const validate = () => {
@@ -30,6 +31,7 @@ export default function SignUpPage() {
     const formData = new FormData();
     formData.set("email", email);
     formData.set("name", fullName);
+    if (password) formData.set("password", password);
     await signUpAction(formData);
   };
 
@@ -92,6 +94,18 @@ export default function SignUpPage() {
                 className={`h-11 rounded-xl ${errors.email ? "border-destructive ring-1 ring-destructive/20" : ""}`}
               />
               {errors.email && <p className="font-body text-label text-destructive animate-slide-down">{errors.email}</p>}
+            </div>
+            <div className="space-y-1.5">
+              <Label className="font-body text-body-sm text-text-body">Password</Label>
+              <Input
+                type="password"
+                value={password}
+                onChange={(e) => { setPassword(e.target.value); if (errors.password) setErrors(prev => ({ ...prev, password: undefined })); }}
+                placeholder="At least 8 characters"
+                className={`h-11 rounded-xl ${errors.password ? "border-destructive ring-1 ring-destructive/20" : ""}`}
+              />
+              {errors.password && <p className="font-body text-label text-destructive animate-slide-down">{errors.password}</p>}
+              <p className="font-body text-[0.65rem] text-text-subtle">Optional — leave blank for passwordless sign-up</p>
             </div>
             <Button
               type="submit"

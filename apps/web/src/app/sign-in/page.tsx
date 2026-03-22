@@ -10,7 +10,8 @@ import { signInAction } from "@/app/_actions/auth";
 
 export default function SignInPage() {
   const [email, setEmail] = useState("");
-  const [errors, setErrors] = useState<{ email?: string }>({});
+  const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
   const [isLoading, setIsLoading] = useState(false);
 
   const validate = () => {
@@ -27,6 +28,7 @@ export default function SignInPage() {
     setIsLoading(true);
     const formData = new FormData();
     formData.set("email", email);
+    if (password) formData.set("password", password);
     await signInAction(formData);
   };
 
@@ -78,6 +80,17 @@ export default function SignInPage() {
                 className={`h-11 rounded-xl ${errors.email ? "border-destructive ring-1 ring-destructive/20" : ""}`}
               />
               {errors.email && <p className="font-body text-label text-destructive animate-slide-down">{errors.email}</p>}
+            </div>
+            <div className="space-y-1.5">
+              <Label className="font-body text-body-sm text-text-body">Password</Label>
+              <Input
+                type="password"
+                value={password}
+                onChange={(e) => { setPassword(e.target.value); if (errors.password) setErrors(prev => ({ ...prev, password: undefined })); }}
+                placeholder="Enter your password"
+                className="h-11 rounded-xl"
+              />
+              <p className="font-body text-[0.65rem] text-text-subtle">Leave blank for passwordless sign-in</p>
             </div>
             <Button
               type="submit"

@@ -17,6 +17,9 @@
     "latest-call:prod": "node scripts/production-latest-call.mjs",
     "build": "npm run build:web",
     "lint": "npm run lint:web",
+    "test": "npm run test -w apps/voice && npm run test -w apps/web",
+    "test:voice": "npm run test -w apps/voice",
+    "test:web": "npm run test -w apps/web",
     "check": "npm run lint && npm run build"
   }
 }

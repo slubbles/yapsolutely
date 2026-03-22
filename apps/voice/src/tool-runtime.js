@@ -148,6 +148,65 @@ function toolDefinitions(session) {
         additionalProperties: false,
       },
     },
+    {
+      name: "create_calendar_event",
+      description:
+        "Create a calendar event or appointment from details collected during the call. The event is stored in the call metadata for the dashboard to display.",
+      input_schema: {
+        type: "object",
+        properties: {
+          title: {
+            type: "string",
+            description: "Event title (e.g. 'Consultation with Jane Smith').",
+          },
+          dateTime: {
+            type: "string",
+            description: "Preferred date and time in plain text or ISO 8601 format.",
+          },
+          duration: {
+            type: "string",
+            description: "Expected duration (e.g. '30 minutes', '1 hour').",
+          },
+          attendeeName: {
+            type: "string",
+            description: "Name of the caller or attendee.",
+          },
+          attendeeEmail: {
+            type: "string",
+            description: "Email address of the attendee if provided.",
+          },
+          attendeePhone: {
+            type: "string",
+            description: "Phone number of the attendee.",
+          },
+          notes: {
+            type: "string",
+            description: "Any additional notes about the appointment.",
+          },
+        },
+        required: ["title", "dateTime"],
+        additionalProperties: false,
+      },
+    },
+    {
+      name: "transfer_call",
+      description:
+        "Transfer the active call to a live human agent or a specific phone number.",
+      input_schema: {
+        type: "object",
+        properties: {
+          to: {
+            type: "string",
+            description: "Phone number to transfer to in E.164 format. If omitted, uses the agent's configured transfer number.",
+          },
+          reason: {
+            type: "string",
+            description: "Short reason for the transfer (e.g. 'Caller requested manager').",
+          },
+        },
+        additionalProperties: false,
+      },
+    },
   ].filter(Boolean);
 }
 
@@ -279,6 +338,118 @@ async function endCall({ session, input, logToolEvent }) {
   };
 }
 
+async function createCalendarEvent({ session, input, logToolEvent }) {
+  const event = {
+    title: input?.title || "Untitled appointment",
+    dateTime: input?.dateTime || null,
+    duration: input?.duration || null,
+    attendeeName: input?.attendeeName || null,
+    attendeeEmail: input?.attendeeEmail || null,
+    attendeePhone: input?.attendeePhone || session.callerNumber || null,
+    notes: input?.notes || null,
+    createdAt: new Date().toISOString(),
+  };
+
+  // Store event in call metadata
+  const existingEvents = session.callMetadata?.calendarEvents || [];
+  const updatedEvents = [...existingEvents, event];
+
+  await mergeCallMetadata({
+    externalCallId: session.externalCallId,
+    metadata: {
+      ...(session.callMetadata || {}),
+      calendarEvents: updatedEvents,
+    },
+  }).catch(() => null);
+
+  session.callMetadata = {
+    ...(session.callMetadata || {}),
+    calendarEvents: updatedEvents,
+  };
+
+  await logToolEvent("Created a calendar event from call details.", {
+    toolName: "create_calendar_event",
+    event,
+  });
+
+  return {
+    ok: true,
+    event,
+  };
+}
+
+async function transferCall({ session, input, logToolEvent }) {
+  const transferTo = sanitizePhoneNumber(input?.to || session.transferNumber);
+  const reason = input?.reason || "caller-requested-transfer";
+
+  if (!transferTo) {
+    await logToolEvent("Call transfer failed — no transfer number configured or provided.", {
+      toolName: "transfer_call",
+      reason,
+    });
+
+    return {
+      ok: false,
+      error: "No transfer number available. Please provide a phone number to transfer to.",
+    };
+  }
+
+  if (!session.callSid) {
+    await logToolEvent("Call transfer failed — no active Twilio call SID available.", {
+      toolName: "transfer_call",
+      transferTo,
+      reason,
+    });
+
+    return {
+      ok: false,
+      error: "Cannot transfer — no active call reference.",
+    };
+  }
+
+  // Use Twilio's update call API to redirect to a TwiML that dials the transfer number
+  try {
+    const twiml = `<?xml version="1.0" encoding="UTF-8"?><Response><Say voice="alice">Transferring you now. Please hold.</Say><Dial>${escapeXml(transferTo)}</Dial></Response>`;
+
+    await postTwilioForm(`Calls/${session.callSid}.json`, {
+      Twiml: twiml,
+    });
+
+    await logToolEvent("Transferred the call to a live agent.", {
+      toolName: "transfer_call",
+      transferTo,
+      reason,
+    });
+
+    return {
+      ok: true,
+      transferTo,
+      reason,
+    };
+  } catch (error) {
+    await logToolEvent("Call transfer failed during Twilio API call.", {
+      toolName: "transfer_call",
+      transferTo,
+      reason,
+      message: error instanceof Error ? error.message : String(error),
+    });
+
+    return {
+      ok: false,
+      error: error instanceof Error ? error.message : String(error),
+    };
+  }
+}
+
+function escapeXml(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&apos;");
+}
+
 export async function runTool({ session, toolName, input, logToolEvent }) {
   switch (toolName) {
     case "capture_lead":
@@ -287,6 +458,10 @@ export async function runTool({ session, toolName, input, logToolEvent }) {
       return sendSmsConfirmation({ session, input, logToolEvent });
     case "end_call":
       return endCall({ session, input, logToolEvent });
+    case "create_calendar_event":
+      return createCalendarEvent({ session, input, logToolEvent });
+    case "transfer_call":
+      return transferCall({ session, input, logToolEvent });
     default:
       return {
         ok: false,

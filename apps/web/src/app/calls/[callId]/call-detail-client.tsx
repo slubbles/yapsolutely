@@ -138,7 +138,7 @@ export default function CallDetailClient({ call }: { call: CallDetail }) {
     <DashboardLayout>
       <div className="p-5 sm:p-6 lg:p-8 max-w-[1100px]">
         {/* ── Header ── */}
-        <div className="mb-6">
+        <div className="mb-5">
           <Link
             href="/calls"
             className="inline-flex font-body text-[0.7rem] text-text-subtle hover:text-text-body transition-colors mb-3"
@@ -148,7 +148,7 @@ export default function CallDetailClient({ call }: { call: CallDetail }) {
           <div className="flex items-start justify-between gap-4">
             <div>
               <div className="flex items-center gap-2.5 mb-0.5">
-                <h1 className="font-display text-[1.2rem] font-semibold tracking-[-0.02em] text-text-strong">
+                <h1 className="font-display text-[1.12rem] font-semibold tracking-[-0.02em] text-text-strong">
                   {call.callerNumber ?? "Unknown caller"}
                 </h1>
                 <span className={`inline-flex px-1.5 py-px rounded text-[0.64rem] font-body font-medium ${statusPill(call.status)}`}>

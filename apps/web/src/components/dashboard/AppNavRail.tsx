@@ -107,28 +107,31 @@ const AppNavRail = ({ user }: { user?: { name?: string | null; email?: string | 
       <Link
         href={item.url}
         onClick={onClick}
-        className={`flex items-center gap-3 px-3 py-[0.4rem] rounded-lg font-body text-[0.78rem] transition-colors ${
+        className={`relative flex items-center gap-2.5 px-3 py-[0.38rem] rounded-lg font-body text-[0.76rem] transition-all duration-150 ${
           active
-            ? "bg-canvas text-text-strong font-medium"
-            : "text-text-subtle hover:text-text-strong hover:bg-canvas/60"
+            ? "bg-canvas text-text-strong font-medium shadow-xs"
+            : "text-text-subtle hover:text-text-body hover:bg-canvas/50"
         }`}
       >
-        <item.icon className={`w-[0.9rem] h-[0.9rem] shrink-0 ${active ? "text-text-strong" : ""}`} />
+        {active && (
+          <span className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-3.5 rounded-full bg-foreground/70" />
+        )}
+        <item.icon className={`w-[0.85rem] h-[0.85rem] shrink-0 ${active ? "text-text-strong" : ""}`} />
         <span>{item.title}</span>
       </Link>
     );
   };
 
   const GroupedNav = ({ onClick }: { onClick?: () => void }) => (
-    <div className="space-y-5">
+    <div className="space-y-4">
       {navGroups.map((group) => (
         <div key={group.label}>
-          <div className="px-3 mb-1.5">
-            <span className="font-body text-[0.6rem] font-medium uppercase tracking-[0.12em] text-text-subtle/60">
+          <div className="px-3 mb-1">
+            <span className="font-body text-[0.56rem] font-semibold uppercase tracking-[0.14em] text-text-subtle/50">
               {group.label}
             </span>
           </div>
-          <div className="space-y-px">
+          <div className="space-y-0.5">
             {group.items.map((item) => (
               <NavLink key={item.url} item={item} onClick={onClick} />
             ))}
@@ -141,7 +144,7 @@ const AppNavRail = ({ user }: { user?: { name?: string | null; email?: string | 
   return (
     <>
       {/* Desktop sidebar */}
-      <aside className="hidden md:flex w-[220px] shrink-0 h-screen sticky top-0 bg-surface-panel border-r border-border-soft/60 flex-col">
+      <aside className="hidden md:flex w-[220px] shrink-0 h-screen sticky top-0 bg-surface-panel border-r border-border-soft/50 flex-col">
         <Link href="/dashboard" className="px-5 h-14 flex items-center hover:opacity-80 transition-opacity">
           <span className="font-display text-[0.95rem] font-semibold tracking-[-0.02em] text-text-strong">
             Yapsolutely

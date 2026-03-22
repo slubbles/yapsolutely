@@ -85,7 +85,7 @@ export default function AgentEditorClient({ agent, isNew }: { agent: AgentEditDa
     <DashboardLayout>
       <div className="p-5 sm:p-6 lg:p-8 max-w-[1000px]">
         {/* Header */}
-        <div className="mb-6">
+        <div className="mb-5">
           <Link
             href={isNew ? "/agents" : `/agents/${slug}`}
             className="inline-flex font-body text-[0.7rem] text-text-subtle hover:text-text-body transition-colors mb-3"
@@ -94,7 +94,7 @@ export default function AgentEditorClient({ agent, isNew }: { agent: AgentEditDa
           </Link>
           <div className="flex items-start justify-between gap-4 mb-4">
             <div>
-              <h1 className="font-display text-[1.2rem] font-semibold tracking-[-0.02em] text-text-strong mb-0.5">
+              <h1 className="font-display text-[1.12rem] font-semibold tracking-[-0.02em] text-text-strong mb-0.5">
                 {isNew ? "Create agent" : `Build — ${name}`}
               </h1>
               <p className="font-body text-[0.75rem] text-text-subtle">

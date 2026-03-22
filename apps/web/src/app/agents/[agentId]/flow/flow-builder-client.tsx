@@ -185,7 +185,7 @@ function BlockPalette({ onAdd }: { onAdd: (type: BlockType) => void }) {
   return (
     <div className="bg-surface-panel rounded-card border border-border-soft">
       <div className="px-4 py-3 border-b border-border-soft">
-        <h3 className="font-display text-sm font-medium text-text-strong">Add block</h3>
+        <h3 className="font-display text-[0.8rem] font-medium text-text-strong">Add block</h3>
         <p className="font-body text-[0.68rem] text-text-subtle mt-0.5">Click to add a step to your flow</p>
       </div>
       <div className="p-3 grid grid-cols-1 gap-1.5">
@@ -490,9 +490,9 @@ export default function FlowBuilderClient({
 
   return (
     <DashboardLayout>
-      <div className="p-5 sm:p-6 lg:p-8 max-w-[1200px]">
+      <div className="p-5 sm:p-6 lg:p-8 max-w-[1100px]">
         {/* Header */}
-        <div className="mb-6">
+        <div className="mb-5">
           <Link
             href={`/agents/${slug}`}
             className="inline-flex font-body text-[0.7rem] text-text-subtle hover:text-text-body transition-colors mb-3"
@@ -501,7 +501,7 @@ export default function FlowBuilderClient({
           </Link>
           <div className="flex items-start justify-between gap-4 mb-4">
             <div>
-              <h1 className="font-display text-[1.2rem] font-semibold tracking-[-0.02em] text-text-strong mb-0.5">
+              <h1 className="font-display text-[1.12rem] font-semibold tracking-[-0.02em] text-text-strong mb-0.5">
                 Flow builder
               </h1>
               <p className="font-body text-[0.75rem] text-text-subtle max-w-lg">
@@ -624,7 +624,7 @@ export default function FlowBuilderClient({
                 <div className="px-4 py-3 border-b border-accent-warm/20 flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Sparkles className="w-4 h-4 text-accent-warm" />
-                    <h3 className="font-display text-sm font-medium text-text-strong">Generated system prompt</h3>
+                    <h3 className="font-display text-[0.8rem] font-medium text-text-strong">Generated system prompt</h3>
                   </div>
                   <div className="flex items-center gap-2">
                     <Button

@@ -119,9 +119,9 @@ export default function AgentDetailClient({ agent }: { agent: AgentDetail }) {
 
   return (
     <DashboardLayout>
-      <div className="p-5 sm:p-6 lg:p-8 max-w-[1200px]">
+      <div className="p-5 sm:p-6 lg:p-8 max-w-[1100px]">
         {/* ── Workspace header ── */}
-        <div className="mb-6">
+        <div className="mb-5">
           <Link
             href="/agents"
             className="inline-flex font-body text-[0.7rem] text-text-subtle hover:text-text-body transition-colors mb-3"
@@ -129,10 +129,10 @@ export default function AgentDetailClient({ agent }: { agent: AgentDetail }) {
             &larr; Agents
           </Link>
 
-          <div className="flex items-start justify-between gap-4 mb-4">
+          <div className="flex items-start justify-between gap-4 mb-3">
             <div className="min-w-0">
               <div className="flex items-center gap-2.5 mb-1">
-                <h1 className="font-display text-[1.2rem] font-semibold tracking-[-0.02em] text-text-strong truncate">
+                <h1 className="font-display text-[1.12rem] font-semibold tracking-[-0.02em] text-text-strong truncate">
                   {agent.name}
                 </h1>
                 <span className={`inline-flex px-1.5 py-px rounded text-[0.64rem] font-body font-medium shrink-0 ${statusPill(agent.status)}`}>

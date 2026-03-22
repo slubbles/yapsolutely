@@ -133,11 +133,11 @@ function CallsInner({ calls }: { calls: CallItem[] }) {
 
   return (
     <DashboardLayout>
-      <div className="p-5 sm:p-6 lg:p-8 max-w-[1200px]">
+      <div className="p-5 sm:p-6 lg:p-8 max-w-[1100px]">
         {/* ── Header ── */}
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center justify-between mb-5">
           <div className="flex items-baseline gap-3">
-            <h1 className="font-display text-[1.25rem] font-semibold tracking-[-0.02em] text-text-strong">
+            <h1 className="font-display text-[1.12rem] font-semibold tracking-[-0.02em] text-text-strong">
               Calls
             </h1>
             <span className="font-body text-[0.72rem] text-text-subtle tabular-nums">

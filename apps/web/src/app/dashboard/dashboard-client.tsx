@@ -134,7 +134,7 @@ export default function DashboardHome({ metrics }: DashboardProps) {
         {/* ── Metrics strip ── */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
           {cards.map((card) => (
-            <Link key={card.label} href={card.href} className="bg-surface-panel rounded-lg border border-border-soft/60 px-4 py-3 hover:bg-surface-subtle/40 transition-colors group">
+            <Link key={card.label} href={card.href} className="bg-surface-panel rounded-lg border border-border-soft/60 px-4 py-3 card-lift hover:bg-surface-subtle/40 group focus-ring">
               <div className="font-body text-[0.58rem] text-text-subtle/70 uppercase tracking-[0.1em] mb-0.5">{card.label}</div>
               <div className="font-mono text-[1rem] font-semibold text-text-strong">{card.value}</div>
               <div className="font-body text-[0.58rem] text-text-subtle/50 mt-0.5">{card.sub}</div>
@@ -224,7 +224,7 @@ export default function DashboardHome({ metrics }: DashboardProps) {
                   { label: "View phone numbers", href: "/numbers", icon: Phone },
                   { label: "Check settings", href: "/settings", icon: Settings },
                 ].map((action) => (
-                  <Link key={action.label} href={action.href} className="flex items-center gap-2.5 px-2.5 py-2 rounded-lg hover:bg-surface-subtle/60 transition-colors">
+                  <Link key={action.label} href={action.href} className="flex items-center gap-2.5 px-2.5 py-2 rounded-lg hover:bg-surface-subtle/60 transition-colors focus-ring">
                     <action.icon className="w-3 h-3 text-text-subtle" />
                     <span className="font-body text-[0.72rem] text-text-body">{action.label}</span>
                     <ArrowRight className="w-2.5 h-2.5 text-text-subtle/30 ml-auto" />

@@ -4,32 +4,32 @@ import { Skeleton } from "@/components/ui/skeleton";
 export default function NumbersLoading() {
   return (
     <DashboardLayout>
-      <div className="p-5 sm:p-8 max-w-[1200px]">
-        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-8">
+      <div className="p-5 sm:p-6 lg:p-8 max-w-[1100px]">
+        <div className="flex items-center justify-between mb-5">
           <div>
-            <Skeleton className="h-8 w-36 mb-2" />
-            <Skeleton className="h-4 w-64" />
+            <Skeleton className="h-5 w-24 mb-1" />
+            <Skeleton className="h-3 w-52" />
           </div>
-          <Skeleton className="h-9 w-36 rounded-lg" />
+          <Skeleton className="h-7 w-24 rounded-lg" />
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-          {Array.from({ length: 3 }).map((_, i) => (
-            <div key={i} className="bg-surface-panel rounded-card border border-border-soft p-5">
-              <Skeleton className="h-4 w-20 mb-2" />
-              <Skeleton className="h-7 w-12" />
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} className="bg-surface-panel rounded-lg border border-border-soft/60 px-4 py-3">
+              <Skeleton className="h-2.5 w-14 mb-1" />
+              <Skeleton className="h-5 w-8" />
             </div>
           ))}
         </div>
         <div className="bg-surface-panel rounded-card border border-border-soft overflow-hidden">
-          <div className="px-5 py-2.5 border-b border-border-soft">
-            <Skeleton className="h-3 w-full" />
+          <div className="px-4 py-2 border-b border-border-soft/80">
+            <Skeleton className="h-2.5 w-full" />
           </div>
           {Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className="flex items-center gap-4 px-5 py-3.5 border-b border-border-soft last:border-0">
-              <Skeleton className="h-4 w-32" />
-              <Skeleton className="h-5 w-20 rounded-md" />
-              <Skeleton className="h-4 w-28" />
-              <Skeleton className="h-4 w-24 ml-auto" />
+            <div key={i} className="flex items-center gap-3 px-4 py-2.5 border-b border-border-soft/50 last:border-0">
+              <Skeleton className="h-3.5 w-28" />
+              <Skeleton className="h-4 w-16 rounded" />
+              <Skeleton className="h-3.5 w-24" />
+              <Skeleton className="h-3.5 w-20 ml-auto" />
             </div>
           ))}
         </div>

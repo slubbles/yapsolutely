@@ -107,7 +107,7 @@ const AppNavRail = ({ user }: { user?: { name?: string | null; email?: string | 
       <Link
         href={item.url}
         onClick={onClick}
-        className={`relative flex items-center gap-2.5 px-3 py-[0.38rem] rounded-lg font-body text-[0.76rem] transition-all duration-150 ${
+        className={`relative flex items-center gap-2.5 px-3 py-[0.38rem] rounded-lg font-body text-[0.76rem] transition-all duration-150 focus-ring ${
           active
             ? "bg-canvas text-text-strong font-medium shadow-xs"
             : "text-text-subtle hover:text-text-body hover:bg-canvas/50"
@@ -181,7 +181,7 @@ const AppNavRail = ({ user }: { user?: { name?: string | null; email?: string | 
             onClick={() => setMenuOpen(!menuOpen)}
             aria-label="Account menu"
             aria-expanded={menuOpen}
-            className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg transition-colors ${
+            className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg transition-colors focus-ring ${
               menuOpen ? "bg-canvas" : "hover:bg-canvas/60"
             }`}
           >

@@ -285,4 +285,9 @@
   }
   .dot-active { @apply w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse-dot; }
   .transition-page { @apply transition-all duration-200 ease-out; }
+  .card-lift {
+    @apply transition-all duration-200 ease-out;
+    &:hover { box-shadow: 0 2px 8px -2px hsl(0 0% 0% / 0.06), 0 1px 3px -1px hsl(0 0% 0% / 0.04); transform: translateY(-1px); }
+  }
+  .focus-ring { @apply focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-foreground/20 focus-visible:ring-offset-1 focus-visible:ring-offset-background; }
 }

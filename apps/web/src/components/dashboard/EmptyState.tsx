@@ -20,21 +20,21 @@ const EmptyState = ({
   secondaryLabel,
   onSecondary,
 }: EmptyStateProps) => (
-  <div className="flex flex-col items-center justify-center py-20 text-center">
-    <div className="w-12 h-12 rounded-2xl bg-foreground/[0.04] flex items-center justify-center mb-5">
-      <Icon className="w-5.5 h-5.5 text-text-subtle" />
+  <div className="flex flex-col items-center justify-center py-14 text-center">
+    <div className="w-10 h-10 rounded-xl bg-foreground/[0.04] flex items-center justify-center mb-4">
+      <Icon className="w-5 h-5 text-text-subtle" />
     </div>
-    <h3 className="font-display text-[1.05rem] font-semibold text-text-strong tracking-[-0.01em] mb-1.5">
+    <h3 className="font-display text-[0.92rem] font-semibold text-text-strong tracking-[-0.01em] mb-1">
       {title}
     </h3>
-    <p className="font-body text-[0.82rem] text-text-subtle leading-relaxed max-w-[320px] mb-6">
+    <p className="font-body text-[0.78rem] text-text-subtle leading-relaxed max-w-[300px] mb-5">
       {description}
     </p>
-    <div className="flex items-center gap-3">
+    <div className="flex items-center gap-2.5">
       {actionLabel && onAction && (
         <Button
           onClick={onAction}
-          className="bg-foreground text-background hover:bg-foreground/90 font-display font-medium tracking-[-0.01em] text-[0.82rem] h-10 rounded-lg px-5 gap-2"
+          className="bg-foreground text-background hover:bg-foreground/90 font-display font-medium tracking-[-0.01em] text-[0.78rem] h-8 rounded-lg px-4 gap-1.5"
         >
           {actionLabel}
         </Button>
@@ -42,7 +42,7 @@ const EmptyState = ({
       {secondaryLabel && onSecondary && (
         <button
           onClick={onSecondary}
-          className="font-body text-[0.8rem] text-text-subtle hover:text-text-body transition-colors"
+          className="font-body text-[0.75rem] text-text-subtle hover:text-text-body transition-colors"
         >
           {secondaryLabel}
         </button>

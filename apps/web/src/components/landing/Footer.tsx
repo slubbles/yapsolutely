@@ -9,7 +9,7 @@ const Footer = () => {
           <a href="#platform" className="hover:text-foreground transition-colors">Platform</a>
           <a href="mailto:hello@yapsolutely.com" className="hover:text-foreground transition-colors">Contact</a>
         </div>
-        <span className="font-body text-xs text-text-subtle/60">© 2025 Yapsolutely, Inc.</span>
+        <span className="font-body text-xs text-text-subtle/60">© {new Date().getFullYear()} Yapsolutely, Inc.</span>
       </div>
     </footer>
   );

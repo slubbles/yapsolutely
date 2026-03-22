@@ -176,7 +176,7 @@ function AgentsClientInner({ agents }: { agents: AgentListItem[] }) {
                   <button
                     key={tab.key}
                     onClick={() => setStatusFilter(tab.key)}
-                    className={`h-7 px-2.5 rounded-md font-body text-[0.72rem] transition-all flex items-center gap-1.5 ${
+                    className={`h-7 px-2.5 rounded-md font-body text-[0.72rem] transition-all flex items-center gap-1.5 focus-ring ${
                       statusFilter === tab.key
                         ? "bg-foreground text-background font-medium"
                         : "text-text-subtle hover:text-text-body hover:bg-surface-subtle"
@@ -227,7 +227,7 @@ function AgentsClientInner({ agents }: { agents: AgentListItem[] }) {
                         <tr
                           key={agent.id}
                           onClick={() => router.push(`/agents/${agent.slug ?? agent.id}`)}
-                          className="border-b border-border-soft/50 last:border-0 hover:bg-surface-subtle/30 transition-colors cursor-pointer group"
+                          className="border-b border-border-soft/50 last:border-0 hover:bg-surface-subtle/30 transition-colors cursor-pointer group focus-ring"
                         >
                           <td className="pl-4 pr-3 py-2.5">
                             <div className="flex items-center gap-2.5">

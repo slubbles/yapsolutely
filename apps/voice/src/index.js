@@ -1175,19 +1175,31 @@ browserWss.on("connection", (socket, req) => {
     // Synthesize TTS and send audio back
     try {
       const voiceModel = session.voiceModel || defaultVoiceModel;
-      const ttsResponse = await fetch(
-        `https://api.deepgram.com/v1/speak?model=${encodeURIComponent(voiceModel)}&encoding=linear16&sample_rate=24000&container=none`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Token ${deepgramApiKey}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ text: reply }),
-        },
-      );
+      const maxTtsAttempts = 3;
+      const retryableStatuses = new Set([429, 503, 529]);
+      let ttsResponse = null;
 
-      if (ttsResponse.ok) {
+      for (let attempt = 1; attempt <= maxTtsAttempts; attempt++) {
+        ttsResponse = await fetch(
+          `https://api.deepgram.com/v1/speak?model=${encodeURIComponent(voiceModel)}&encoding=linear16&sample_rate=24000&container=none`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Token ${deepgramApiKey}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ text: reply }),
+          },
+        );
+
+        if (ttsResponse.ok || attempt === maxTtsAttempts || !retryableStatuses.has(ttsResponse.status)) {
+          break;
+        }
+
+        await new Promise((r) => setTimeout(r, Math.min(1000 * attempt, 3000)));
+      }
+
+      if (ttsResponse && ttsResponse.ok) {
         const arrayBuffer = await ttsResponse.arrayBuffer();
         const audioBuffer = Buffer.from(arrayBuffer);
         // Send audio in chunks to avoid large frames
@@ -1230,3 +1242,26 @@ server.on("upgrade", (req, socket, head) => {
 server.listen(port, () => {
   console.log(`Yapsolutely voice runtime listening on http://localhost:${port}`);
 });
+
+function gracefulShutdown(signal) {
+  console.log(`[yapsolutely-runtime] ${signal} received, shutting down gracefully…`);
+
+  server.close(() => {
+    console.log("[yapsolutely-runtime] HTTP server closed.");
+  });
+
+  for (const client of websocketServer.clients) {
+    client.close(1001, "Server shutting down");
+  }
+  for (const client of browserWss.clients) {
+    client.close(1001, "Server shutting down");
+  }
+
+  setTimeout(() => {
+    console.log("[yapsolutely-runtime] Forcing exit after shutdown timeout.");
+    process.exit(1);
+  }, 10_000).unref();
+}
+
+process.on("SIGTERM", () => gracefulShutdown("SIGTERM"));
+process.on("SIGINT", () => gracefulShutdown("SIGINT"));

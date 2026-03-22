@@ -44,26 +44,36 @@ function buildDeepgramListenUrl(session) {
 
 async function synthesizeSpeech(session, text, signal) {
   const model = session.voiceModel || defaultVoiceModel;
-  const response = await fetch(
-    `https://api.deepgram.com/v1/speak?model=${encodeURIComponent(model)}&encoding=mulaw&sample_rate=8000&container=none`,
-    {
-      method: "POST",
-      headers: {
-        Authorization: `Token ${deepgramApiKey}`,
-        "Content-Type": "application/json",
+  const maxAttempts = 3;
+  const retryableStatuses = new Set([429, 503, 529]);
+
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    const response = await fetch(
+      `https://api.deepgram.com/v1/speak?model=${encodeURIComponent(model)}&encoding=mulaw&sample_rate=8000&container=none`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Token ${deepgramApiKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ text }),
+        signal,
       },
-      body: JSON.stringify({ text }),
-      signal,
-    },
-  );
+    );
 
-  if (!response.ok) {
+    if (response.ok) {
+      const arrayBuffer = await response.arrayBuffer();
+      return Buffer.from(arrayBuffer);
+    }
+
+    if (attempt < maxAttempts && retryableStatuses.has(response.status)) {
+      await wait(Math.min(1000 * attempt, 3000));
+      continue;
+    }
+
     const errorText = await response.text().catch(() => "");
-    throw new Error(errorText || "Deepgram TTS request failed");
+    throw new Error(errorText || `Deepgram TTS request failed (${response.status})`);
   }
-
-  const arrayBuffer = await response.arrayBuffer();
-  return Buffer.from(arrayBuffer);
 }
 
 async function streamAudioBufferToTwilio(socket, session, audioBuffer, shouldStop) {

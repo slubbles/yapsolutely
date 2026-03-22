@@ -61,24 +61,35 @@ function buildAnthropicMessages(session) {
 }
 
 async function createAnthropicResponse(payload, signal) {
-  const response = await fetch("https://api.anthropic.com/v1/messages", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "x-api-key": anthropicApiKey,
-      "anthropic-version": "2023-06-01",
-    },
-    body: JSON.stringify(payload),
-    signal,
-  });
+  const maxAttempts = 3;
+  const retryableStatuses = new Set([429, 503, 529]);
 
-  const data = await response.json().catch(() => null);
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": anthropicApiKey,
+        "anthropic-version": "2023-06-01",
+      },
+      body: JSON.stringify(payload),
+      signal,
+    });
 
-  if (!response.ok) {
-    throw new Error(data?.error?.message || data?.error || "Anthropic request failed");
+    const data = await response.json().catch(() => null);
+
+    if (response.ok) {
+      return data;
+    }
+
+    if (attempt < maxAttempts && retryableStatuses.has(response.status)) {
+      const delay = Math.min(1000 * attempt, 3000);
+      await new Promise((resolve) => setTimeout(resolve, delay));
+      continue;
+    }
+
+    throw new Error(data?.error?.message || data?.error || `Anthropic request failed (${response.status})`);
   }
-
-  return data;
 }
 
 export async function generateAssistantReply(session, signal, recordEvent) {

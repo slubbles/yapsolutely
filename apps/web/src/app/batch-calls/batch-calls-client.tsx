@@ -1,6 +1,7 @@
 "use client";
 
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
+import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import { PhoneOutgoing } from "lucide-react";
 
 const metrics = [
@@ -22,9 +23,14 @@ export default function BatchCallsClient() {
             <h1 className="font-display text-[1.38rem] font-semibold tracking-[-0.02em] text-text-strong">Batch Calls</h1>
             <p className="font-body text-[0.89rem] text-text-subtle mt-0.5">Plan and launch outbound call campaigns.</p>
           </div>
-          <button className="font-body text-[0.89rem] text-text-subtle/50 px-2.5 py-1 rounded border border-border-soft/40 cursor-not-allowed">
-            New campaign
-          </button>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button className="font-body text-[0.89rem] text-text-subtle/50 px-2.5 py-1 rounded border border-border-soft/40 cursor-default">
+                New campaign
+              </button>
+            </TooltipTrigger>
+            <TooltipContent>Coming soon</TooltipContent>
+          </Tooltip>
         </div>
 
         {/* ── Metrics strip ── */}

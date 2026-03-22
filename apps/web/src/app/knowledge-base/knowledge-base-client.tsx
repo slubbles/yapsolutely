@@ -1,6 +1,7 @@
 "use client";
 
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
+import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import { BookOpen } from "lucide-react";
 
 const metrics = [
@@ -22,9 +23,14 @@ export default function KnowledgeBaseClient() {
             <h1 className="font-display text-[1.38rem] font-semibold tracking-[-0.02em] text-text-strong">Knowledge Base</h1>
             <p className="font-body text-[0.89rem] text-text-subtle mt-0.5">Sources that inform your agents&apos; responses.</p>
           </div>
-          <button className="font-body text-[0.89rem] text-text-subtle/50 px-2.5 py-1 rounded border border-border-soft/40 cursor-not-allowed">
-            Add source
-          </button>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button className="font-body text-[0.89rem] text-text-subtle/50 px-2.5 py-1 rounded border border-border-soft/40 cursor-default">
+                Add source
+              </button>
+            </TooltipTrigger>
+            <TooltipContent>Coming soon</TooltipContent>
+          </Tooltip>
         </div>
 
         {/* ── Metrics strip ── */}

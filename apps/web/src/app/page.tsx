@@ -1,6 +1,7 @@
 import Navbar from "@/components/landing/Navbar";
 import Hero from "@/components/landing/Hero";
 import TrustStrip from "@/components/landing/TrustStrip";
+import BrandCarousel from "@/components/landing/BrandCarousel";
 import Workflow from "@/components/landing/Workflow";
 import ProductShowcase from "@/components/landing/ProductShowcase";
 import ClosingCTA from "@/components/landing/ClosingCTA";
@@ -12,6 +13,7 @@ export default function Home() {
       <Navbar />
       <Hero />
       <TrustStrip />
+      <BrandCarousel />
       <Workflow />
       <ProductShowcase />
       <ClosingCTA />

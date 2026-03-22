@@ -18,6 +18,9 @@ apps/*/coverage/
 .env.development.local
 .env.test.local
 .env.production.local
+deploy/.env
+deploy/.env.web
+deploy/.env.voice
 
 # misc
 .DS_Store

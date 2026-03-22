@@ -52,6 +52,16 @@ Production uses:
 - `deploy/.env.web`
 - `deploy/.env.voice`
 
+Example starter files now live in the repo as:
+
+- `deploy/.env.example`
+- `deploy/.env.web.example`
+- `deploy/.env.voice.example`
+
+Recommended first step on the VPS:
+
+- copy each `*.example` file to its real `deploy/.env*` counterpart and fill in real values
+
 `deploy/.env` holds host-level Compose values such as:
 
 - `WEB_HOST`
@@ -59,6 +69,13 @@ Production uses:
 - `POSTGRES_DB`
 - `POSTGRES_USER`
 - `POSTGRES_PASSWORD`
+
+For a clean custom-domain setup, use something like:
+
+- `WEB_HOST=app.yourdomain.com`
+- `VOICE_HOST=voice.yourdomain.com`
+
+Then point both DNS records at the VPS IP and let Caddy provision HTTPS automatically.
 
 ---
 
@@ -236,6 +253,49 @@ Optional overrides:
 - `YAPS_REMOTE_REPO_PATH`
 
 The smoke check additionally verifies that simulated Twilio inbound/status webhooks still create a `Call` row plus `CallEvent` transcript proof in production Postgres.
+
+---
+
+## Optional: Vercel split-hosting mode
+
+The current recommended production path is still **VPS-only** because it keeps the dashboard, voice runtime, and database deployment simpler during final live-call validation.
+
+However, if you want Karim to have a Vercel-hosted dashboard URL, the web app can be deployed separately to Vercel while keeping `voice` and `postgres` on the VPS.
+
+### Suggested split-hosting shape
+
+- `apps/web` → Vercel
+- `apps/voice` → VPS
+- `postgres` → VPS
+
+### Vercel project settings
+
+- Root directory: `apps/web`
+- Framework preset: Next.js
+- Install command: default is fine
+- Build command: default is fine
+
+### Web env values that must use the split-hosting URLs
+
+- `NEXT_PUBLIC_APP_URL=https://app.yourdomain.com` (or the Vercel URL)
+- `VOICE_STREAM_BASE_URL=https://voice.yourdomain.com`
+- `VOICE_STREAM_WSS_URL=wss://voice.yourdomain.com/twilio/stream`
+- plus all the normal web-side secrets
+
+### What must also change on the VPS voice/runtime side
+
+- `NEXT_PUBLIC_APP_URL` in `deploy/.env.voice` must point at the Vercel-hosted web app URL
+- Twilio webhooks should still point to the VPS voice host, not to Vercel
+
+### Recommendation
+
+If the main goal is a cleaner public link, prefer:
+
+1. buy a cheap domain
+2. point `app.` and `voice.` subdomains at the VPS
+3. keep the current VPS-only production path
+
+That gets you a polished URL without introducing extra deployment moving parts during the final demo hardening phase.
 
 ---
 

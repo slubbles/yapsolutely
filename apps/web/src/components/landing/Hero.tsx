@@ -4,7 +4,7 @@ import Link from "next/link";
 
 const Hero = () => {
   return (
-    <section className="pt-28 sm:pt-40 pb-16 sm:pb-28 px-5 sm:px-6">
+    <section id="product" className="pt-28 sm:pt-40 pb-16 sm:pb-28 px-5 sm:px-6">
       <div className="max-w-7xl mx-auto">
         <div className="text-center max-w-3xl mx-auto mb-7 animate-fade-up" style={{ animationDelay: "0.1s" }}>
           <h1 className="text-[2.25rem] sm:text-[3.25rem] lg:text-[5.25rem] font-semibold tracking-[-0.035em] leading-[1.05] text-foreground">
@@ -20,7 +20,7 @@ const Hero = () => {
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-16 sm:mb-28 animate-fade-up px-4" style={{ animationDelay: "0.3s" }}>
           <Button variant="hero" size="xl" asChild className="w-full sm:w-auto">
-            <Link href="/sign-in">Start building</Link>
+            <Link href="/sign-up">Start building</Link>
           </Button>
           <Button variant="hero-outline" size="xl" asChild className="w-full sm:w-auto">
             <a href="#workflow">See how it works</a>

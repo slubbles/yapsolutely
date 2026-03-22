@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, Pencil, Pause, Play, Copy, Phone, ExternalLink, MessageSquare, Workflow } from "lucide-react";
+import { ArrowLeft, Pencil, Pause, Play, Copy, Phone, ExternalLink, MessageSquare, Workflow, Download } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -106,6 +106,24 @@ export default function AgentDetailClient({ agent }: { agent: AgentDetail }) {
   const slug = agent.slug ?? agent.id;
   const primaryNumber = agent.phoneNumbers[0]?.phoneNumber ?? "—";
 
+  const handleExport = () => {
+    const exportData = {
+      name: agent.name,
+      description: agent.description,
+      systemPrompt: agent.systemPrompt,
+      firstMessage: agent.firstMessage,
+      voiceModel: agent.voiceModel,
+      transferNumber: agent.transferNumber,
+    };
+    const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${agent.slug ?? agent.name.toLowerCase().replace(/\s+/g, "-")}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <DashboardLayout>
       <div className="p-5 sm:p-8 max-w-[1200px]">
@@ -129,6 +147,10 @@ export default function AgentDetailClient({ agent }: { agent: AgentDetail }) {
             </p>
           </div>
           <div className="flex items-center gap-2 shrink-0">
+            <Button onClick={handleExport} variant="ghost" size="sm" className="font-body text-text-subtle text-[0.78rem] gap-1.5">
+              <Download className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Export</span>
+            </Button>
             <form action={duplicateAgentAction}>
               <input type="hidden" name="agentId" value={agent.id} />
               <Button type="submit" variant="ghost" size="sm" className="font-body text-text-subtle text-[0.78rem] gap-1.5">

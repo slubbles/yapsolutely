@@ -553,3 +553,74 @@ export async function generatePromptFromFlowAction(formData: FormData) {
     redirect(`/agents/${agentId}?error=database-unavailable`);
   }
 }
+
+export async function importAgentAction(formData: FormData) {
+  const session = await getSession();
+
+  if (!session) {
+    redirect("/sign-in");
+  }
+
+  const jsonStr = readText(formData, "agentJson");
+
+  if (!jsonStr) {
+    redirect("/agents?error=missing-import-data");
+  }
+
+  let parsed: Record<string, unknown>;
+  try {
+    parsed = JSON.parse(jsonStr);
+    if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
+      throw new Error("not object");
+    }
+  } catch {
+    redirect("/agents?error=invalid-import-format");
+  }
+
+  const name = typeof parsed.name === "string" ? parsed.name.trim() : "";
+  const systemPrompt = typeof parsed.systemPrompt === "string" ? parsed.systemPrompt.trim() : "";
+
+  if (!name || !systemPrompt) {
+    redirect("/agents?error=import-missing-required");
+  }
+
+  const description = typeof parsed.description === "string" ? parsed.description.trim() : null;
+  const firstMessage = typeof parsed.firstMessage === "string" ? parsed.firstMessage.trim() : null;
+  const voiceModel = typeof parsed.voiceModel === "string" ? parsed.voiceModel.trim() : null;
+  const transferNumber = typeof parsed.transferNumber === "string" ? parsed.transferNumber.trim() : null;
+
+  try {
+    const user = await prisma.user.upsert({
+      where: { email: session.email },
+      update: { name: session.name },
+      create: { email: session.email, name: session.name },
+    });
+
+    const slug = await createUniqueAgentSlug(prisma, name);
+
+    const config: Record<string, unknown> = { source: "json-import" };
+    if (parsed.config && typeof parsed.config === "object" && !Array.isArray(parsed.config)) {
+      const importedConfig = parsed.config as Record<string, unknown>;
+      if (importedConfig.flow) config.flow = importedConfig.flow;
+    }
+
+    const agent = await prisma.agent.create({
+      data: {
+        userId: user.id,
+        name,
+        slug,
+        description,
+        systemPrompt,
+        firstMessage,
+        voiceModel: voiceModel || process.env.VOICE_MODEL || null,
+        transferNumber,
+        status: AgentStatus.DRAFT,
+        config: config as Prisma.JsonObject,
+      },
+    });
+
+    redirect(`/agents/${agent.slug ?? agent.id}`);
+  } catch {
+    redirect("/agents?error=database-unavailable");
+  }
+}

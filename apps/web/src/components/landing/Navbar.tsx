@@ -27,7 +27,7 @@ const Navbar = () => {
             <Link href="/sign-in">Sign in</Link>
           </Button>
           <Button variant="hero" size="default" className="rounded-full font-display" asChild>
-            <Link href="/sign-in">Get started</Link>
+            <Link href="/sign-up">Get started</Link>
           </Button>
         </div>
         <button
@@ -51,7 +51,7 @@ const Navbar = () => {
               <Link href="/sign-in" onClick={() => setMobileOpen(false)}>Sign in</Link>
             </Button>
             <Button variant="hero" size="default" className="rounded-full font-display" asChild>
-              <Link href="/sign-in" onClick={() => setMobileOpen(false)}>Get started</Link>
+              <Link href="/sign-up" onClick={() => setMobileOpen(false)}>Get started</Link>
             </Button>
           </div>
         </div>

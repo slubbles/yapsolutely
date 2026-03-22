@@ -1,12 +1,13 @@
 "use client";
 
-import { useState, useMemo, Suspense } from "react";
-import { Search, Plus, Download, Bot } from "lucide-react";
+import { useState, useMemo, useRef, Suspense } from "react";
+import { Search, Plus, Download, Upload, Bot } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import OnboardingModal from "@/components/dashboard/OnboardingModal";
 import EmptyState from "@/components/dashboard/EmptyState";
+import { importAgentAction } from "@/app/_actions/agents";
 import type { AgentListItem } from "@/lib/agent-data";
 
 const templates = [
@@ -57,6 +58,7 @@ function AgentsClientInner({ agents }: { agents: AgentListItem[] }) {
   const [showOnboarding, setShowOnboarding] = useState(searchParams.get("onboarding") === "true");
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const filtered = useMemo(() => {
     let result = agents;
@@ -80,6 +82,20 @@ function AgentsClientInner({ agents }: { agents: AgentListItem[] }) {
     router.replace("/agents");
   };
 
+  const handleImportFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const text = reader.result as string;
+      const formData = new FormData();
+      formData.set("agentJson", text);
+      importAgentAction(formData);
+    };
+    reader.readAsText(file);
+    e.target.value = "";
+  };
+
   return (
     <DashboardLayout>
       {showOnboarding && <OnboardingModal onComplete={handleOnboardingComplete} />}
@@ -90,8 +106,15 @@ function AgentsClientInner({ agents }: { agents: AgentListItem[] }) {
             <p className="font-body text-[0.82rem] text-text-subtle">Create, configure, and manage your voice agents.</p>
           </div>
           <div className="flex items-center gap-2">
-            <Button variant="ghost" size="sm" className="font-body text-text-subtle text-[0.78rem] gap-1.5">
-              <Download className="w-3.5 h-3.5" />Import
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".json"
+              onChange={handleImportFile}
+              className="hidden"
+            />
+            <Button onClick={() => fileInputRef.current?.click()} variant="ghost" size="sm" className="font-body text-text-subtle text-[0.78rem] gap-1.5">
+              <Upload className="w-3.5 h-3.5" />Import
             </Button>
             <Button onClick={() => router.push("/agents/new")} variant="hero" size="default" className="rounded-lg gap-1.5 text-[0.8rem]">
               <Plus className="w-3.5 h-3.5" />Create agent

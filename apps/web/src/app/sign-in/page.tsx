@@ -106,7 +106,7 @@ export default function SignInPage() {
               >
                 {isLoading ? (
                   <span className="flex items-center gap-2">
-                    <span className="w-3.5 h-3.5 border-2 border-background/30 border-t-background rounded-full animate-spin" />
+                    <span className="w-3.5 h-3.5 border-2 border-primary-foreground/30 border-t-background rounded-full animate-spin" />
                     Signing in…
                   </span>
                 ) : "Sign in with email"}

@@ -119,7 +119,7 @@ const SectionContextPane = () => {
   return (
     <div className="hidden lg:flex w-[200px] shrink-0 h-screen sticky top-0 bg-surface-subtle/50 border-r border-border-soft/40 flex-col">
       <div className="px-4 h-14 flex items-center">
-        <h2 className="font-display text-[0.82rem] font-semibold text-text-strong tracking-[-0.01em]">
+        <h2 className="font-display text-[1.02rem] font-semibold text-text-strong tracking-[-0.01em]">
           {config.title}
         </h2>
       </div>
@@ -131,7 +131,7 @@ const SectionContextPane = () => {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex items-center justify-between px-3 py-[0.4rem] rounded-lg font-body text-[0.76rem] transition-colors ${
+                className={`flex items-center justify-between px-3 py-[0.4rem] rounded-lg font-body text-[0.84rem] transition-colors ${
                   active
                     ? "bg-surface-panel text-text-strong font-medium shadow-surface-xs"
                     : "text-text-subtle hover:text-text-body hover:bg-surface-panel/60"
@@ -139,7 +139,7 @@ const SectionContextPane = () => {
               >
                 <span>{item.label}</span>
                 {item.count !== undefined && (
-                  <span className="text-[0.62rem] font-body text-text-subtle/70 tabular-nums">
+                  <span className="text-[0.79rem] font-body text-text-subtle/70 tabular-nums">
                     {item.count}
                   </span>
                 )}

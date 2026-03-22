@@ -156,19 +156,19 @@
   --font-body: var(--font-body-family);
   --font-sans: var(--font-body-family);
 
-  --font-size-page-title: 1.5rem;
+  --font-size-page-title: 1.65rem;
   --font-size-page-title--line-height: 1.2;
   --font-size-page-title--letter-spacing: -0.025em;
-  --font-size-section-head: 0.92rem;
+  --font-size-section-head: 1.02rem;
   --font-size-section-head--line-height: 1.3;
   --font-size-section-head--letter-spacing: -0.01em;
-  --font-size-body-md: 0.82rem;
+  --font-size-body-md: 0.92rem;
   --font-size-body-md--line-height: 1.65;
-  --font-size-body-sm: 0.78rem;
+  --font-size-body-sm: 0.87rem;
   --font-size-body-sm--line-height: 1.6;
-  --font-size-label: 0.72rem;
+  --font-size-label: 0.8rem;
   --font-size-label--line-height: 1.4;
-  --font-size-caption: 0.65rem;
+  --font-size-caption: 0.74rem;
   --font-size-caption--line-height: 1.4;
   --font-size-caption--letter-spacing: 0.1em;
 

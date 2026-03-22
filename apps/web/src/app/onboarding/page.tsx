@@ -107,11 +107,11 @@ export default function OnboardingPage() {
                       <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors ${
                         role === option.value ? "border-foreground bg-foreground" : "border-border"
                       }`}>
-                        {role === option.value && <Check className="w-3 h-3 text-background" />}
+                        {role === option.value && <Check className="w-3 h-3 text-primary-foreground" />}
                       </div>
                       <div>
                         <div className="font-display text-body-md font-medium text-text-strong">{option.label}</div>
-                        <div className="font-body text-[0.72rem] text-text-subtle">{option.desc}</div>
+                        <div className="font-body text-[0.89rem] text-text-subtle">{option.desc}</div>
                       </div>
                     </button>
                   ))}
@@ -139,7 +139,7 @@ export default function OnboardingPage() {
                       }`}
                     >
                       <div className="font-display text-lg font-semibold text-text-strong mb-1">{option.label}</div>
-                      <div className="font-body text-[0.72rem] text-text-subtle">{option.desc}</div>
+                      <div className="font-body text-[0.89rem] text-text-subtle">{option.desc}</div>
                     </button>
                   ))}
                 </div>
@@ -168,7 +168,7 @@ export default function OnboardingPage() {
                       <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center transition-colors ${
                         industry === option.value ? "border-foreground bg-foreground" : "border-border"
                       }`}>
-                        {industry === option.value && <Check className="w-2.5 h-2.5 text-background" />}
+                        {industry === option.value && <Check className="w-2.5 h-2.5 text-primary-foreground" />}
                       </div>
                       <span className="font-display text-body-md font-medium text-text-strong">{option.label}</span>
                     </button>
@@ -196,7 +196,7 @@ export default function OnboardingPage() {
               >
                 {isLoading ? (
                   <span className="flex items-center gap-2">
-                    <span className="w-3.5 h-3.5 border-2 border-background/30 border-t-background rounded-full animate-spin" />
+                    <span className="w-3.5 h-3.5 border-2 border-primary-foreground/30 border-t-background rounded-full animate-spin" />
                     Setting up…
                   </span>
                 ) : step === "industry" ? (
@@ -213,7 +213,7 @@ export default function OnboardingPage() {
             <div className="mt-6 text-center">
               <button
                 onClick={handleComplete}
-                className="font-body text-[0.72rem] text-text-subtle/60 hover:text-text-subtle transition-colors"
+                className="font-body text-[0.89rem] text-text-subtle/60 hover:text-text-subtle transition-colors"
               >
                 Skip for now
               </button>
@@ -222,14 +222,14 @@ export default function OnboardingPage() {
         </div>
 
         <div className="mt-auto pt-6">
-          <p className="font-body text-[0.65rem] text-text-subtle/50">© 2025 Yapsolutely, Inc.</p>
+          <p className="font-body text-[0.82rem] text-text-subtle/50">© 2025 Yapsolutely, Inc.</p>
         </div>
       </div>
 
       {/* Right: context panel */}
       <div className="hidden lg:flex flex-1 bg-surface-dark rounded-l-[2rem] p-12 xl:p-16 items-center justify-center relative overflow-hidden">
         <div className="max-w-md animate-fade-in" style={{ animationDelay: "0.2s" }}>
-          <span className="font-body text-[0.6rem] text-surface-dark-foreground/20 uppercase tracking-[0.2em] block mb-6">Workspace setup</span>
+          <span className="font-body text-[0.77rem] text-surface-dark-foreground/20 uppercase tracking-[0.2em] block mb-6">Workspace setup</span>
           <p className="font-display text-[1.75rem] font-semibold tracking-[-0.025em] text-surface-dark-foreground leading-[1.2] mb-6">
             A few questions to personalize your experience.
           </p>
@@ -251,7 +251,7 @@ export default function OnboardingPage() {
                   }`}>
                     {item.status === "done" ? "✓" : item.step}
                   </div>
-                  <span className={`font-body text-[0.82rem] ${
+                  <span className={`font-body text-[1.02rem] ${
                     item.status === "done" ? "text-surface-dark-foreground/40 line-through" :
                     "text-surface-dark-foreground/60"
                   }`}>

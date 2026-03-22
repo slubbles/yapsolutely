@@ -141,25 +141,25 @@ export default function CallDetailClient({ call }: { call: CallDetail }) {
         <div className="mb-5">
           <Link
             href="/calls"
-            className="inline-flex font-body text-[0.7rem] text-text-subtle hover:text-text-body transition-colors mb-3"
+            className="inline-flex font-body text-[0.79rem] text-text-subtle hover:text-text-body transition-colors mb-3"
           >
             &larr; Calls
           </Link>
           <div className="flex items-start justify-between gap-4">
             <div>
               <div className="flex items-center gap-2.5 mb-0.5">
-                <h1 className="font-display text-[1.12rem] font-semibold tracking-[-0.02em] text-text-strong">
+                <h1 className="font-display text-[1.38rem] font-semibold tracking-[-0.02em] text-text-strong">
                   {call.callerNumber ?? "Unknown caller"}
                 </h1>
-                <span className={`inline-flex px-1.5 py-px rounded text-[0.64rem] font-body font-medium ${statusPill(call.status)}`}>
+                <span className={`inline-flex px-1.5 py-px rounded text-[0.8rem] font-body font-medium ${statusPill(call.status)}`}>
                   {statusLabel(call.status)}
                 </span>
               </div>
-              <p className="font-body text-[0.75rem] text-text-subtle">
+              <p className="font-body text-[0.84rem] text-text-subtle">
                 {call.agentName ? `Handled by ${call.agentName}` : "Call detail"} &middot; {formatDate(call.createdAt)}
               </p>
             </div>
-            <Button onClick={handleExport} variant="ghost" size="sm" className="font-body text-text-subtle text-[0.72rem] gap-1 h-7 px-2">
+            <Button onClick={handleExport} variant="ghost" size="sm" className="font-body text-text-subtle text-[0.89rem] gap-1 h-7 px-2">
               <Download className="w-3 h-3" />
               Export
             </Button>
@@ -175,7 +175,7 @@ export default function CallDetailClient({ call }: { call: CallDetail }) {
             { label: "Events", value: call.events.length.toString() },
           ].map((stat) => (
             <div key={stat.label} className="bg-surface-panel rounded-lg border border-border-soft/60 px-4 py-3">
-              <div className="font-body text-[0.58rem] text-text-subtle/70 uppercase tracking-[0.1em] mb-0.5">{stat.label}</div>
+              <div className="font-body text-[0.67rem] text-text-subtle/70 uppercase tracking-[0.1em] mb-0.5">{stat.label}</div>
               <div className="font-mono text-[1rem] font-semibold text-text-strong">{stat.value}</div>
             </div>
           ))}
@@ -187,7 +187,7 @@ export default function CallDetailClient({ call }: { call: CallDetail }) {
           <div className="xl:col-span-8">
             <div className="bg-surface-panel rounded-card border border-border-soft overflow-hidden">
               <div className="px-4 py-3 border-b border-border-soft/60">
-                <h3 className="font-display text-[0.8rem] font-medium text-text-strong">Transcript</h3>
+                <h3 className="font-display text-[0.89rem] font-medium text-text-strong">Transcript</h3>
               </div>
               <div className="p-4 space-y-1">
                 {call.events.length > 0 ? (
@@ -197,10 +197,10 @@ export default function CallDetailClient({ call }: { call: CallDetail }) {
                     return (
                       <div key={event.id} className={`${style.bgClass} ${isConversation ? "py-2" : "my-1.5"}`}>
                         <div className="flex items-start gap-2">
-                          <span className="font-mono text-[0.58rem] text-text-subtle/30 w-6 shrink-0 pt-0.5 text-right tabular-nums">{event.sequence}</span>
+                          <span className="font-mono text-[0.67rem] text-text-subtle/30 w-6 shrink-0 pt-0.5 text-right tabular-nums">{event.sequence}</span>
                           <div className="flex-1 min-w-0">
-                            <span className={`font-body text-[0.64rem] font-medium ${style.labelClass} mr-1.5`}>{style.label}</span>
-                            <span className={`font-body text-[0.78rem] leading-[1.65] ${event.role === "TOOL" || event.role === "SYSTEM" ? "text-text-subtle" : "text-text-body"}`}>
+                            <span className={`font-body text-[0.8rem] font-medium ${style.labelClass} mr-1.5`}>{style.label}</span>
+                            <span className={`font-body text-[0.87rem] leading-[1.65] ${event.role === "TOOL" || event.role === "SYSTEM" ? "text-text-subtle" : "text-text-body"}`}>
                               {event.text ?? ""}
                             </span>
                           </div>
@@ -209,9 +209,9 @@ export default function CallDetailClient({ call }: { call: CallDetail }) {
                     );
                   })
                 ) : call.transcriptText ? (
-                  <p className="font-body text-[0.78rem] text-text-body leading-[1.7] whitespace-pre-wrap">{call.transcriptText}</p>
+                  <p className="font-body text-[0.87rem] text-text-body leading-[1.7] whitespace-pre-wrap">{call.transcriptText}</p>
                 ) : (
-                  <p className="font-body text-[0.78rem] text-text-subtle py-4 text-center">No transcript available.</p>
+                  <p className="font-body text-[0.87rem] text-text-subtle py-4 text-center">No transcript available.</p>
                 )}
               </div>
             </div>
@@ -222,10 +222,10 @@ export default function CallDetailClient({ call }: { call: CallDetail }) {
             {call.summary && (
               <div className="bg-surface-panel rounded-card border border-border-soft">
                 <div className="px-4 py-3 border-b border-border-soft/60">
-                  <h3 className="font-display text-[0.8rem] font-medium text-text-strong">Summary</h3>
+                  <h3 className="font-display text-[0.89rem] font-medium text-text-strong">Summary</h3>
                 </div>
                 <div className="p-4">
-                  <p className="font-body text-[0.75rem] text-text-body leading-[1.7]">{call.summary}</p>
+                  <p className="font-body text-[0.84rem] text-text-body leading-[1.7]">{call.summary}</p>
                 </div>
               </div>
             )}
@@ -233,13 +233,13 @@ export default function CallDetailClient({ call }: { call: CallDetail }) {
             {toolEvents.length > 0 && (
               <div className="bg-surface-panel rounded-card border border-border-soft">
                 <div className="px-4 py-3 border-b border-border-soft/60">
-                  <h3 className="font-display text-[0.8rem] font-medium text-text-strong">Tool actions</h3>
+                  <h3 className="font-display text-[0.89rem] font-medium text-text-strong">Tool actions</h3>
                 </div>
                 <div className="p-3 space-y-1.5">
                   {toolEvents.map((e) => (
                     <div key={e.id} className="p-2.5 rounded-lg bg-surface-subtle/50">
-                      <p className="font-body text-[0.68rem] text-text-subtle leading-relaxed">{e.text}</p>
-                      <span className="font-mono text-[0.56rem] text-text-subtle/30 mt-0.5 block">seq {e.sequence}</span>
+                      <p className="font-body text-[0.77rem] text-text-subtle leading-relaxed">{e.text}</p>
+                      <span className="font-mono text-[0.74rem] text-text-subtle/30 mt-0.5 block">seq {e.sequence}</span>
                     </div>
                   ))}
                 </div>
@@ -248,7 +248,7 @@ export default function CallDetailClient({ call }: { call: CallDetail }) {
 
             <div className="bg-surface-panel rounded-card border border-border-soft">
               <div className="px-4 py-3 border-b border-border-soft/60">
-                <h3 className="font-display text-[0.8rem] font-medium text-text-strong">Details</h3>
+                <h3 className="font-display text-[0.89rem] font-medium text-text-strong">Details</h3>
               </div>
               <div className="p-4 space-y-1">
                 {[
@@ -260,8 +260,8 @@ export default function CallDetailClient({ call }: { call: CallDetail }) {
                   { label: "Date", value: formatDate(call.createdAt) },
                 ].map((item) => (
                   <div key={item.label} className="flex items-center justify-between py-1.5">
-                    <span className="font-body text-[0.68rem] text-text-subtle">{item.label}</span>
-                    <span className={`text-[0.68rem] text-text-body truncate max-w-[140px] text-right ${item.mono ? "font-mono" : "font-body"}`}>
+                    <span className="font-body text-[0.77rem] text-text-subtle">{item.label}</span>
+                    <span className={`text-[0.77rem] text-text-body truncate max-w-[140px] text-right ${item.mono ? "font-mono" : "font-body"}`}>
                       {item.value}
                     </span>
                   </div>

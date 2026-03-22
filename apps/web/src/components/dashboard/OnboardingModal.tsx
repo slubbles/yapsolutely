@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -27,7 +26,6 @@ interface OnboardingModalProps {
 }
 
 const OnboardingModal = ({ onComplete }: OnboardingModalProps) => {
-  const router = useRouter();
   const [step, setStep] = useState(0);
   const [workspace, setWorkspace] = useState("");
   const [selectedUseCase, setSelectedUseCase] = useState("");
@@ -104,7 +102,7 @@ const OnboardingModal = ({ onComplete }: OnboardingModalProps) => {
                   onClick={() => setSelectedUseCase(uc)}
                   className={`h-11 rounded-xl border font-body text-body-sm transition-all duration-150 ${
                     selectedUseCase === uc
-                      ? "border-foreground bg-foreground text-background"
+                      ? "border-foreground bg-foreground text-primary-foreground"
                       : "border-border-soft bg-surface-panel text-text-body hover:border-foreground/20 hover:bg-surface-subtle/40"
                   }`}
                 >

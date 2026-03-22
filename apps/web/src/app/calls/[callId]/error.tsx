@@ -25,7 +25,7 @@ export default function CallDetailError({
           <h2 className="font-display text-lg font-semibold text-text-strong mb-2">
             Couldn&apos;t load call
           </h2>
-          <p className="font-body text-[0.82rem] text-text-subtle mb-6 max-w-md mx-auto">
+          <p className="font-body text-[1.02rem] text-text-subtle mb-6 max-w-md mx-auto">
             There was a problem loading this call&apos;s details.
           </p>
           <div className="flex items-center justify-center gap-3">

@@ -310,7 +310,7 @@ export default function NewAgentRouter() {
         <div className="mb-8">
           <Link
             href="/agents"
-            className="inline-flex items-center gap-1.5 font-body text-[0.75rem] text-text-subtle hover:text-text-body transition-colors mb-4"
+            className="inline-flex items-center gap-1.5 font-body text-[0.84rem] text-text-subtle hover:text-text-body transition-colors mb-4"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             Back to agents
@@ -318,7 +318,7 @@ export default function NewAgentRouter() {
           <h1 className="font-display text-[1.65rem] font-semibold tracking-[-0.03em] text-text-strong mb-1">
             Create agent
           </h1>
-          <p className="font-body text-[0.85rem] text-text-subtle">
+          <p className="font-body text-[1.05rem] text-text-subtle">
             Start from a template or build from scratch.
           </p>
         </div>
@@ -333,10 +333,10 @@ export default function NewAgentRouter() {
               <FileText className="w-5 h-5 text-text-subtle group-hover:text-text-strong transition-colors" />
             </div>
             <div>
-              <h3 className="font-display text-[0.92rem] font-semibold text-text-strong tracking-[-0.01em]">
+              <h3 className="font-display text-[1.02rem] font-semibold text-text-strong tracking-[-0.01em]">
                 Start from scratch
               </h3>
-              <p className="font-body text-[0.78rem] text-text-subtle mt-0.5">
+              <p className="font-body text-[0.87rem] text-text-subtle mt-0.5">
                 Create a blank agent and write your own prompt.
               </p>
             </div>
@@ -345,7 +345,7 @@ export default function NewAgentRouter() {
 
         {/* Templates grid */}
         <div className="mb-4">
-          <h2 className="font-display text-[0.82rem] font-semibold text-text-subtle uppercase tracking-[0.08em]">
+          <h2 className="font-display text-[1.02rem] font-semibold text-text-subtle uppercase tracking-[0.08em]">
             Templates
           </h2>
         </div>
@@ -362,10 +362,10 @@ export default function NewAgentRouter() {
                   {template.icon}
                 </div>
                 <div className="min-w-0">
-                  <h3 className="font-display text-[0.88rem] font-semibold text-text-strong tracking-[-0.01em] group-hover:text-foreground transition-colors">
+                  <h3 className="font-display text-[0.98rem] font-semibold text-text-strong tracking-[-0.01em] group-hover:text-foreground transition-colors">
                     {template.name}
                   </h3>
-                  <p className="font-body text-[0.76rem] text-text-subtle mt-1 leading-relaxed">
+                  <p className="font-body text-[0.84rem] text-text-subtle mt-1 leading-relaxed">
                     {template.description}
                   </p>
                 </div>

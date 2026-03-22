@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
-import { ArrowLeft, Send, RotateCcw, Bot, User, Loader2, Mic, MicOff, MessageSquare, Phone } from "lucide-react";
+import { Send, RotateCcw, Bot, User, Loader2, Mic, MicOff, MessageSquare, Phone } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
@@ -263,7 +263,7 @@ function VoiceStateIndicator({ state }: { state: VoiceState }) {
   return (
     <div className="flex items-center gap-2">
       <span className={`w-2.5 h-2.5 rounded-full ${cfg.color} ${cfg.pulse ? "animate-pulse" : ""}`} />
-      <span className="font-body text-[0.72rem] text-text-subtle">{cfg.label}</span>
+      <span className="font-body text-[0.89rem] text-text-subtle">{cfg.label}</span>
     </div>
   );
 }
@@ -384,7 +384,7 @@ export default function AgentTestClient({ agent }: { agent: AgentSummary }) {
           <div className="max-w-[900px] mx-auto">
             <Link
               href={`/agents/${slug}`}
-              className="inline-flex font-body text-[0.7rem] text-text-subtle hover:text-text-body transition-colors mb-2"
+              className="inline-flex font-body text-[0.79rem] text-text-subtle hover:text-text-body transition-colors mb-2"
             >
               &larr; {agent.name}
             </Link>
@@ -399,7 +399,7 @@ export default function AgentTestClient({ agent }: { agent: AgentSummary }) {
                 <div className="flex items-center bg-surface-subtle rounded-md p-0.5 gap-0.5">
                   <button
                     onClick={() => handleModeSwitch("text")}
-                    className={`flex items-center gap-1.5 px-2.5 py-1 rounded font-body text-[0.7rem] transition-all ${
+                    className={`flex items-center gap-1.5 px-2.5 py-1 rounded font-body text-[0.79rem] transition-all ${
                       mode === "text"
                         ? "bg-surface-panel text-text-strong shadow-sm"
                         : "text-text-subtle hover:text-text-body"
@@ -410,7 +410,7 @@ export default function AgentTestClient({ agent }: { agent: AgentSummary }) {
                   </button>
                   <button
                     onClick={() => handleModeSwitch("voice")}
-                    className={`flex items-center gap-1.5 px-2.5 py-1 rounded font-body text-[0.7rem] transition-all ${
+                    className={`flex items-center gap-1.5 px-2.5 py-1 rounded font-body text-[0.79rem] transition-all ${
                       mode === "voice"
                         ? "bg-surface-panel text-text-strong shadow-sm"
                       : "text-text-subtle hover:text-text-body"
@@ -424,7 +424,7 @@ export default function AgentTestClient({ agent }: { agent: AgentSummary }) {
                 variant="ghost"
                 size="sm"
                 onClick={resetConversation}
-                className="font-body text-[0.72rem] text-text-subtle gap-1.5 h-7"
+                className="font-body text-[0.89rem] text-text-subtle gap-1.5 h-7"
               >
                 <RotateCcw className="w-3 h-3" />
                 Reset
@@ -443,10 +443,10 @@ export default function AgentTestClient({ agent }: { agent: AgentSummary }) {
                 <div className="w-12 h-12 bg-surface-subtle rounded-full flex items-center justify-center mx-auto mb-4">
                   <Bot className="w-6 h-6 text-text-subtle" />
                 </div>
-                <p className="font-body text-[0.85rem] text-text-subtle mb-1">
+                <p className="font-body text-[1.05rem] text-text-subtle mb-1">
                   {mode === "text" ? "Start a conversation" : "Start a voice call"}
                 </p>
-                <p className="font-body text-[0.75rem] text-text-subtle/70">
+                <p className="font-body text-[0.84rem] text-text-subtle/70">
                   {mode === "text"
                     ? `Type a message below to test how ${agent.name} responds.`
                     : `Click the microphone button below to start talking to ${agent.name}.`}
@@ -458,7 +458,7 @@ export default function AgentTestClient({ agent }: { agent: AgentSummary }) {
               if (msg.role === "system") {
                 return (
                   <div key={msg.id} className="flex justify-center">
-                    <span className="font-body text-[0.7rem] text-text-subtle/60 bg-surface-subtle px-3 py-1 rounded-full">
+                    <span className="font-body text-[0.79rem] text-text-subtle/60 bg-surface-subtle px-3 py-1 rounded-full">
                       {msg.content}
                     </span>
                   </div>
@@ -490,7 +490,7 @@ export default function AgentTestClient({ agent }: { agent: AgentSummary }) {
                     }`}
                   >
                     <p
-                      className={`font-body text-[0.82rem] leading-relaxed whitespace-pre-wrap ${
+                      className={`font-body text-[1.02rem] leading-relaxed whitespace-pre-wrap ${
                         msg.role === "user" ? "" : "text-text-body"
                       }`}
                     >
@@ -514,7 +514,7 @@ export default function AgentTestClient({ agent }: { agent: AgentSummary }) {
 
             {(error || voiceError) && (
               <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 max-w-[75%]">
-                <p className="font-body text-[0.78rem] text-red-700">{error || voiceError}</p>
+                <p className="font-body text-[0.87rem] text-red-700">{error || voiceError}</p>
               </div>
             )}
           </div>
@@ -539,7 +539,7 @@ export default function AgentTestClient({ agent }: { agent: AgentSummary }) {
                     onChange={(e) => setInput(e.target.value)}
                     placeholder="Type a message to test your agent…"
                     disabled={isLoading}
-                    className="flex-1 bg-surface-subtle border border-border-soft rounded-xl px-4 py-2.5 font-body text-[0.82rem] text-text-body placeholder:text-text-subtle/50 focus:outline-none focus:ring-2 focus:ring-accent-warm/30 focus:border-accent-warm/40 disabled:opacity-50"
+                    className="flex-1 bg-surface-subtle border border-border-soft rounded-xl px-4 py-2.5 font-body text-[1.02rem] text-text-body placeholder:text-text-subtle/50 focus:outline-none focus:ring-2 focus:ring-accent-warm/30 focus:border-accent-warm/40 disabled:opacity-50"
                   />
                   <Button
                     type="submit"
@@ -552,7 +552,7 @@ export default function AgentTestClient({ agent }: { agent: AgentSummary }) {
                     Send
                   </Button>
                 </form>
-                <p className="font-body text-[0.65rem] text-text-subtle/60 mt-2 text-center">
+                <p className="font-body text-[0.82rem] text-text-subtle/60 mt-2 text-center">
                   Text mode — tests the agent&apos;s prompt and behavior. Switch to Voice to test with your microphone.
                 </p>
               </>
@@ -576,7 +576,7 @@ export default function AgentTestClient({ agent }: { agent: AgentSummary }) {
                   )}
                 </div>
                 <VoiceStateIndicator state={voiceState} />
-                <p className="font-body text-[0.65rem] text-text-subtle/60 text-center">
+                <p className="font-body text-[0.82rem] text-text-subtle/60 text-center">
                   {voiceState === "idle"
                     ? "Click the microphone to start a voice conversation with your agent."
                     : voiceState === "listening"

@@ -94,21 +94,21 @@ function CallVolumeChart({ data }: { data: DailyCallVolume[] }) {
           const pct = (day.count / max) * 100;
           return (
             <div key={day.date} className="flex-1 flex flex-col items-center gap-1">
-              <span className="font-mono text-[0.58rem] text-text-subtle/70">{day.count}</span>
+              <span className="font-mono text-[0.67rem] text-text-subtle/70">{day.count}</span>
               <div className="w-full flex items-end justify-center" style={{ height: "68px" }}>
                 <div
                   className="w-full max-w-[32px] rounded-t bg-emerald-500/70 transition-all duration-300 hover:bg-emerald-500"
                   style={{ height: `${Math.max(pct, 4)}%` }}
                 />
               </div>
-              <span className="font-body text-[0.56rem] text-text-subtle/60">{formatDayLabel(day.date)}</span>
+              <span className="font-body text-[0.74rem] text-text-subtle/60">{formatDayLabel(day.date)}</span>
             </div>
           );
         })}
       </div>
       <div className="mt-2 pt-2 border-t border-border-soft/40 flex items-center gap-4">
-        <span className="font-body text-[0.62rem] text-text-subtle">Total: <span className="font-mono text-text-body">{total}</span></span>
-        <span className="font-body text-[0.62rem] text-text-subtle">Avg: <span className="font-mono text-text-body">{data.length > 0 ? (total / data.length).toFixed(1) : 0}</span>/day</span>
+        <span className="font-body text-[0.79rem] text-text-subtle">Total: <span className="font-mono text-text-body">{total}</span></span>
+        <span className="font-body text-[0.79rem] text-text-subtle">Avg: <span className="font-mono text-text-body">{data.length > 0 ? (total / data.length).toFixed(1) : 0}</span>/day</span>
       </div>
     </div>
   );
@@ -127,17 +127,17 @@ export default function DashboardHome({ metrics }: DashboardProps) {
       <div className="p-5 sm:p-6 lg:p-8 max-w-[1100px]">
         {/* ── Header ── */}
         <div className="mb-5">
-          <h1 className="font-display text-[1.12rem] font-semibold tracking-[-0.02em] text-text-strong">Dashboard</h1>
-          <p className="font-body text-[0.72rem] text-text-subtle mt-0.5">Overview of your workspace activity.</p>
+          <h1 className="font-display text-[1.38rem] font-semibold tracking-[-0.02em] text-text-strong">Dashboard</h1>
+          <p className="font-body text-[0.89rem] text-text-subtle mt-0.5">Overview of your workspace activity.</p>
         </div>
 
         {/* ── Metrics strip ── */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
           {cards.map((card) => (
             <Link key={card.label} href={card.href} className="bg-surface-panel rounded-lg border border-border-soft/60 px-4 py-3 card-lift hover:bg-surface-subtle/40 group focus-ring">
-              <div className="font-body text-[0.58rem] text-text-subtle/70 uppercase tracking-[0.1em] mb-0.5">{card.label}</div>
+              <div className="font-body text-[0.67rem] text-text-subtle/70 uppercase tracking-[0.1em] mb-0.5">{card.label}</div>
               <div className="font-mono text-[1rem] font-semibold text-text-strong">{card.value}</div>
-              <div className="font-body text-[0.58rem] text-text-subtle/50 mt-0.5">{card.sub}</div>
+              <div className="font-body text-[0.67rem] text-text-subtle/50 mt-0.5">{card.sub}</div>
             </Link>
           ))}
         </div>
@@ -146,8 +146,8 @@ export default function DashboardHome({ metrics }: DashboardProps) {
         {metrics.callVolume.length > 0 && (
           <div className="bg-surface-panel rounded-card border border-border-soft overflow-hidden mb-5">
             <div className="px-4 py-3 border-b border-border-soft/60 flex items-center justify-between">
-              <h3 className="font-display text-[0.8rem] font-medium text-text-strong">Call Volume</h3>
-              <span className="font-body text-[0.62rem] text-text-subtle/60">Last 7 days</span>
+              <h3 className="font-display text-[0.89rem] font-medium text-text-strong">Call Volume</h3>
+              <span className="font-body text-[0.79rem] text-text-subtle/60">Last 7 days</span>
             </div>
             <div className="px-4 py-3">
               <CallVolumeChart data={metrics.callVolume} />
@@ -160,16 +160,16 @@ export default function DashboardHome({ metrics }: DashboardProps) {
           <div className="xl:col-span-2">
             <div className="bg-surface-panel rounded-card border border-border-soft overflow-hidden">
               <div className="px-4 py-3 border-b border-border-soft/60 flex items-center justify-between">
-                <h3 className="font-display text-[0.8rem] font-medium text-text-strong">Recent Calls</h3>
-                <Link href="/calls" className="font-body text-[0.62rem] text-text-subtle hover:text-text-body transition-colors">
+                <h3 className="font-display text-[0.89rem] font-medium text-text-strong">Recent Calls</h3>
+                <Link href="/calls" className="font-body text-[0.79rem] text-text-subtle hover:text-text-body transition-colors">
                   View all &rarr;
                 </Link>
               </div>
               {metrics.recentCalls.length === 0 ? (
                 <div className="p-6 text-center">
                   <PhoneIncoming className="w-6 h-6 text-text-subtle/20 mx-auto mb-2" />
-                  <p className="font-body text-[0.78rem] text-text-subtle mb-0.5">No calls yet</p>
-                  <p className="font-body text-[0.62rem] text-text-subtle/60">Calls will appear here once your agents start handling conversations.</p>
+                  <p className="font-body text-[0.87rem] text-text-subtle mb-0.5">No calls yet</p>
+                  <p className="font-body text-[0.79rem] text-text-subtle/60">Calls will appear here once your agents start handling conversations.</p>
                 </div>
               ) : (
                 <div className="divide-y divide-border-soft/30">
@@ -178,13 +178,13 @@ export default function DashboardHome({ metrics }: DashboardProps) {
                       <div className="flex items-center gap-2.5">
                         <Phone className="w-3 h-3 text-text-subtle/30" />
                         <div>
-                          <div className="font-body text-[0.78rem] text-text-body">{call.callerNumber ?? "Unknown"}</div>
-                          <div className="font-body text-[0.62rem] text-text-subtle/60">{call.agentName ?? "—"} · {formatTime(call.createdAt)}</div>
+                          <div className="font-body text-[0.87rem] text-text-body">{call.callerNumber ?? "Unknown"}</div>
+                          <div className="font-body text-[0.79rem] text-text-subtle/60">{call.agentName ?? "—"} · {formatTime(call.createdAt)}</div>
                         </div>
                       </div>
                       <div className="flex items-center gap-2.5">
-                        <span className="font-mono text-[0.65rem] text-text-subtle">{formatDuration(call.durationSeconds)}</span>
-                        <span className={`inline-flex px-1.5 py-0.5 rounded text-[0.58rem] font-body font-medium ${statusStyle(call.status)}`}>{statusLabel(call.status)}</span>
+                        <span className="font-mono text-[0.82rem] text-text-subtle">{formatDuration(call.durationSeconds)}</span>
+                        <span className={`inline-flex px-1.5 py-0.5 rounded text-[0.67rem] font-body font-medium ${statusStyle(call.status)}`}>{statusLabel(call.status)}</span>
                       </div>
                     </Link>
                   ))}
@@ -197,7 +197,7 @@ export default function DashboardHome({ metrics }: DashboardProps) {
             {/* Summary */}
             <div className="bg-surface-panel rounded-card border border-border-soft overflow-hidden">
               <div className="px-4 py-3 border-b border-border-soft/60">
-                <h3 className="font-display text-[0.8rem] font-medium text-text-strong">Call Summary</h3>
+                <h3 className="font-display text-[0.89rem] font-medium text-text-strong">Call Summary</h3>
               </div>
               <div className="px-4 py-2 space-y-0.5">
                 {[
@@ -206,8 +206,8 @@ export default function DashboardHome({ metrics }: DashboardProps) {
                   { label: "Today", value: metrics.callsToday },
                 ].map((item) => (
                   <div key={item.label} className="flex items-center justify-between py-1.5">
-                    <span className="font-body text-[0.72rem] text-text-body">{item.label}</span>
-                    <span className="font-mono text-[0.72rem] text-text-subtle">{item.value}</span>
+                    <span className="font-body text-[0.89rem] text-text-body">{item.label}</span>
+                    <span className="font-mono text-[0.89rem] text-text-subtle">{item.value}</span>
                   </div>
                 ))}
               </div>
@@ -216,7 +216,7 @@ export default function DashboardHome({ metrics }: DashboardProps) {
             {/* Quick actions */}
             <div className="bg-surface-panel rounded-card border border-border-soft overflow-hidden">
               <div className="px-4 py-3 border-b border-border-soft/60">
-                <h3 className="font-display text-[0.8rem] font-medium text-text-strong">Quick Actions</h3>
+                <h3 className="font-display text-[0.89rem] font-medium text-text-strong">Quick Actions</h3>
               </div>
               <div className="px-2 py-2 space-y-0.5">
                 {[
@@ -226,7 +226,7 @@ export default function DashboardHome({ metrics }: DashboardProps) {
                 ].map((action) => (
                   <Link key={action.label} href={action.href} className="flex items-center gap-2.5 px-2.5 py-2 rounded-lg hover:bg-surface-subtle/60 transition-colors focus-ring">
                     <action.icon className="w-3 h-3 text-text-subtle" />
-                    <span className="font-body text-[0.72rem] text-text-body">{action.label}</span>
+                    <span className="font-body text-[0.89rem] text-text-body">{action.label}</span>
                     <ArrowRight className="w-2.5 h-2.5 text-text-subtle/30 ml-auto" />
                   </Link>
                 ))}
@@ -237,8 +237,8 @@ export default function DashboardHome({ metrics }: DashboardProps) {
             <div className="bg-surface-panel rounded-card border border-border-soft overflow-hidden">
               <div className="px-4 py-3 flex items-center gap-2">
                 <span className={`w-1.5 h-1.5 rounded-full ${metrics.runtimeStatus === "Online" ? "bg-emerald-400 animate-pulse-dot" : "bg-text-subtle/30"}`} />
-                <span className="font-body text-[0.72rem] font-medium text-text-strong">Runtime</span>
-                <span className="font-body text-[0.62rem] text-text-subtle ml-auto">{metrics.runtimeStatus}</span>
+                <span className="font-body text-[0.89rem] font-medium text-text-strong">Runtime</span>
+                <span className="font-body text-[0.79rem] text-text-subtle ml-auto">{metrics.runtimeStatus}</span>
               </div>
             </div>
           </div>

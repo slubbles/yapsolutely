@@ -25,7 +25,7 @@ export default function AgentEditError({
           <h2 className="font-display text-lg font-semibold text-text-strong mb-2">
             Couldn&apos;t load editor
           </h2>
-          <p className="font-body text-[0.82rem] text-text-subtle mb-6 max-w-md mx-auto">
+          <p className="font-body text-[1.02rem] text-text-subtle mb-6 max-w-md mx-auto">
             There was a problem loading the agent editor.
           </p>
           <div className="flex items-center justify-center gap-3">

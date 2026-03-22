@@ -1,6 +1,6 @@
 import PublicPageShell from "@/components/landing/PublicPageShell";
 import Link from "next/link";
-import { ArrowRight, Book, Lock, Key, Users, Phone, Bot, FileText, Webhook, Zap, Settings } from "lucide-react";
+import { ArrowRight, Lock, Key, Phone, Bot, FileText, Webhook, Zap } from "lucide-react";
 
 export const metadata = {
   title: "API Reference — Yapsolutely",

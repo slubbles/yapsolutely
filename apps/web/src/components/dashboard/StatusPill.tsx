@@ -24,7 +24,7 @@ const StatusPill = ({ status, showDot = false, className }: StatusPillProps) => 
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md font-body text-[0.68rem] font-medium",
+        "inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md font-body text-[0.77rem] font-medium",
         config.className,
         className,
       )}

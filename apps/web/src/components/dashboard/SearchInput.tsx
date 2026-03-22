@@ -1,4 +1,3 @@
-import { type ReactNode } from "react";
 import { Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 

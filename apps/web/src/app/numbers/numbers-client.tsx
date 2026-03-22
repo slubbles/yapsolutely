@@ -2,7 +2,7 @@
 
 import { useState, Suspense } from "react";
 import { Search, Plus, Hash, X, Trash2 } from "lucide-react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -53,7 +53,6 @@ function formatDate(iso: string): string {
 }
 
 function NumbersInner({ numbers, agents }: { numbers: NumberItem[]; agents: AgentOption[] }) {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const [query, setQuery] = useState(searchParams.get("q") ?? "");
   const [showAddDialog, setShowAddDialog] = useState(false);
@@ -79,13 +78,13 @@ function NumbersInner({ numbers, agents }: { numbers: NumberItem[]; agents: Agen
         {/* ── Header ── */}
         <div className="flex items-center justify-between mb-5">
           <div>
-            <h1 className="font-display text-[1.12rem] font-semibold tracking-[-0.02em] text-text-strong">
+            <h1 className="font-display text-[1.38rem] font-semibold tracking-[-0.02em] text-text-strong">
               Numbers
-              {totalNumbers > 0 && <span className="ml-2 font-body text-[0.72rem] text-text-subtle font-normal">{totalNumbers}</span>}
+              {totalNumbers > 0 && <span className="ml-2 font-body text-[0.89rem] text-text-subtle font-normal">{totalNumbers}</span>}
             </h1>
-            <p className="font-body text-[0.72rem] text-text-subtle mt-0.5">Assign phone numbers to agents and manage routing.</p>
+            <p className="font-body text-[0.89rem] text-text-subtle mt-0.5">Assign phone numbers to agents and manage routing.</p>
           </div>
-          <Button onClick={() => setShowAddDialog(true)} variant="hero" size="sm" className="rounded-lg gap-1 text-[0.72rem] h-7 px-3">
+          <Button onClick={() => setShowAddDialog(true)} variant="hero" size="sm" className="rounded-lg gap-1 text-[0.89rem] h-7 px-3">
             <Plus className="w-3 h-3" />Add number
           </Button>
         </div>
@@ -111,7 +110,7 @@ function NumbersInner({ numbers, agents }: { numbers: NumberItem[]; agents: Agen
                 { label: "Needs Setup", value: String(needsSetup) },
               ].map((stat) => (
                 <div key={stat.label} className="bg-surface-panel rounded-lg border border-border-soft/60 px-4 py-3">
-                  <div className="font-body text-[0.58rem] text-text-subtle/70 uppercase tracking-[0.1em] mb-0.5">{stat.label}</div>
+                  <div className="font-body text-[0.67rem] text-text-subtle/70 uppercase tracking-[0.1em] mb-0.5">{stat.label}</div>
                   <div className="font-mono text-[1rem] font-semibold text-text-strong">{stat.value}</div>
                 </div>
               ))}
@@ -126,7 +125,7 @@ function NumbersInner({ numbers, agents }: { numbers: NumberItem[]; agents: Agen
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder="Search numbers…"
-                  className="w-full h-7 pl-7 pr-2 rounded-md border border-border-soft/60 bg-surface-panel font-body text-[0.72rem] text-text-strong placeholder:text-text-subtle/40 focus:outline-none focus:ring-1 focus:ring-text-strong/10"
+                  className="w-full h-7 pl-7 pr-2 rounded-md border border-border-soft/60 bg-surface-panel font-body text-[0.89rem] text-text-strong placeholder:text-text-subtle/40 focus:outline-none focus:ring-1 focus:ring-text-strong/10"
                 />
               </div>
             </div>
@@ -136,11 +135,11 @@ function NumbersInner({ numbers, agents }: { numbers: NumberItem[]; agents: Agen
               <table className="w-full">
                 <thead>
                   <tr className="border-b border-border-soft/40">
-                    <th className="text-left pl-4 pr-3 py-2 font-body text-[0.62rem] text-text-subtle/60 uppercase tracking-[0.08em]">Number</th>
-                    <th className="text-left pl-4 pr-3 py-2 font-body text-[0.62rem] text-text-subtle/60 uppercase tracking-[0.08em]">Name</th>
-                    <th className="text-left pl-4 pr-3 py-2 font-body text-[0.62rem] text-text-subtle/60 uppercase tracking-[0.08em]">Agent</th>
-                    <th className="text-left pl-4 pr-3 py-2 font-body text-[0.62rem] text-text-subtle/60 uppercase tracking-[0.08em]">Status</th>
-                    <th className="text-right pl-4 pr-4 py-2 font-body text-[0.62rem] text-text-subtle/60 uppercase tracking-[0.08em]">Added</th>
+                    <th className="text-left pl-4 pr-3 py-2 font-body text-[0.79rem] text-text-subtle/60 uppercase tracking-[0.08em]">Number</th>
+                    <th className="text-left pl-4 pr-3 py-2 font-body text-[0.79rem] text-text-subtle/60 uppercase tracking-[0.08em]">Name</th>
+                    <th className="text-left pl-4 pr-3 py-2 font-body text-[0.79rem] text-text-subtle/60 uppercase tracking-[0.08em]">Agent</th>
+                    <th className="text-left pl-4 pr-3 py-2 font-body text-[0.79rem] text-text-subtle/60 uppercase tracking-[0.08em]">Status</th>
+                    <th className="text-right pl-4 pr-4 py-2 font-body text-[0.79rem] text-text-subtle/60 uppercase tracking-[0.08em]">Added</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -149,8 +148,8 @@ function NumbersInner({ numbers, agents }: { numbers: NumberItem[]; agents: Agen
                     const isEditing = editingId === n.id;
                     return (
                       <tr key={n.id} className="border-b border-border-soft/30 last:border-0 hover:bg-surface-subtle/40 transition-colors group">
-                        <td className="pl-4 pr-3 py-2.5 font-mono text-[0.72rem] text-text-body">{n.phoneNumber}</td>
-                        <td className="pl-4 pr-3 py-2.5 font-body text-[0.78rem] text-text-body">{n.friendlyName ?? "—"}</td>
+                        <td className="pl-4 pr-3 py-2.5 font-mono text-[0.89rem] text-text-body">{n.phoneNumber}</td>
+                        <td className="pl-4 pr-3 py-2.5 font-body text-[0.87rem] text-text-body">{n.friendlyName ?? "—"}</td>
                         <td className="pl-4 pr-3 py-2.5">
                           {isEditing ? (
                             <form action={reassignPhoneNumberAction} onSubmit={() => setEditingId(null)}>
@@ -161,7 +160,7 @@ function NumbersInner({ numbers, agents }: { numbers: NumberItem[]; agents: Agen
                                 onChange={(e) => e.currentTarget.form?.requestSubmit()}
                                 onBlur={() => setEditingId(null)}
                                 autoFocus
-                                className="h-6 px-1.5 rounded border border-border-soft bg-surface-panel font-body text-[0.72rem] text-text-strong focus:outline-none focus:ring-1 focus:ring-text-strong/10"
+                                className="h-6 px-1.5 rounded border border-border-soft bg-surface-panel font-body text-[0.89rem] text-text-strong focus:outline-none focus:ring-1 focus:ring-text-strong/10"
                               >
                                 <option value="">No agent</option>
                                 {agents.map((a) => (
@@ -172,18 +171,18 @@ function NumbersInner({ numbers, agents }: { numbers: NumberItem[]; agents: Agen
                           ) : (
                             <button
                               onClick={() => setEditingId(n.id)}
-                              className="font-body text-[0.78rem] text-text-body hover:text-text-strong hover:underline transition-colors text-left"
+                              className="font-body text-[0.87rem] text-text-body hover:text-text-strong hover:underline transition-colors text-left"
                             >
-                              {n.assignedAgentName ?? <span className="text-text-subtle italic text-[0.72rem]">Assign</span>}
+                              {n.assignedAgentName ?? <span className="text-text-subtle italic text-[0.89rem]">Assign</span>}
                             </button>
                           )}
                         </td>
                         <td className="pl-4 pr-3 py-2.5">
-                          <span className={`inline-flex px-1.5 py-px rounded text-[0.64rem] font-body font-medium ${statusStyle(status)}`}>{status}</span>
+                          <span className={`inline-flex px-1.5 py-px rounded text-[0.8rem] font-body font-medium ${statusStyle(status)}`}>{status}</span>
                         </td>
                         <td className="pl-4 pr-4 py-2.5 text-right">
                           <div className="flex items-center justify-end gap-1.5">
-                            <span className="font-body text-[0.72rem] text-text-subtle">{formatDate(n.createdAt)}</span>
+                            <span className="font-body text-[0.89rem] text-text-subtle">{formatDate(n.createdAt)}</span>
                             <form action={deletePhoneNumberAction}>
                               <input type="hidden" name="phoneNumberId" value={n.id} />
                               <button
@@ -212,7 +211,7 @@ function NumbersInner({ numbers, agents }: { numbers: NumberItem[]; agents: Agen
           <div className="absolute inset-0 bg-foreground/40 backdrop-blur-sm" onClick={() => setShowAddDialog(false)} />
           <div className="relative w-full max-w-md mx-4 bg-surface-panel rounded-xl border border-border-soft overflow-hidden">
             <div className="px-5 pt-5 pb-2 flex items-center justify-between">
-              <h2 className="font-display text-[0.95rem] font-semibold tracking-[-0.02em] text-text-strong">Add phone number</h2>
+              <h2 className="font-display text-[1.15rem] font-semibold tracking-[-0.02em] text-text-strong">Add phone number</h2>
               <button onClick={() => setShowAddDialog(false)} className="p-1 rounded hover:bg-surface-subtle transition-colors">
                 <X className="w-3.5 h-3.5 text-text-subtle" />
               </button>
@@ -220,21 +219,21 @@ function NumbersInner({ numbers, agents }: { numbers: NumberItem[]; agents: Agen
             <form action={registerPhoneNumberAction} className="px-5 pb-5">
               <div className="space-y-3.5 mt-3">
                 <div>
-                  <Label htmlFor="phoneNumber" className="font-body text-[0.72rem] text-text-body mb-1 block">Phone number</Label>
-                  <Input id="phoneNumber" name="phoneNumber" placeholder="+1 (555) 123-4567" required className="font-mono text-[0.78rem] h-8" />
-                  <p className="font-body text-[0.62rem] text-text-subtle mt-0.5">Include country code.</p>
+                  <Label htmlFor="phoneNumber" className="font-body text-[0.89rem] text-text-body mb-1 block">Phone number</Label>
+                  <Input id="phoneNumber" name="phoneNumber" placeholder="+1 (555) 123-4567" required className="font-mono text-[0.87rem] h-8" />
+                  <p className="font-body text-[0.79rem] text-text-subtle mt-0.5">Include country code.</p>
                 </div>
                 <div>
-                  <Label htmlFor="friendlyName" className="font-body text-[0.72rem] text-text-body mb-1 block">Friendly name</Label>
-                  <Input id="friendlyName" name="friendlyName" placeholder="e.g. Main Office Line" className="text-[0.78rem] h-8" />
+                  <Label htmlFor="friendlyName" className="font-body text-[0.89rem] text-text-body mb-1 block">Friendly name</Label>
+                  <Input id="friendlyName" name="friendlyName" placeholder="e.g. Main Office Line" className="text-[0.87rem] h-8" />
                 </div>
                 <div>
-                  <Label htmlFor="twilioSid" className="font-body text-[0.72rem] text-text-body mb-1 block">Twilio SID <span className="text-text-subtle">(optional)</span></Label>
-                  <Input id="twilioSid" name="twilioSid" placeholder="PNxxxxxxxxxxxxxxxx" className="font-mono text-[0.78rem] h-8" />
+                  <Label htmlFor="twilioSid" className="font-body text-[0.89rem] text-text-body mb-1 block">Twilio SID <span className="text-text-subtle">(optional)</span></Label>
+                  <Input id="twilioSid" name="twilioSid" placeholder="PNxxxxxxxxxxxxxxxx" className="font-mono text-[0.87rem] h-8" />
                 </div>
                 <div>
-                  <Label htmlFor="agentId" className="font-body text-[0.72rem] text-text-body mb-1 block">Assign to agent <span className="text-text-subtle">(optional)</span></Label>
-                  <select id="agentId" name="agentId" className="w-full h-8 px-2.5 rounded-md border border-border-soft bg-surface-panel font-body text-[0.78rem] text-text-strong focus:outline-none focus:ring-1 focus:ring-text-strong/10">
+                  <Label htmlFor="agentId" className="font-body text-[0.89rem] text-text-body mb-1 block">Assign to agent <span className="text-text-subtle">(optional)</span></Label>
+                  <select id="agentId" name="agentId" className="w-full h-8 px-2.5 rounded-md border border-border-soft bg-surface-panel font-body text-[0.87rem] text-text-strong focus:outline-none focus:ring-1 focus:ring-text-strong/10">
                     <option value="">No agent</option>
                     {agents.map((a) => (
                       <option key={a.id} value={a.id}>{a.name}</option>
@@ -243,8 +242,8 @@ function NumbersInner({ numbers, agents }: { numbers: NumberItem[]; agents: Agen
                 </div>
               </div>
               <div className="flex items-center justify-end gap-2 mt-5 pt-3 border-t border-border-soft/60">
-                <Button type="button" variant="ghost" size="sm" className="text-[0.72rem] h-7" onClick={() => setShowAddDialog(false)}>Cancel</Button>
-                <Button type="submit" variant="hero" size="sm" className="rounded-lg text-[0.72rem] h-7 px-3">Add number</Button>
+                <Button type="button" variant="ghost" size="sm" className="text-[0.89rem] h-7" onClick={() => setShowAddDialog(false)}>Cancel</Button>
+                <Button type="submit" variant="hero" size="sm" className="rounded-lg text-[0.89rem] h-7 px-3">Add number</Button>
               </div>
             </form>
           </div>

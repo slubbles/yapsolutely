@@ -211,10 +211,10 @@ const PromptComposer = ({ currentPrompt, onApply, onClose, agentName = "", agent
             <Sparkles className="w-3.5 h-3.5 text-text-strong" />
           </div>
           <div>
-            <h3 className="font-display text-[0.88rem] font-semibold text-text-strong tracking-[-0.01em]">
+            <h3 className="font-display text-[0.98rem] font-semibold text-text-strong tracking-[-0.01em]">
               {isExpanding ? "Improve prompt" : "Generate prompt"}
             </h3>
-            <p className="font-body text-[0.68rem] text-text-subtle">
+            <p className="font-body text-[0.77rem] text-text-subtle">
               {isExpanding ? "Expand and refine your existing draft" : "Describe your agent and we'll write the first draft"}
             </p>
           </div>
@@ -239,31 +239,31 @@ const PromptComposer = ({ currentPrompt, onApply, onClose, agentName = "", agent
         <div className={`px-6 py-5 ${expanded ? "max-h-none" : "max-h-[460px] overflow-y-auto"}`}>
           {isExpanding && (
             <div className="mb-5 p-3.5 rounded-lg bg-surface-panel border border-border-soft">
-              <div className="font-body text-[0.65rem] text-text-subtle uppercase tracking-[0.1em] mb-1.5">Current draft</div>
-              <p className="font-body text-[0.78rem] text-text-body leading-relaxed line-clamp-3">{currentPrompt}</p>
+              <div className="font-body text-[0.82rem] text-text-subtle uppercase tracking-[0.1em] mb-1.5">Current draft</div>
+              <p className="font-body text-[0.87rem] text-text-body leading-relaxed line-clamp-3">{currentPrompt}</p>
             </div>
           )}
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
             <div className="space-y-1.5">
-              <Label className="font-body text-[0.72rem] text-text-subtle">Agent name</Label>
+              <Label className="font-body text-[0.89rem] text-text-subtle">Agent name</Label>
               <Input
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="e.g. Inbound Sales"
-                className="h-9 rounded-lg border-border-soft bg-surface-panel font-body text-[0.82rem]"
+                className="h-9 rounded-lg border-border-soft bg-surface-panel font-body text-[1.02rem]"
               />
             </div>
             <div className="space-y-1.5">
-              <Label className="font-body text-[0.72rem] text-text-subtle">Tone</Label>
+              <Label className="font-body text-[0.89rem] text-text-subtle">Tone</Label>
               <div className="flex flex-wrap gap-1.5">
                 {toneOptions.map((t) => (
                   <button
                     key={t}
                     onClick={() => setTone(tone === t ? "" : t)}
-                    className={`px-2.5 py-1 rounded-md font-body text-[0.72rem] border transition-all duration-150 ${
+                    className={`px-2.5 py-1 rounded-md font-body text-[0.89rem] border transition-all duration-150 ${
                       tone === t
-                        ? "border-foreground bg-foreground text-background"
+                        ? "border-foreground bg-foreground text-primary-foreground"
                         : "border-border-soft bg-surface-panel text-text-body hover:border-foreground/20"
                     }`}
                   >
@@ -276,54 +276,54 @@ const PromptComposer = ({ currentPrompt, onApply, onClose, agentName = "", agent
 
           <div className="space-y-4 mb-5">
             <div className="space-y-1.5">
-              <Label className="font-body text-[0.72rem] text-text-subtle">What does this agent do?</Label>
+              <Label className="font-body text-[0.89rem] text-text-subtle">What does this agent do?</Label>
               <Input
                 value={purpose}
                 onChange={(e) => setPurpose(e.target.value)}
                 placeholder="e.g. Qualifies inbound leads and books demos"
-                className="h-9 rounded-lg border-border-soft bg-surface-panel font-body text-[0.82rem]"
+                className="h-9 rounded-lg border-border-soft bg-surface-panel font-body text-[1.02rem]"
               />
             </div>
             <div className="space-y-1.5">
-              <Label className="font-body text-[0.72rem] text-text-subtle">Primary goal</Label>
+              <Label className="font-body text-[0.89rem] text-text-subtle">Primary goal</Label>
               <Input
                 value={goal}
                 onChange={(e) => setGoal(e.target.value)}
                 placeholder="e.g. Qualify leads and schedule a demo call"
-                className="h-9 rounded-lg border-border-soft bg-surface-panel font-body text-[0.82rem]"
+                className="h-9 rounded-lg border-border-soft bg-surface-panel font-body text-[1.02rem]"
               />
             </div>
             <div className="space-y-1.5">
-              <Label className="font-body text-[0.72rem] text-text-subtle">Must-do instructions</Label>
+              <Label className="font-body text-[0.89rem] text-text-subtle">Must-do instructions</Label>
               <textarea
                 value={mustDo}
                 onChange={(e) => setMustDo(e.target.value)}
                 placeholder={"Always greet by name\nConfirm contact details\nOffer a callback option"}
                 rows={3}
-                className="w-full rounded-lg border border-border-soft bg-surface-panel px-3 py-2 font-body text-[0.82rem] text-text-strong placeholder:text-text-subtle/50 focus:outline-none focus:ring-1 focus:ring-text-strong/10 transition-shadow resize-none"
+                className="w-full rounded-lg border border-border-soft bg-surface-panel px-3 py-2 font-body text-[1.02rem] text-text-strong placeholder:text-text-subtle/50 focus:outline-none focus:ring-1 focus:ring-text-strong/10 transition-shadow resize-none"
               />
             </div>
             <div className="space-y-1.5">
-              <Label className="font-body text-[0.72rem] text-text-subtle">Things to avoid</Label>
+              <Label className="font-body text-[0.89rem] text-text-subtle">Things to avoid</Label>
               <textarea
                 value={avoid}
                 onChange={(e) => setAvoid(e.target.value)}
                 placeholder={"Don't discuss competitor pricing\nDon't make promises about delivery dates"}
                 rows={2}
-                className="w-full rounded-lg border border-border-soft bg-surface-panel px-3 py-2 font-body text-[0.82rem] text-text-strong placeholder:text-text-subtle/50 focus:outline-none focus:ring-1 focus:ring-text-strong/10 transition-shadow resize-none"
+                className="w-full rounded-lg border border-border-soft bg-surface-panel px-3 py-2 font-body text-[1.02rem] text-text-strong placeholder:text-text-subtle/50 focus:outline-none focus:ring-1 focus:ring-text-strong/10 transition-shadow resize-none"
               />
             </div>
             <div className="space-y-1.5">
-              <Label className="font-body text-[0.72rem] text-text-subtle">Escalation / transfer rules</Label>
+              <Label className="font-body text-[0.89rem] text-text-subtle">Escalation / transfer rules</Label>
               <Input
                 value={escalation}
                 onChange={(e) => setEscalation(e.target.value)}
                 placeholder="e.g. Transfer to a human if the caller mentions legal issues"
-                className="h-9 rounded-lg border-border-soft bg-surface-panel font-body text-[0.82rem]"
+                className="h-9 rounded-lg border-border-soft bg-surface-panel font-body text-[1.02rem]"
               />
             </div>
             <div className="space-y-1.5">
-              <Label className="font-body text-[0.72rem] text-text-subtle">
+              <Label className="font-body text-[0.89rem] text-text-subtle">
                 Additional notes
                 <span className="ml-1 text-text-subtle/50 normal-case tracking-normal">(optional)</span>
               </Label>
@@ -331,23 +331,23 @@ const PromptComposer = ({ currentPrompt, onApply, onClose, agentName = "", agent
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
                 placeholder="e.g. This agent handles healthcare clients specifically"
-                className="h-9 rounded-lg border-border-soft bg-surface-panel font-body text-[0.82rem]"
+                className="h-9 rounded-lg border-border-soft bg-surface-panel font-body text-[1.02rem]"
               />
             </div>
           </div>
 
           <div className="flex items-center justify-end gap-2 pt-1">
-            <Button variant="ghost" size="sm" onClick={onClose} className="font-body text-[0.78rem] text-text-subtle">
+            <Button variant="ghost" size="sm" onClick={onClose} className="font-body text-[0.87rem] text-text-subtle">
               Cancel
             </Button>
             <Button
               onClick={handleGenerate}
               disabled={isGenerating || (!purpose && !goal)}
-              className="bg-foreground text-background hover:bg-foreground/90 font-display font-medium tracking-[-0.01em] text-[0.8rem] h-9 rounded-lg px-5 gap-2"
+              className="bg-foreground text-primary-foreground hover:bg-foreground/90 font-display font-medium tracking-[-0.01em] text-[0.89rem] h-9 rounded-lg px-5 gap-2"
             >
               {isGenerating ? (
                 <>
-                  <span className="w-3.5 h-3.5 border-2 border-background/30 border-t-background rounded-full animate-spin" />
+                  <span className="w-3.5 h-3.5 border-2 border-primary-foreground/30 border-t-background rounded-full animate-spin" />
                   Generating…
                 </>
               ) : (
@@ -367,20 +367,20 @@ const PromptComposer = ({ currentPrompt, onApply, onClose, agentName = "", agent
             <div className="flex items-center gap-1.5 mb-3">
               <div className="inline-flex items-center gap-1 rounded-full bg-emerald-400/10 px-2.5 py-0.5">
                 <Sparkles className="w-3 h-3 text-emerald-600" />
-                <span className="font-body text-[0.65rem] font-medium text-emerald-700">AI-generated</span>
+                <span className="font-body text-[0.82rem] font-medium text-emerald-700">AI-generated</span>
               </div>
             </div>
           )}
           {/* Refinement chips */}
           <div className="flex items-center gap-2 mb-4">
-            <span className="font-body text-[0.65rem] text-text-subtle uppercase tracking-[0.1em]">Refine</span>
+            <span className="font-body text-[0.82rem] text-text-subtle uppercase tracking-[0.1em]">Refine</span>
             <div className="flex gap-1.5">
               {refinementActions.map((action) => (
                 <button
                   key={action.instruction}
                   onClick={() => handleRefinement(action.instruction)}
                   disabled={isGenerating}
-                  className="px-2.5 py-1 rounded-md border border-border-soft bg-surface-panel font-body text-[0.72rem] text-text-body hover:border-foreground/15 hover:text-text-strong transition-all disabled:opacity-50"
+                  className="px-2.5 py-1 rounded-md border border-border-soft bg-surface-panel font-body text-[0.89rem] text-text-body hover:border-foreground/15 hover:text-text-strong transition-all disabled:opacity-50"
                 >
                   {action.label}
                 </button>
@@ -399,9 +399,9 @@ const PromptComposer = ({ currentPrompt, onApply, onClose, agentName = "", agent
               value={generatedPrompt}
               onChange={(e) => setGeneratedPrompt(e.target.value)}
               rows={12}
-              className="w-full rounded-lg border border-border-soft bg-surface-panel px-4 py-3.5 font-body text-[0.82rem] text-text-body leading-[1.75] placeholder:text-text-subtle/50 focus:outline-none focus:ring-1 focus:ring-text-strong/10 transition-shadow resize-y"
+              className="w-full rounded-lg border border-border-soft bg-surface-panel px-4 py-3.5 font-body text-[1.02rem] text-text-body leading-[1.75] placeholder:text-text-subtle/50 focus:outline-none focus:ring-1 focus:ring-text-strong/10 transition-shadow resize-y"
             />
-            <div className="absolute bottom-3 right-3 font-mono text-[0.6rem] text-text-subtle/40">
+            <div className="absolute bottom-3 right-3 font-mono text-[0.77rem] text-text-subtle/40">
               {generatedPrompt.length} chars
             </div>
           </div>
@@ -410,7 +410,7 @@ const PromptComposer = ({ currentPrompt, onApply, onClose, agentName = "", agent
           <div className="flex items-center justify-between">
             <button
               onClick={() => setPhase("input")}
-              className="font-body text-[0.78rem] text-text-subtle hover:text-text-body transition-colors flex items-center gap-1"
+              className="font-body text-[0.87rem] text-text-subtle hover:text-text-body transition-colors flex items-center gap-1"
             >
               <ChevronRight className="w-3 h-3 rotate-180" />
               Back to inputs
@@ -421,14 +421,14 @@ const PromptComposer = ({ currentPrompt, onApply, onClose, agentName = "", agent
                 size="sm"
                 onClick={handleRegenerate}
                 disabled={isGenerating}
-                className="font-body text-[0.78rem] text-text-subtle gap-1.5"
+                className="font-body text-[0.87rem] text-text-subtle gap-1.5"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
                 Regenerate
               </Button>
               <Button
                 onClick={() => onApply(generatedPrompt)}
-                className="bg-foreground text-background hover:bg-foreground/90 font-display font-medium tracking-[-0.01em] text-[0.8rem] h-9 rounded-lg px-5"
+                className="bg-foreground text-primary-foreground hover:bg-foreground/90 font-display font-medium tracking-[-0.01em] text-[0.89rem] h-9 rounded-lg px-5"
               >
                 Apply to prompt
               </Button>

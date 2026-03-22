@@ -120,10 +120,10 @@ function AgentsClientInner({ agents }: { agents: AgentListItem[] }) {
         {/* ── Header ── */}
         <div className="flex items-center justify-between mb-5">
           <div className="flex items-baseline gap-3">
-            <h1 className="font-display text-[1.12rem] font-semibold tracking-[-0.02em] text-text-strong">
+            <h1 className="font-display text-[1.38rem] font-semibold tracking-[-0.02em] text-text-strong">
               Agents
             </h1>
-            <span className="font-body text-[0.72rem] text-text-subtle tabular-nums">
+            <span className="font-body text-[0.89rem] text-text-subtle tabular-nums">
               {counts.all} total
             </span>
           </div>
@@ -139,7 +139,7 @@ function AgentsClientInner({ agents }: { agents: AgentListItem[] }) {
               onClick={() => fileInputRef.current?.click()}
               variant="ghost"
               size="sm"
-              className="font-body text-text-subtle text-[0.75rem] gap-1.5 h-8"
+              className="font-body text-text-subtle text-[0.84rem] gap-1.5 h-8"
             >
               <Upload className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Import</span>
@@ -148,7 +148,7 @@ function AgentsClientInner({ agents }: { agents: AgentListItem[] }) {
               onClick={() => router.push("/agents/new")}
               variant="hero"
               size="sm"
-              className="rounded-lg gap-1.5 text-[0.78rem] h-8"
+              className="rounded-lg gap-1.5 text-[0.87rem] h-8"
             >
               <Plus className="w-3.5 h-3.5" />
               Create agent
@@ -176,15 +176,15 @@ function AgentsClientInner({ agents }: { agents: AgentListItem[] }) {
                   <button
                     key={tab.key}
                     onClick={() => setStatusFilter(tab.key)}
-                    className={`h-7 px-2.5 rounded-md font-body text-[0.72rem] transition-all flex items-center gap-1.5 focus-ring ${
+                    className={`h-7 px-2.5 rounded-md font-body text-[0.89rem] transition-all flex items-center gap-1.5 focus-ring ${
                       statusFilter === tab.key
-                        ? "bg-foreground text-background font-medium"
+                        ? "bg-foreground text-primary-foreground font-medium"
                         : "text-text-subtle hover:text-text-body hover:bg-surface-subtle"
                     }`}
                   >
                     {tab.label}
-                    <span className={`text-[0.62rem] tabular-nums ${
-                      statusFilter === tab.key ? "text-background/60" : "text-text-subtle/50"
+                    <span className={`text-[0.79rem] tabular-nums ${
+                      statusFilter === tab.key ? "text-primary-foreground/60" : "text-text-subtle/50"
                     }`}>
                       {tab.count}
                     </span>
@@ -198,7 +198,7 @@ function AgentsClientInner({ agents }: { agents: AgentListItem[] }) {
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder="Search agents..."
-                  className="w-full h-7 pl-8 pr-3 rounded-md border border-border-soft/60 bg-transparent font-body text-[0.75rem] text-text-strong placeholder:text-text-subtle/40 focus:outline-none focus:border-foreground/20 transition-colors"
+                  className="w-full h-7 pl-8 pr-3 rounded-md border border-border-soft/60 bg-transparent font-body text-[0.84rem] text-text-strong placeholder:text-text-subtle/40 focus:outline-none focus:border-foreground/20 transition-colors"
                 />
               </div>
             </div>
@@ -206,7 +206,7 @@ function AgentsClientInner({ agents }: { agents: AgentListItem[] }) {
             {/* ── Table ── */}
             {filtered.length === 0 ? (
               <div className="bg-surface-panel rounded-card border border-border-soft p-8 text-center">
-                <p className="font-body text-[0.82rem] text-text-subtle">No agents match your filters.</p>
+                <p className="font-body text-[1.02rem] text-text-subtle">No agents match your filters.</p>
               </div>
             ) : (
               <div className="bg-surface-panel rounded-card border border-border-soft overflow-hidden">
@@ -214,12 +214,12 @@ function AgentsClientInner({ agents }: { agents: AgentListItem[] }) {
                   <table className="w-full">
                     <thead>
                       <tr className="border-b border-border-soft/80">
-                        <th className="text-left pl-4 pr-3 py-2 font-body text-[0.62rem] font-medium text-text-subtle/70 uppercase tracking-[0.08em]">Name</th>
-                        <th className="text-left px-3 py-2 font-body text-[0.62rem] font-medium text-text-subtle/70 uppercase tracking-[0.08em]">Status</th>
-                        <th className="text-left px-3 py-2 font-body text-[0.62rem] font-medium text-text-subtle/70 uppercase tracking-[0.08em]">Phone</th>
-                        <th className="text-left px-3 py-2 font-body text-[0.62rem] font-medium text-text-subtle/70 uppercase tracking-[0.08em]">Voice</th>
-                        <th className="text-right px-3 py-2 font-body text-[0.62rem] font-medium text-text-subtle/70 uppercase tracking-[0.08em]">Calls</th>
-                        <th className="text-right pl-3 pr-4 py-2 font-body text-[0.62rem] font-medium text-text-subtle/70 uppercase tracking-[0.08em]">Updated</th>
+                        <th className="text-left pl-4 pr-3 py-2 font-body text-[0.79rem] font-medium text-text-subtle/70 uppercase tracking-[0.08em]">Name</th>
+                        <th className="text-left px-3 py-2 font-body text-[0.79rem] font-medium text-text-subtle/70 uppercase tracking-[0.08em]">Status</th>
+                        <th className="text-left px-3 py-2 font-body text-[0.79rem] font-medium text-text-subtle/70 uppercase tracking-[0.08em]">Phone</th>
+                        <th className="text-left px-3 py-2 font-body text-[0.79rem] font-medium text-text-subtle/70 uppercase tracking-[0.08em]">Voice</th>
+                        <th className="text-right px-3 py-2 font-body text-[0.79rem] font-medium text-text-subtle/70 uppercase tracking-[0.08em]">Calls</th>
+                        <th className="text-right pl-3 pr-4 py-2 font-body text-[0.79rem] font-medium text-text-subtle/70 uppercase tracking-[0.08em]">Updated</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -232,26 +232,26 @@ function AgentsClientInner({ agents }: { agents: AgentListItem[] }) {
                           <td className="pl-4 pr-3 py-2.5">
                             <div className="flex items-center gap-2.5">
                               <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${statusDot(agent.status)}`} />
-                              <span className="font-body text-[0.78rem] font-medium text-text-strong group-hover:text-text-strong/80 truncate max-w-[200px]">
+                              <span className="font-body text-[0.87rem] font-medium text-text-strong group-hover:text-text-strong/80 truncate max-w-[200px]">
                                 {agent.name}
                               </span>
                             </div>
                           </td>
                           <td className="px-3 py-2.5">
-                            <span className={`inline-flex px-1.5 py-px rounded text-[0.64rem] font-body font-medium ${statusPill(agent.status)}`}>
+                            <span className={`inline-flex px-1.5 py-px rounded text-[0.8rem] font-body font-medium ${statusPill(agent.status)}`}>
                               {statusLabel(agent.status)}
                             </span>
                           </td>
-                          <td className="px-3 py-2.5 font-mono text-[0.7rem] text-text-subtle">
+                          <td className="px-3 py-2.5 font-mono text-[0.79rem] text-text-subtle">
                             {agent.phoneNumber ?? "—"}
                           </td>
-                          <td className="px-3 py-2.5 font-body text-[0.72rem] text-text-body">
+                          <td className="px-3 py-2.5 font-body text-[0.89rem] text-text-body">
                             {agent.voiceModel ?? "Default"}
                           </td>
-                          <td className="px-3 py-2.5 text-right font-mono text-[0.7rem] text-text-subtle tabular-nums">
+                          <td className="px-3 py-2.5 text-right font-mono text-[0.79rem] text-text-subtle tabular-nums">
                             {agent.callCount}
                           </td>
-                          <td className="pl-3 pr-4 py-2.5 text-right font-body text-[0.68rem] text-text-subtle/70">
+                          <td className="pl-3 pr-4 py-2.5 text-right font-body text-[0.77rem] text-text-subtle/70">
                             {timeAgo(agent.updatedAt)}
                           </td>
                         </tr>

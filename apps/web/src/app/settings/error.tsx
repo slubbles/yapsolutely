@@ -24,7 +24,7 @@ export default function SettingsError({
           <h2 className="font-display text-lg font-semibold text-text-strong mb-2">
             Something went wrong
           </h2>
-          <p className="font-body text-[0.82rem] text-text-subtle mb-6 max-w-md mx-auto">
+          <p className="font-body text-[1.02rem] text-text-subtle mb-6 max-w-md mx-auto">
             We couldn&apos;t load settings. This is usually a temporary issue.
           </p>
           <Button onClick={reset} variant="outline" size="sm">

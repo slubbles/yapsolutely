@@ -14,7 +14,7 @@ export default function NotFound() {
         <div className="flex items-center justify-center gap-3">
           <Link
             href="/dashboard"
-            className="inline-flex items-center justify-center h-9 px-4 rounded-lg bg-foreground text-background font-body text-[0.8rem] font-medium hover:opacity-90 transition-opacity"
+            className="inline-flex items-center justify-center h-9 px-4 rounded-lg bg-foreground text-primary-foreground font-body text-[0.8rem] font-medium hover:opacity-90 transition-opacity"
           >
             Go to dashboard
           </Link>

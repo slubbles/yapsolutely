@@ -2,7 +2,6 @@
 
 import { useState, useCallback, useMemo } from "react";
 import {
-  ArrowLeft,
   Plus,
   Trash2,
   Sparkles,
@@ -185,8 +184,8 @@ function BlockPalette({ onAdd }: { onAdd: (type: BlockType) => void }) {
   return (
     <div className="bg-surface-panel rounded-card border border-border-soft">
       <div className="px-4 py-3 border-b border-border-soft">
-        <h3 className="font-display text-[0.8rem] font-medium text-text-strong">Add block</h3>
-        <p className="font-body text-[0.68rem] text-text-subtle mt-0.5">Click to add a step to your flow</p>
+        <h3 className="font-display text-[0.89rem] font-medium text-text-strong">Add block</h3>
+        <p className="font-body text-[0.77rem] text-text-subtle mt-0.5">Click to add a step to your flow</p>
       </div>
       <div className="p-3 grid grid-cols-1 gap-1.5">
         {BLOCK_DEFINITIONS.map((def) => {
@@ -202,10 +201,10 @@ function BlockPalette({ onAdd }: { onAdd: (type: BlockType) => void }) {
                 <Icon className="w-3.5 h-3.5" />
               </div>
               <div className="min-w-0">
-                <div className="font-body text-[0.78rem] font-medium text-text-strong group-hover:text-text-strong/90">
+                <div className="font-body text-[0.87rem] font-medium text-text-strong group-hover:text-text-strong/90">
                   {def.label}
                 </div>
-                <div className="font-body text-[0.65rem] text-text-subtle truncate">{def.description}</div>
+                <div className="font-body text-[0.82rem] text-text-subtle truncate">{def.description}</div>
               </div>
             </button>
           );
@@ -271,10 +270,10 @@ function SortableFlowBlock({
           <div className={`w-6 h-6 rounded-md flex items-center justify-center ${def.color}`}>
             <Icon className="w-3 h-3" />
           </div>
-          <span className="font-body text-[0.78rem] font-medium text-text-strong flex-1">
+          <span className="font-body text-[0.87rem] font-medium text-text-strong flex-1">
             {def.label}
           </span>
-          <span className="font-mono text-[0.62rem] text-text-subtle/50 tabular-nums mr-2">
+          <span className="font-mono text-[0.79rem] text-text-subtle/50 tabular-nums mr-2">
             Step {index + 1}/{total}
           </span>
           <button
@@ -289,7 +288,7 @@ function SortableFlowBlock({
         <div className="p-4 space-y-3">
           {def.fieldConfig.map((field) => (
             <div key={field.key}>
-              <Label className="font-body text-[0.7rem] text-text-subtle mb-1.5 block">
+              <Label className="font-body text-[0.79rem] text-text-subtle mb-1.5 block">
                 {field.label}
               </Label>
               {field.multiline ? (
@@ -300,7 +299,7 @@ function SortableFlowBlock({
                   }
                   placeholder={field.placeholder}
                   rows={3}
-                  className="font-body text-[0.8rem] resize-none"
+                  className="font-body text-[0.89rem] resize-none"
                 />
               ) : (
                 <Input
@@ -309,7 +308,7 @@ function SortableFlowBlock({
                     onUpdate(block.id, { ...block.fields, [field.key]: e.target.value })
                   }
                   placeholder={field.placeholder}
-                  className="font-body text-[0.8rem]"
+                  className="font-body text-[0.89rem]"
                 />
               )}
             </div>
@@ -333,12 +332,12 @@ function DragOverlayBlock({ block }: { block: FlowBlock }) {
         <div className={`w-6 h-6 rounded-md flex items-center justify-center ${def.color}`}>
           <Icon className="w-3 h-3" />
         </div>
-        <span className="font-body text-[0.78rem] font-medium text-text-strong flex-1">
+        <span className="font-body text-[0.87rem] font-medium text-text-strong flex-1">
           {def.label}
         </span>
       </div>
       <div className="p-4">
-        <div className="text-[0.72rem] text-text-subtle italic">{def.description}</div>
+        <div className="text-[0.89rem] text-text-subtle italic">{def.description}</div>
       </div>
     </div>
   );
@@ -495,16 +494,16 @@ export default function FlowBuilderClient({
         <div className="mb-5">
           <Link
             href={`/agents/${slug}`}
-            className="inline-flex font-body text-[0.7rem] text-text-subtle hover:text-text-body transition-colors mb-3"
+            className="inline-flex font-body text-[0.79rem] text-text-subtle hover:text-text-body transition-colors mb-3"
           >
             &larr; {agent.name}
           </Link>
           <div className="flex items-start justify-between gap-4 mb-4">
             <div>
-              <h1 className="font-display text-[1.12rem] font-semibold tracking-[-0.02em] text-text-strong mb-0.5">
+              <h1 className="font-display text-[1.38rem] font-semibold tracking-[-0.02em] text-text-strong mb-0.5">
                 Flow builder
               </h1>
-              <p className="font-body text-[0.75rem] text-text-subtle max-w-lg">
+              <p className="font-body text-[0.84rem] text-text-subtle max-w-lg">
                 Design your agent&apos;s conversation flow visually, then generate a system prompt.
               </p>
             </div>
@@ -514,7 +513,7 @@ export default function FlowBuilderClient({
                 size="sm"
                 onClick={handleSave}
                 disabled={isSaving || blocks.length === 0}
-                className="rounded-md gap-1.5 text-[0.72rem] border-border-soft h-8"
+                className="rounded-md gap-1.5 text-[0.89rem] border-border-soft h-8"
               >
                 {isSaving ? <Loader2 className="w-3 h-3 animate-spin" /> : saved ? <Check className="w-3 h-3" /> : <Save className="w-3 h-3" />}
                 {saved ? "Saved" : "Save flow"}
@@ -524,7 +523,7 @@ export default function FlowBuilderClient({
                 size="sm"
                 onClick={handleGeneratePrompt}
                 disabled={isGenerating || blocks.length === 0}
-                className="rounded-md gap-1.5 text-[0.72rem] h-8"
+                className="rounded-md gap-1.5 text-[0.89rem] h-8"
               >
                 {isGenerating ? <Loader2 className="w-3 h-3 animate-spin" /> : <Sparkles className="w-3 h-3" />}
                 Generate prompt
@@ -550,7 +549,7 @@ export default function FlowBuilderClient({
                 <h3 className="font-display text-sm font-semibold text-text-strong mb-1">
                   Start building your flow
                 </h3>
-                <p className="font-body text-[0.78rem] text-text-subtle max-w-sm mx-auto mb-5">
+                <p className="font-body text-[0.87rem] text-text-subtle max-w-sm mx-auto mb-5">
                   Add blocks from the palette to define how your agent handles calls. Drag to reorder steps.
                 </p>
                 <div className="flex flex-wrap justify-center gap-2">
@@ -562,7 +561,7 @@ export default function FlowBuilderClient({
                         variant="outline"
                         size="sm"
                         onClick={() => addBlock(def.type)}
-                        className="rounded-lg gap-1.5 text-[0.75rem] border-border-soft"
+                        className="rounded-lg gap-1.5 text-[0.84rem] border-border-soft"
                       >
                         <Icon className="w-3.5 h-3.5" />
                         {def.label}
@@ -608,7 +607,7 @@ export default function FlowBuilderClient({
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="rounded-full text-[0.72rem] text-text-subtle border border-dashed border-border-soft px-4 gap-1.5 hover:border-accent-warm/40 hover:text-accent-warm"
+                    className="rounded-full text-[0.89rem] text-text-subtle border border-dashed border-border-soft px-4 gap-1.5 hover:border-accent-warm/40 hover:text-accent-warm"
                     onClick={() => addBlock("custom")}
                   >
                     <Plus className="w-3.5 h-3.5" />
@@ -624,7 +623,7 @@ export default function FlowBuilderClient({
                 <div className="px-4 py-3 border-b border-accent-warm/20 flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Sparkles className="w-4 h-4 text-accent-warm" />
-                    <h3 className="font-display text-[0.8rem] font-medium text-text-strong">Generated system prompt</h3>
+                    <h3 className="font-display text-[0.89rem] font-medium text-text-strong">Generated system prompt</h3>
                   </div>
                   <div className="flex items-center gap-2">
                     <Button
@@ -632,7 +631,7 @@ export default function FlowBuilderClient({
                       size="sm"
                       onClick={handleGeneratePrompt}
                       disabled={isGenerating}
-                      className="text-[0.72rem] text-text-subtle gap-1"
+                      className="text-[0.89rem] text-text-subtle gap-1"
                     >
                       Regenerate
                     </Button>
@@ -641,7 +640,7 @@ export default function FlowBuilderClient({
                       size="sm"
                       onClick={handleApplyPrompt}
                       disabled={isSaving}
-                      className="rounded-lg gap-1.5 text-[0.75rem]"
+                      className="rounded-lg gap-1.5 text-[0.84rem]"
                     >
                       {isSaving ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Check className="w-3.5 h-3.5" />}
                       Apply to agent
@@ -649,7 +648,7 @@ export default function FlowBuilderClient({
                   </div>
                 </div>
                 <div className="p-4">
-                  <pre className="font-body text-[0.78rem] text-text-body leading-relaxed whitespace-pre-wrap">
+                  <pre className="font-body text-[0.87rem] text-text-body leading-relaxed whitespace-pre-wrap">
                     {generatedPrompt}
                   </pre>
                 </div>

@@ -1,5 +1,5 @@
 import PublicPageShell from "@/components/landing/PublicPageShell";
-import { Sparkles, Bug, Zap, ArrowUpRight, Lock, Phone, Bot, BarChart3 } from "lucide-react";
+import { Sparkles, Bug, Zap, Lock } from "lucide-react";
 
 export const metadata = {
   title: "Changelog — Yapsolutely",

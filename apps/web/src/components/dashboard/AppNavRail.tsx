@@ -106,6 +106,8 @@ const AppNavRail = ({ user }: { user?: { name?: string | null; email?: string | 
           )}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Account menu"
+            aria-expanded={menuOpen}
             className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg transition-colors ${
               menuOpen ? "bg-canvas" : "hover:bg-canvas/60"
             }`}
@@ -132,6 +134,8 @@ const AppNavRail = ({ user }: { user?: { name?: string | null; email?: string | 
           </Link>
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
+            aria-label={mobileOpen ? "Close navigation" : "Open navigation"}
+            aria-expanded={mobileOpen}
             className="p-2 rounded-lg hover:bg-canvas transition-colors"
           >
             {mobileOpen ? <X className="w-5 h-5 text-text-strong" /> : <Menu className="w-5 h-5 text-text-strong" />}
@@ -142,7 +146,7 @@ const AppNavRail = ({ user }: { user?: { name?: string | null; email?: string | 
       {/* Mobile slide-out nav */}
       {mobileOpen && (
         <div className="md:hidden fixed inset-0 z-40">
-          <div className="absolute inset-0 bg-foreground/20 backdrop-blur-sm" onClick={() => setMobileOpen(false)} />
+          <div className="absolute inset-0 bg-foreground/20 backdrop-blur-sm" onClick={() => setMobileOpen(false)} role="presentation" />
           <div className="absolute top-14 left-0 right-0 bg-surface-panel border-b border-border-soft shadow-xl">
             <nav className="px-4 py-3">
               <NavLinks onClick={() => setMobileOpen(false)} />

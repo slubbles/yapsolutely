@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, Pencil, Pause, Play, Copy, Phone, ExternalLink, MessageSquare } from "lucide-react";
+import { ArrowLeft, Pencil, Pause, Play, Copy, Phone, ExternalLink, MessageSquare, Workflow } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -150,6 +150,10 @@ export default function AgentDetailClient({ agent }: { agent: AgentDetail }) {
                 )}
               </Button>
             </form>
+            <Button onClick={() => router.push(`/agents/${slug}/flow`)} variant="outline" size="default" className="rounded-lg gap-1.5 text-[0.8rem] border-border-soft">
+              <Workflow className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Flow builder</span>
+            </Button>
             <Button onClick={() => router.push(`/agents/${slug}/test`)} variant="outline" size="default" className="rounded-lg gap-1.5 text-[0.8rem] border-border-soft">
               <MessageSquare className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Test agent</span>

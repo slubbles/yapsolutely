@@ -375,3 +375,127 @@ export async function toggleAgentStatusAction(formData: FormData) {
     redirect(`/agents/${agentId}?error=database-unavailable`);
   }
 }
+
+export async function saveFlowAction(formData: FormData) {
+  const session = await getSession();
+
+  if (!session) {
+    redirect("/sign-in");
+  }
+
+  const agentId = readText(formData, "agentId");
+  const flowJson = readText(formData, "flow");
+
+  if (!agentId || !flowJson) {
+    redirect("/agents?error=missing-fields");
+  }
+
+  let flow: unknown[];
+  try {
+    flow = JSON.parse(flowJson);
+    if (!Array.isArray(flow)) throw new Error("not array");
+  } catch {
+    redirect(`/agents/${agentId}/flow?error=invalid-flow`);
+    return;
+  }
+
+  try {
+    const user = await prisma.user.findUnique({
+      where: { email: session.email },
+      select: { id: true },
+    });
+
+    if (!user) {
+      redirect("/sign-in");
+    }
+
+    const agent = await prisma.agent.findFirst({
+      where: { id: agentId, userId: user.id },
+      select: { id: true, config: true },
+    });
+
+    if (!agent) {
+      redirect(`/agents/${agentId}?error=not-found`);
+    }
+
+    const existingConfig =
+      agent.config && typeof agent.config === "object" && !Array.isArray(agent.config)
+        ? (agent.config as Record<string, unknown>)
+        : {};
+
+    await prisma.agent.update({
+      where: { id: agentId },
+      data: {
+        config: { ...existingConfig, flow: flow as Prisma.JsonArray, flowUpdatedAt: new Date().toISOString() },
+      },
+    });
+  } catch {
+    redirect(`/agents/${agentId}/flow?error=database-unavailable`);
+  }
+}
+
+export async function generatePromptFromFlowAction(formData: FormData) {
+  const session = await getSession();
+
+  if (!session) {
+    redirect("/sign-in");
+  }
+
+  const agentId = readText(formData, "agentId");
+  const flowJson = readText(formData, "flow");
+  const generatedPrompt = readText(formData, "generatedPrompt");
+
+  if (!agentId || !generatedPrompt) {
+    redirect("/agents?error=missing-fields");
+  }
+
+  let flow: unknown[] = [];
+  try {
+    flow = JSON.parse(flowJson);
+    if (!Array.isArray(flow)) flow = [];
+  } catch {
+    flow = [];
+  }
+
+  try {
+    const user = await prisma.user.findUnique({
+      where: { email: session.email },
+      select: { id: true },
+    });
+
+    if (!user) {
+      redirect("/sign-in");
+    }
+
+    const agent = await prisma.agent.findFirst({
+      where: { id: agentId, userId: user.id },
+      select: { id: true, config: true },
+    });
+
+    if (!agent) {
+      redirect(`/agents/${agentId}?error=not-found`);
+    }
+
+    const existingConfig =
+      agent.config && typeof agent.config === "object" && !Array.isArray(agent.config)
+        ? (agent.config as Record<string, unknown>)
+        : {};
+
+    await prisma.agent.update({
+      where: { id: agentId },
+      data: {
+        systemPrompt: generatedPrompt,
+        config: {
+          ...existingConfig,
+          flow: flow as Prisma.JsonArray,
+          flowUpdatedAt: new Date().toISOString(),
+          promptSource: "flow-builder",
+        },
+      },
+    });
+
+    redirect(`/agents/${agentId}?updated=1`);
+  } catch {
+    redirect(`/agents/${agentId}?error=database-unavailable`);
+  }
+}

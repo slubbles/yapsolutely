@@ -968,17 +968,263 @@ const server = http.createServer((req, res) => {
   });
 });
 
-server.on("upgrade", (req, socket, head) => {
-  const requestUrl = new URL(req.url || "/", `http://${req.headers.host || `localhost:${port}`}`);
+// --- Browser voice stream WebSocket handler ---
 
-  if (requestUrl.pathname !== "/twilio/stream") {
-    socket.destroy();
+const deepgramApiKey = process.env.DEEPGRAM_API_KEY || "";
+const anthropicApiKey = process.env.ANTHROPIC_API_KEY || "";
+const deepgramSttModel = process.env.DEEPGRAM_STT_MODEL || "nova-3";
+const defaultVoiceModel =
+  process.env.DEEPGRAM_TTS_MODEL || process.env.VOICE_MODEL || "aura-2-thalia-en";
+const browserWss = new WebSocketServer({ noServer: true });
+
+browserWss.on("connection", (socket, req) => {
+  const url = new URL(req.url || "/", `http://${req.headers.host || `localhost:${port}`}`);
+  const secret = url.searchParams.get("secret") || "";
+
+  if (runtimeSharedSecret && secret !== runtimeSharedSecret) {
+    socket.close(4001, "Unauthorized");
     return;
   }
 
-  websocketServer.handleUpgrade(req, socket, head, (upgradedSocket) => {
-    websocketServer.emit("connection", upgradedSocket, req);
+  if (!deepgramApiKey || !anthropicApiKey) {
+    socket.send(JSON.stringify({ type: "error", message: "Voice pipeline not configured (missing DEEPGRAM_API_KEY or ANTHROPIC_API_KEY)" }));
+    socket.close(4002, "Not configured");
+    return;
+  }
+
+  let session = null;
+  let deepgramSocket = null;
+  let keepAliveInterval = null;
+  let closed = false;
+
+  function sendEvent(event) {
+    if (socket.readyState === 1) {
+      socket.send(JSON.stringify(event));
+    }
+  }
+
+  function cleanup() {
+    if (closed) return;
+    closed = true;
+    if (keepAliveInterval) clearInterval(keepAliveInterval);
+    if (deepgramSocket && deepgramSocket.readyState === WebSocket.OPEN) {
+      deepgramSocket.send(JSON.stringify({ type: "CloseStream" }));
+      deepgramSocket.close();
+    }
+  }
+
+  socket.on("message", async (raw) => {
+    // Binary data = audio from browser mic
+    if (Buffer.isBuffer(raw) || raw instanceof ArrayBuffer) {
+      const buf = Buffer.isBuffer(raw) ? raw : Buffer.from(raw);
+      if (deepgramSocket && deepgramSocket.readyState === WebSocket.OPEN) {
+        deepgramSocket.send(buf);
+      }
+      return;
+    }
+
+    // Text = JSON control messages
+    let msg;
+    try {
+      msg = JSON.parse(raw.toString());
+    } catch {
+      return;
+    }
+
+    if (msg.type === "config") {
+      const agent = msg.agent || {};
+      session = {
+        agentId: agent.id || null,
+        agentName: agent.name || null,
+        agentDescription: agent.description || null,
+        systemPrompt: agent.systemPrompt || "",
+        firstMessage: agent.firstMessage || null,
+        voiceModel: agent.voiceModel || null,
+        voiceProvider: agent.voiceProvider || null,
+        language: agent.language || "en-US",
+        transferNumber: agent.transferNumber || null,
+        phoneNumber: null,
+        callerNumber: null,
+        externalCallId: null,
+        callMetadata: {},
+        pendingHangup: null,
+        callSid: null,
+        history: [],
+        pendingTranscript: "",
+        isGeneratingResponse: false,
+        activeResponseController: null,
+      };
+
+      if (session.firstMessage) {
+        session.history.push({ role: "assistant", content: session.firstMessage });
+      }
+
+      // Connect to Deepgram for STT
+      const dgParams = new URLSearchParams({
+        encoding: "linear16",
+        sample_rate: "16000",
+        channels: "1",
+        interim_results: "true",
+        vad_events: "true",
+        endpointing: "300",
+        utterance_end_ms: "1000",
+        punctuate: "true",
+        smart_format: "true",
+        model: deepgramSttModel || "nova-3",
+        language: (session.language || "en-US").replace("_", "-"),
+      });
+
+      deepgramSocket = new WebSocket(
+        `wss://api.deepgram.com/v1/listen?${dgParams.toString()}`,
+        { headers: { Authorization: `Token ${deepgramApiKey}` } },
+      );
+
+      keepAliveInterval = setInterval(() => {
+        if (deepgramSocket && deepgramSocket.readyState === WebSocket.OPEN) {
+          deepgramSocket.send(JSON.stringify({ type: "KeepAlive" }));
+        }
+      }, 8000);
+
+      deepgramSocket.on("open", () => {
+        sendEvent({ type: "status", message: "Voice pipeline connected" });
+      });
+
+      deepgramSocket.on("message", async (rawMsg) => {
+        let dgMsg;
+        try {
+          dgMsg = JSON.parse(rawMsg.toString());
+        } catch {
+          return;
+        }
+
+        if (dgMsg.type === "Results") {
+          const transcript = dgMsg.channel?.alternatives?.[0]?.transcript?.trim() || "";
+          const isFinal = Boolean(dgMsg.is_final);
+
+          if (transcript) {
+            sendEvent({ type: "transcript", text: transcript, is_final: isFinal });
+          }
+
+          if (isFinal && transcript) {
+            session.pendingTranscript = [session.pendingTranscript, transcript].filter(Boolean).join(" ").trim();
+          }
+
+          const shouldFinalize =
+            (dgMsg.speech_final || dgMsg.from_finalize) && session.pendingTranscript;
+
+          if (shouldFinalize) {
+            const userText = session.pendingTranscript;
+            session.pendingTranscript = "";
+            await handleUserTurn(userText);
+          }
+        }
+
+        if (dgMsg.type === "UtteranceEnd" && session.pendingTranscript) {
+          const userText = session.pendingTranscript;
+          session.pendingTranscript = "";
+          await handleUserTurn(userText);
+        }
+      });
+
+      deepgramSocket.on("close", () => {
+        sendEvent({ type: "status", message: "STT connection closed" });
+      });
+
+      deepgramSocket.on("error", (err) => {
+        sendEvent({ type: "error", message: `STT error: ${err.message}` });
+      });
+
+      sendEvent({ type: "ready" });
+      return;
+    }
   });
+
+  async function handleUserTurn(text) {
+    if (!text || !session || session.isGeneratingResponse) return;
+
+    session.isGeneratingResponse = true;
+    session.history.push({ role: "user", content: text });
+    sendEvent({ type: "user_final", text });
+
+    const controller = new AbortController();
+    session.activeResponseController = controller;
+
+    let reply = "";
+    try {
+      reply = await generateAssistantReply(
+        session,
+        controller.signal,
+        async (_role, toolText, payload) => {
+          sendEvent({ type: "tool", role: _role, text: toolText, payload });
+        },
+      );
+    } catch (err) {
+      if (!controller.signal.aborted) {
+        reply = "I'm sorry, I had trouble responding. Could you repeat that?";
+      }
+    } finally {
+      session.activeResponseController = null;
+      session.isGeneratingResponse = false;
+    }
+
+    if (!reply) return;
+
+    session.history.push({ role: "assistant", content: reply });
+    sendEvent({ type: "response", text: reply });
+
+    // Synthesize TTS and send audio back
+    try {
+      const voiceModel = session.voiceModel || defaultVoiceModel;
+      const ttsResponse = await fetch(
+        `https://api.deepgram.com/v1/speak?model=${encodeURIComponent(voiceModel)}&encoding=linear16&sample_rate=24000&container=none`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Token ${deepgramApiKey}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ text: reply }),
+        },
+      );
+
+      if (ttsResponse.ok) {
+        const arrayBuffer = await ttsResponse.arrayBuffer();
+        const audioBuffer = Buffer.from(arrayBuffer);
+        // Send audio in chunks to avoid large frames
+        const chunkSize = 8000;
+        for (let i = 0; i < audioBuffer.length; i += chunkSize) {
+          const chunk = audioBuffer.subarray(i, Math.min(i + chunkSize, audioBuffer.length));
+          sendEvent({ type: "audio", payload: chunk.toString("base64") });
+        }
+        sendEvent({ type: "audio_end" });
+      }
+    } catch (err) {
+      sendEvent({ type: "error", message: `TTS failed: ${err.message}` });
+    }
+  }
+
+  socket.on("close", cleanup);
+  socket.on("error", cleanup);
+});
+
+server.on("upgrade", (req, socket, head) => {
+  const requestUrl = new URL(req.url || "/", `http://${req.headers.host || `localhost:${port}`}`);
+
+  if (requestUrl.pathname === "/twilio/stream") {
+    websocketServer.handleUpgrade(req, socket, head, (upgradedSocket) => {
+      websocketServer.emit("connection", upgradedSocket, req);
+    });
+    return;
+  }
+
+  if (requestUrl.pathname === "/browser/stream") {
+    browserWss.handleUpgrade(req, socket, head, (upgradedSocket) => {
+      browserWss.emit("connection", upgradedSocket, req);
+    });
+    return;
+  }
+
+  socket.destroy();
 });
 
 server.listen(port, () => {

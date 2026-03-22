@@ -4,6 +4,9 @@ const PUBLIC_PATHS = new Set([
   "/",
   "/sign-in",
   "/sign-up",
+  "/secure-account",
+  "/verify-identity",
+  "/onboarding",
 ]);
 
 const PUBLIC_PREFIXES = [

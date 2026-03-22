@@ -1,54 +1,68 @@
 const Workflow = () => {
   return (
-    <section id="workflow" className="py-32 px-6">
+    <section id="workflow" className="py-28 sm:py-36 px-6">
       <div className="max-w-7xl mx-auto">
-        <div className="max-w-xl mb-20">
-          <h2 className="text-[2.5rem] sm:text-[3.25rem] font-semibold tracking-[-0.03em] text-foreground leading-[1.1]">
-            Three steps to a
-            <br />
-            working phone agent
-          </h2>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 mb-14">
+          <div className="lg:col-span-7">
+            <span className="font-body text-[0.65rem] text-text-subtle/60 uppercase tracking-[0.2em] block mb-4">How it works</span>
+            <h2 className="text-[2.25rem] sm:text-[3rem] font-semibold tracking-[-0.03em] text-foreground leading-[1.08]">
+              Three steps to a
+              <br />
+              working phone agent
+            </h2>
+          </div>
+          <div className="lg:col-span-5 flex items-end">
+            <p className="font-body text-[0.9rem] text-text-subtle leading-[1.7] max-w-sm">
+              No SDK integration, no custom infrastructure. Configure your agent, assign a number, and calls start flowing.
+            </p>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          {/* Build — featured */}
-          <div className="lg:col-span-7 bg-surface-dark rounded-panel p-10 sm:p-14 flex flex-col justify-between min-h-[340px]">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+          {/* Build — dominant hero block */}
+          <div className="lg:col-span-7 bg-surface-dark rounded-[1.5rem] p-8 sm:p-12 flex flex-col justify-between min-h-[340px]">
             <div>
-              <span className="font-mono text-xs text-surface-dark-foreground/20 block mb-8">01</span>
-              <h3 className="font-display text-[1.75rem] sm:text-[2.25rem] font-semibold tracking-[-0.025em] text-surface-dark-foreground mb-5 leading-[1.15]">
-                Define your agent's
+              <span className="font-mono text-xs text-surface-dark-foreground/20 block mb-6">01</span>
+              <h3 className="font-display text-[1.5rem] sm:text-[2rem] font-semibold tracking-[-0.025em] text-surface-dark-foreground mb-4 leading-[1.12]">
+                Define your agent&apos;s
                 <br />
                 behavior and script
               </h3>
-              <p className="font-body text-surface-dark-foreground/40 text-[0.9rem] leading-[1.7] max-w-md">
+              <p className="font-body text-surface-dark-foreground/40 text-[0.85rem] leading-[1.7] max-w-md">
                 Set the voice, tone, routing logic, and fallback rules. Configure what your agent says, when it transfers, and how it handles edge cases.
               </p>
             </div>
-            <div className="mt-10 font-body text-[0.65rem] text-surface-dark-foreground/15 uppercase tracking-[0.2em]">Build</div>
+            <div className="mt-8 flex items-center justify-between">
+              <span className="font-body text-[0.6rem] text-surface-dark-foreground/15 uppercase tracking-[0.2em]">Build</span>
+              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-dark-foreground/5">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400/60" />
+                <span className="font-body text-[0.6rem] text-surface-dark-foreground/25">Prompt editor • Voice selection • Tools</span>
+              </div>
+            </div>
           </div>
 
           {/* Deploy + Monitor stacked */}
-          <div className="lg:col-span-5 flex flex-col gap-6">
-            <div className="bg-surface-elevated rounded-panel p-8 sm:p-10 flex-1">
-              <span className="font-mono text-xs text-text-subtle/50 block mb-5">02</span>
-              <h3 className="font-display text-xl font-semibold tracking-[-0.02em] text-foreground mb-2.5 leading-snug">
+          <div className="lg:col-span-5 flex flex-col gap-5">
+            <div className="bg-surface-elevated rounded-[1.25rem] p-7 sm:p-8 flex-1 border border-border-soft/20">
+              <span className="font-mono text-xs text-text-subtle/40 block mb-4">02</span>
+              <h3 className="font-display text-lg font-semibold tracking-[-0.02em] text-foreground mb-2 leading-snug">
                 Assign a number and go live
               </h3>
-              <p className="font-body text-sm text-text-subtle leading-[1.7]">
+              <p className="font-body text-[0.82rem] text-text-subtle leading-[1.7]">
                 Provision a phone number, attach it to your agent, and start receiving inbound calls. Push updates without downtime.
               </p>
-              <div className="mt-7 font-body text-[0.65rem] text-text-subtle/30 uppercase tracking-[0.2em]">Deploy</div>
+              <div className="mt-6 font-body text-[0.6rem] text-text-subtle/25 uppercase tracking-[0.2em]">Deploy</div>
             </div>
 
-            <div className="bg-surface-elevated rounded-panel p-8 sm:p-10 flex-1">
-              <span className="font-mono text-xs text-text-subtle/50 block mb-5">03</span>
-              <h3 className="font-display text-xl font-semibold tracking-[-0.02em] text-foreground mb-2.5 leading-snug">
+            <div className="bg-surface-elevated rounded-[1.25rem] p-7 sm:p-8 flex-1 border border-border-soft/20">
+              <span className="font-mono text-xs text-text-subtle/40 block mb-4">03</span>
+              <h3 className="font-display text-lg font-semibold tracking-[-0.02em] text-foreground mb-2 leading-snug">
                 Review every call in detail
               </h3>
-              <p className="font-body text-sm text-text-subtle leading-[1.7]">
+              <p className="font-body text-[0.82rem] text-text-subtle leading-[1.7]">
                 Read transcripts, flag conversations, and track agent performance. Full audit trail on every interaction.
               </p>
-              <div className="mt-7 font-body text-[0.65rem] text-text-subtle/30 uppercase tracking-[0.2em]">Monitor</div>
+              <div className="mt-6 font-body text-[0.6rem] text-text-subtle/25 uppercase tracking-[0.2em]">Monitor</div>
             </div>
           </div>
         </div>

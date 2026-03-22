@@ -1,12 +1,16 @@
 "use client";
 
-import { Pause, Play, Copy, Phone, Download } from "lucide-react";
+import { useState } from "react";
+import { Pause, Play, Copy, Phone, Download, Plus, Unplug, PhoneCall } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import AgentWorkspaceTabs from "@/components/dashboard/AgentWorkspaceTabs";
 import { toggleAgentStatusAction, duplicateAgentAction } from "@/app/_actions/agents";
+import { connectNumberToAgentAction, disconnectNumberFromAgentAction } from "@/app/_actions/phone-numbers";
 
 type AgentCall = {
   id: string;
@@ -90,6 +94,100 @@ function timeAgo(dateStr: string) {
   if (hours < 24) return `${hours}h ago`;
   const days = Math.floor(hours / 24);
   return `${days}d ago`;
+}
+
+// ─── Phone Number Section ──────────────────────────
+
+function PhoneNumberSection({ agentId, slug, phoneNumbers }: { agentId: string; slug: string; phoneNumbers: AgentPhone[] }) {
+  const [showForm, setShowForm] = useState(false);
+  const hasNumbers = phoneNumbers.length > 0;
+
+  return (
+    <div className={`bg-surface-panel rounded-card border ${hasNumbers ? "border-border-soft" : "border-dashed border-border-soft/80"}`}>
+      <div className="px-4 py-3 border-b border-border-soft/60 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <PhoneCall className="w-3.5 h-3.5 text-text-subtle" />
+          <h3 className="font-display text-[0.89rem] font-medium text-text-strong">Phone number</h3>
+        </div>
+        {hasNumbers && !showForm && (
+          <button
+            onClick={() => setShowForm(true)}
+            className="font-body text-[0.77rem] text-text-subtle hover:text-text-body transition-colors"
+          >
+            + Add another
+          </button>
+        )}
+      </div>
+
+      {hasNumbers ? (
+        <div className="divide-y divide-border-soft/40">
+          {phoneNumbers.map((p) => (
+            <div key={p.id} className="px-4 py-2.5 flex items-center justify-between">
+              <div>
+                <div className="font-mono text-[0.87rem] text-text-body">{p.phoneNumber}</div>
+                {p.friendlyName && (
+                  <div className="font-body text-[0.77rem] text-text-subtle">{p.friendlyName}</div>
+                )}
+              </div>
+              <form action={disconnectNumberFromAgentAction}>
+                <input type="hidden" name="phoneNumberId" value={p.id} />
+                <input type="hidden" name="agentSlug" value={slug} />
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button type="submit" className="p-1.5 rounded-md hover:bg-surface-subtle transition-colors">
+                      <Unplug className="w-3.5 h-3.5 text-text-subtle" />
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent className="font-body text-[0.77rem]">Disconnect number</TooltipContent>
+                </Tooltip>
+              </form>
+            </div>
+          ))}
+        </div>
+      ) : !showForm ? (
+        <div className="p-5 text-center">
+          <div className="w-10 h-10 rounded-full bg-surface-subtle flex items-center justify-center mx-auto mb-3">
+            <Phone className="w-4 h-4 text-text-subtle" />
+          </div>
+          <p className="font-body text-[0.87rem] text-text-body mb-1">No phone number connected</p>
+          <p className="font-body text-[0.77rem] text-text-subtle mb-3">Connect a Twilio phone number to start receiving inbound calls.</p>
+          <Button
+            onClick={() => setShowForm(true)}
+            variant="outline"
+            size="sm"
+            className="gap-1.5 rounded-lg font-body text-[0.84rem] h-7 px-3 border-border-soft"
+          >
+            <Plus className="w-3 h-3" />
+            Connect number
+          </Button>
+        </div>
+      ) : null}
+
+      {showForm && (
+        <form action={connectNumberToAgentAction} className="p-4 border-t border-border-soft/40">
+          <input type="hidden" name="agentId" value={agentId} />
+          <input type="hidden" name="agentSlug" value={slug} />
+          <div className="space-y-3">
+            <div>
+              <Label htmlFor="cn-phone" className="font-body text-[0.84rem] text-text-body mb-1 block">Phone number</Label>
+              <Input id="cn-phone" name="phoneNumber" placeholder="+1 (555) 123-4567" required className="font-mono text-[0.87rem] h-8" />
+              <p className="font-body text-[0.72rem] text-text-subtle mt-0.5">Your Twilio phone number with country code</p>
+            </div>
+            <div>
+              <Label htmlFor="cn-name" className="font-body text-[0.84rem] text-text-body mb-1 block">
+                Friendly name <span className="text-text-subtle">(optional)</span>
+              </Label>
+              <Input id="cn-name" name="friendlyName" placeholder="e.g. Main Office Line" className="text-[0.87rem] h-8" />
+            </div>
+          </div>
+          <div className="flex items-center justify-end gap-2 mt-4 pt-3 border-t border-border-soft/40">
+            <Button type="button" variant="ghost" size="sm" className="text-[0.84rem] h-7" onClick={() => setShowForm(false)}>Cancel</Button>
+            <Button type="submit" variant="hero" size="sm" className="rounded-lg text-[0.84rem] h-7 px-3">Connect</Button>
+          </div>
+        </form>
+      )}
+    </div>
+  );
 }
 
 export default function AgentDetailClient({ agent }: { agent: AgentDetail }) {
@@ -310,6 +408,9 @@ export default function AgentDetailClient({ agent }: { agent: AgentDetail }) {
               </div>
             </div>
 
+            {/* Phone number — interactive */}
+            <PhoneNumberSection agentId={agent.id} slug={slug} phoneNumbers={agent.phoneNumbers} />
+
             {/* Quick actions */}
             <div className="bg-surface-panel rounded-card border border-border-soft">
               <div className="px-4 py-3 border-b border-border-soft/60">
@@ -320,6 +421,7 @@ export default function AgentDetailClient({ agent }: { agent: AgentDetail }) {
                   { label: "Edit prompt", href: `/agents/${slug}/edit` },
                   { label: "Flow builder", href: `/agents/${slug}/flow` },
                   { label: "Test agent", href: `/agents/${slug}/test` },
+                  { label: "Manage all numbers", href: "/numbers" },
                 ].map((action) => (
                   <Link
                     key={action.label}
@@ -332,25 +434,6 @@ export default function AgentDetailClient({ agent }: { agent: AgentDetail }) {
                 ))}
               </div>
             </div>
-
-            {/* Numbers */}
-            {agent.phoneNumbers.length > 0 && (
-              <div className="bg-surface-panel rounded-card border border-border-soft">
-                <div className="px-4 py-3 border-b border-border-soft/60">
-                  <h3 className="font-display text-[0.89rem] font-medium text-text-strong">Assigned numbers</h3>
-                </div>
-                <div className="p-3 space-y-1">
-                  {agent.phoneNumbers.map((p) => (
-                    <div key={p.id} className="flex items-center justify-between px-3 py-1.5">
-                      <span className="font-mono text-[0.79rem] text-text-body">{p.phoneNumber}</span>
-                      {p.friendlyName && (
-                        <span className="font-body text-[0.8rem] text-text-subtle">{p.friendlyName}</span>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
           </div>
         </div>
       </div>

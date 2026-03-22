@@ -188,11 +188,17 @@ export default function AgentEditorClient({ agent, isNew }: { agent: AgentEditDa
               </div>
               <div className="space-y-1.5">
                 <Label className="font-body text-[0.89rem] text-text-subtle">Assigned number</Label>
-                <Input
-                  value={agent.phoneNumber || "Not assigned"}
-                  readOnly
-                  className="h-10 rounded-lg border-border-soft bg-muted font-mono text-[0.89rem] text-text-subtle"
-                />
+                <div className="h-10 rounded-lg border border-border-soft bg-muted flex items-center px-3 justify-between">
+                  <span className="font-mono text-[0.89rem] text-text-subtle">
+                    {agent.phoneNumber || "Not assigned"}
+                  </span>
+                  <Link
+                    href={isNew ? "/numbers" : `/agents/${agent.slug || agent.id}`}
+                    className="font-body text-[0.77rem] text-text-subtle hover:text-text-body transition-colors"
+                  >
+                    {agent.phoneNumber ? "Manage" : "Connect"} &rarr;
+                  </Link>
+                </div>
               </div>
             </div>
           </div>

@@ -290,4 +290,10 @@
     &:hover { box-shadow: 0 2px 8px -2px hsl(0 0% 0% / 0.06), 0 1px 3px -1px hsl(0 0% 0% / 0.04); transform: translateY(-1px); }
   }
   .focus-ring { @apply focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-foreground/20 focus-visible:ring-offset-1 focus-visible:ring-offset-background; }
+  .prose-yap h2 { @apply font-display text-[1rem] font-semibold text-text-strong tracking-[-0.01em] mt-8 mb-3 first:mt-0; }
+  .prose-yap h3 { @apply font-display text-[0.88rem] font-medium text-text-strong mt-5 mb-2; }
+  .prose-yap p { @apply font-body text-[0.82rem] text-text-body leading-[1.7] mb-3; }
+  .prose-yap ul { @apply list-disc list-outside pl-5 space-y-1.5 mb-3; }
+  .prose-yap li { @apply font-body text-[0.82rem] text-text-body leading-[1.65]; }
+  .prose-yap strong { @apply font-medium text-text-strong; }
 }

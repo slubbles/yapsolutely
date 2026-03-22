@@ -18,8 +18,8 @@ const Navbar = () => {
           <div className="hidden md:flex items-center gap-8">
             <a href="#product" className="font-body text-[0.8rem] text-text-subtle hover:text-foreground transition-colors">Product</a>
             <a href="#workflow" className="font-body text-[0.8rem] text-text-subtle hover:text-foreground transition-colors">How it works</a>
-            <a href="#platform" className="font-body text-[0.8rem] text-text-subtle hover:text-foreground transition-colors">Platform</a>
-            <a href="#pricing" className="font-body text-[0.8rem] text-text-subtle hover:text-foreground transition-colors">Pricing</a>
+            <Link href="/pricing" className="font-body text-[0.8rem] text-text-subtle hover:text-foreground transition-colors">Pricing</Link>
+            <Link href="/docs" className="font-body text-[0.8rem] text-text-subtle hover:text-foreground transition-colors">Docs</Link>
           </div>
         </div>
         <div className="hidden sm:flex items-center gap-3">
@@ -43,8 +43,8 @@ const Navbar = () => {
           <div className="flex flex-col gap-3 mb-4">
             <a href="#product" onClick={() => setMobileOpen(false)} className="font-body text-[0.85rem] text-text-body py-1">Product</a>
             <a href="#workflow" onClick={() => setMobileOpen(false)} className="font-body text-[0.85rem] text-text-body py-1">How it works</a>
-            <a href="#platform" onClick={() => setMobileOpen(false)} className="font-body text-[0.85rem] text-text-body py-1">Platform</a>
-            <a href="#pricing" onClick={() => setMobileOpen(false)} className="font-body text-[0.85rem] text-text-body py-1">Pricing</a>
+            <Link href="/pricing" onClick={() => setMobileOpen(false)} className="font-body text-[0.85rem] text-text-body py-1">Pricing</Link>
+            <Link href="/docs" onClick={() => setMobileOpen(false)} className="font-body text-[0.85rem] text-text-body py-1">Docs</Link>
           </div>
           <div className="flex flex-col gap-2">
             <Button variant="ghost" size="sm" className="font-body text-text-subtle justify-start" asChild>

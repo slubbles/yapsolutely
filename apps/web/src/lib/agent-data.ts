@@ -1,6 +1,11 @@
 import { AgentStatus } from "@prisma/client";
 import { prisma } from "@/lib/db";
 
+export type AgentListFilters = {
+  query?: string;
+  status?: string;
+};
+
 export type AgentListItem = {
   id: string;
   name: string;
@@ -18,13 +23,52 @@ export type PhoneNumberOption = {
   assignedAgentId: string | null;
 };
 
-export async function listAgentsForUser(email: string): Promise<AgentListItem[]> {
+export async function listAgentsForUser(
+  email: string,
+  filters: AgentListFilters = {},
+): Promise<AgentListItem[]> {
+  const query = filters.query?.trim() || "";
+  const normalizedStatus = filters.status?.trim().toUpperCase() || "";
+
   try {
     return await prisma.agent.findMany({
       where: {
         user: {
           email,
         },
+        ...(normalizedStatus && normalizedStatus !== "ALL"
+          ? { status: normalizedStatus as AgentStatus }
+          : {}),
+        ...(query
+          ? {
+              OR: [
+                {
+                  name: {
+                    contains: query,
+                    mode: "insensitive",
+                  },
+                },
+                {
+                  description: {
+                    contains: query,
+                    mode: "insensitive",
+                  },
+                },
+                {
+                  firstMessage: {
+                    contains: query,
+                    mode: "insensitive",
+                  },
+                },
+                {
+                  voiceModel: {
+                    contains: query,
+                    mode: "insensitive",
+                  },
+                },
+              ],
+            }
+          : {}),
       },
       orderBy: {
         updatedAt: "desc",

@@ -92,6 +92,7 @@ The goal is **not** to literally rebuild every enterprise Retell feature at once
 - the settings area now also surfaces the voice runtime readiness verdict, runtime-missing keys, and runtime-to-web probe results, so deployment status can be reviewed from one in-app screen
 - production now runs on the VPS with `web`, `voice`, and an internal `postgres` service under Docker Compose + Caddy because the prior Supabase direct Postgres path was unreachable from the host
 - the live production database now contains a seeded Karim demo user, active agent, and Twilio number assignment so inbound call resolution works end to end in production
+- the first-run auth funnel now uses email-verification UX instead of SMS verification, matching the current website-first build priority while provider-backed auth is still being wired
 
 ### What is not done yet
 
@@ -187,6 +188,7 @@ These decisions are now the default execution baseline unless explicitly revised
 - Use `shadcn/ui` initially for speed
 - Do **not** treat starter visuals as final
 - Evolve into a custom Yapsolutely design system after functionality stabilizes
+- Treat `plan/ui-masterplan.md` as the canonical source of truth for UI vision, design-system rules, page inventory, and UI execution sequencing
 
 ### Multi-tenancy strategy
 
@@ -693,6 +695,18 @@ A user can visually define a flow and generate a usable system prompt from it.
 - [ ] redesign landing page and dashboard chrome
 - [ ] ensure everything remains editable and maintainable
 
+### Planning note
+
+The design-planning source of truth for this objective now lives in `plan/ui-masterplan.md`, including:
+
+- creative north star
+- image fidelity guardrails
+- page archetypes
+- design-system rules
+- UI execution order
+- locked font direction (`General Sans` + `Satoshi`)
+- locked editorial card language for image-overlay CTA panels and premium rounded surfaces
+
 ### Definition of done
 
 The app no longer looks like a generic starter and has a distinctive Yapsolutely identity.
@@ -830,8 +844,8 @@ Includes:
 | 10. Business actions/tools | in progress | runtime tool interface now exists with lead capture, SMS confirmation, graceful end-call hooks, and logged tool events |
 | 11. Browser-based test experience | not started | intentionally later |
 | 12. Flow builder | not started | key differentiator, later after core works |
-| 13. Visual design evolution | not started | shadcn-first, custom later |
-| 14. Deployment and demo readiness | in progress | web + voice are deployed to the VPS behind Caddy, production Postgres is live in the stack, the Twilio voice webhook is configured, seeded agent/number resolution works publicly, automated preflight + smoke scripts now verify readiness and simulated transcript persistence, and operator-facing handoff docs now exist; remaining work is final real-call validation plus Loom proof |
+| 13. Visual design evolution | planning complete | visual execution is now fully specified in `plan/ui-masterplan.md`; implementation has not started yet |
+| 14. Deployment and demo readiness | in progress | web + voice are deployed to the VPS behind Caddy, production Postgres is live in the stack, the Twilio voice webhook is configured, seeded agent/number resolution works publicly, automated preflight + smoke scripts now verify readiness and simulated transcript persistence, and operator-facing handoff docs now exist; remaining work is final real-call validation plus Loom proof, with that live-call pass currently waiting on Karim’s upgraded Twilio account |
 | 15. Phase 2 roadmap | planning complete | known at high level |
 
 ---
@@ -848,6 +862,10 @@ If we speak plainly:
 So the honest answer is:
 
 > We are past the initial scaffold stage: the dashboard, persistence layer, runtime contracts, live provider path, tool hooks, and transcript review surfaces now exist, but the remaining high-risk work is real end-to-end live-call validation and deployment/demo hardening.
+
+Right now the practical blocker is external, not architectural:
+
+> the final real-call proof should wait for Karim’s upgraded Twilio account, so the highest-value work until then is continuing to finish and polish the website, onboarding, and operator-facing product surfaces.
 
 ---
 
@@ -901,7 +919,7 @@ The mock session engine is now in place, so the next immediate task is:
 
 The runtime/data contract is now richer, the live provider path exists in code, tool hooks are wired, the transcript review surface exposes tool outcomes more clearly, and playback completion now waits for Twilio mark acknowledgements, so the next immediate task is:
 
-> validate the Deepgram + Anthropic stream path plus runtime tools end to end on a real Twilio media stream, then continue tuning interruption/barge-in behavior under real audio so the live call experience is reliable enough for demo readiness.
+> continue finishing high-leverage website and onboarding surfaces while Karim reviews the product, then validate the Deepgram + Anthropic stream path plus runtime tools end to end on a real Twilio media stream once the upgraded Twilio account is available.
 
 ---
 

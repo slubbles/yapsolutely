@@ -10,6 +10,11 @@ export type PhoneNumberListItem = {
   createdAt: Date;
 };
 
+export type PhoneNumberListFilters = {
+  query?: string;
+  status?: string;
+};
+
 function normalizePhoneNumber(value: string) {
   const trimmed = value.trim();
 
@@ -24,13 +29,70 @@ function normalizePhoneNumber(value: string) {
   return `+${trimmed.replace(/\D/g, "")}`;
 }
 
-export async function listPhoneNumbersWithAssignments(email: string): Promise<PhoneNumberListItem[]> {
+export async function listPhoneNumbersWithAssignments(
+  email: string,
+  filters: PhoneNumberListFilters = {},
+): Promise<PhoneNumberListItem[]> {
+  const query = filters.query?.trim() || "";
+  const normalizedStatus = filters.status?.trim().toUpperCase() || "";
+
   try {
     const items = await prisma.phoneNumber.findMany({
       where: {
         user: {
           email,
         },
+        ...(query
+          ? {
+              OR: [
+                {
+                  phoneNumber: {
+                    contains: query,
+                    mode: "insensitive",
+                  },
+                },
+                {
+                  friendlyName: {
+                    contains: query,
+                    mode: "insensitive",
+                  },
+                },
+                {
+                  twilioSid: {
+                    contains: query,
+                    mode: "insensitive",
+                  },
+                },
+                {
+                  agent: {
+                    name: {
+                      contains: query,
+                      mode: "insensitive",
+                    },
+                  },
+                },
+              ],
+            }
+          : {}),
+        ...(normalizedStatus === "ASSIGNED"
+          ? {
+              agentId: {
+                not: null,
+              },
+            }
+          : normalizedStatus === "UNASSIGNED"
+            ? {
+                agentId: null,
+                friendlyName: {
+                  not: null,
+                },
+              }
+            : normalizedStatus === "NEEDS_SETUP"
+              ? {
+                  agentId: null,
+                  friendlyName: null,
+                }
+              : {}),
       },
       orderBy: {
         createdAt: "desc",

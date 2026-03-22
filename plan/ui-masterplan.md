@@ -393,7 +393,7 @@ The first-run experience should include a pre-dashboard flow modeled after Retel
 - landing page
 - auth
 - secure account
-- OTP verification
+- email verification
 - onboarding survey
 - dashboard
 
@@ -612,9 +612,9 @@ This is the target UI page set for the next major phase.
 3. `/sign-up`
    - minimal sign-up flow
 4. `/secure-account`
-   - phone number input
+   - confirm work email
 5. `/verify-identity`
-   - 6-digit OTP verification page
+   - 6-digit email verification page
 6. `/onboarding`
    - survey / setup intent flow
 
@@ -698,7 +698,7 @@ Goal:
 
 Goal:
 
-- ask for phone number
+- confirm the work email target
 - frame security and trust
 - make the product feel real and high-trust
 
@@ -706,7 +706,7 @@ Goal:
 
 Goal:
 
-- 6-digit OTP page
+- 6-digit email verification page
 - clean, high-confidence verification UI
 
 ### Step 5 — Onboarding survey

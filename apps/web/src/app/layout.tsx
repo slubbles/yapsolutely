@@ -1,15 +1,54 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+const generalSans = localFont({
+  src: [
+    {
+      path: "./fonts/general-sans-400.woff2",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "./fonts/general-sans-500.woff2",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "./fonts/general-sans-600.woff2",
+      weight: "600",
+      style: "normal",
+    },
+    {
+      path: "./fonts/general-sans-700.woff2",
+      weight: "700",
+      style: "normal",
+    },
+  ],
+  variable: "--font-general-sans",
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const satoshi = localFont({
+  src: [
+    {
+      path: "./fonts/satoshi-400.woff2",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "./fonts/satoshi-500.woff2",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "./fonts/satoshi-700.woff2",
+      weight: "700",
+      style: "normal",
+    },
+  ],
+  variable: "--font-satoshi",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -26,7 +65,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${generalSans.variable} ${satoshi.variable} h-full antialiased`}
     >
       <body className="min-h-full bg-[var(--background)] text-[var(--foreground)]">
         {children}

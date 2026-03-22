@@ -14,6 +14,16 @@ function readCheckbox(formData: FormData, key: string) {
   return formData.get(key) === "on";
 }
 
+function readReturnTo(formData: FormData, agentId?: string) {
+  const value = readText(formData, "returnTo");
+
+  if (value.startsWith("/")) {
+    return value;
+  }
+
+  return agentId ? `/agents/${agentId}` : "/agents";
+}
+
 function toSlug(value: string) {
   return value
     .toLowerCase()
@@ -156,9 +166,10 @@ export async function updateAgentAction(formData: FormData) {
   const status = readText(formData, "status");
   const phoneNumberId = readText(formData, "phoneNumberId");
   const isActive = readCheckbox(formData, "isActive");
+  const returnTo = readReturnTo(formData, agentId);
 
   if (!agentId || !name || !systemPrompt) {
-    redirect(`/agents/${agentId || "unknown"}?error=missing-required-fields`);
+    redirect(`${returnTo}?error=missing-required-fields`);
   }
 
   try {
@@ -238,9 +249,9 @@ export async function updateAgentAction(formData: FormData) {
       }
     });
 
-    redirect(`/agents/${agentId}?updated=1`);
+    redirect(`${returnTo}?updated=1`);
   } catch {
-    redirect(`/agents/${agentId}?error=database-unavailable`);
+    redirect(`${returnTo}?error=database-unavailable`);
   }
 }
 

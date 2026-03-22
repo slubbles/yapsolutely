@@ -1,21 +1,15 @@
-import Link from "next/link";
-import { ReactNode } from "react";
-import { signOutAction } from "@/app/_actions/auth";
-
-const navItems = [
-  { href: "/dashboard", label: "Dashboard" },
-  { href: "/agents", label: "Agents" },
-  { href: "/numbers", label: "Numbers" },
-  { href: "/agents/new", label: "Create agent" },
-  { href: "/calls", label: "Calls" },
-  { href: "/settings", label: "Settings" },
-];
+import { ReactNode, Suspense } from "react";
+import { AppContextPane } from "@/components/app-context-pane";
+import { AppNavRail } from "@/components/app-nav-rail";
+import { getConsoleShellContext, type ConsoleShellSection } from "./console-shell-context";
+import { ConsoleShellSectionStrip } from "./console-shell-section-strip";
 
 type ConsoleShellProps = {
   eyebrow: string;
   title: string;
   description: string;
   userEmail?: string;
+  section?: ConsoleShellSection;
   children?: ReactNode;
 };
 
@@ -24,105 +18,58 @@ export function ConsoleShell({
   title,
   description,
   userEmail,
+  section,
   children,
 }: ConsoleShellProps) {
+  const contextPane = getConsoleShellContext(section, eyebrow);
+
   return (
-    <main className="mx-auto min-h-screen w-full max-w-7xl px-6 py-8 sm:px-10 lg:px-12">
-      <div className="grid gap-6 lg:grid-cols-[260px_1fr]">
-        <aside className="rounded-[28px] border border-white/10 bg-slate-950/60 p-5 shadow-[0_20px_80px_rgba(3,7,18,0.3)] backdrop-blur">
-          <Link href="/" className="block rounded-2xl border border-violet-400/20 bg-violet-500/10 px-4 py-4">
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-violet-200">
-              Yapsolutely
-            </p>
-            <p className="mt-2 text-lg font-semibold text-white">Voice OS dashboard</p>
-            <p className="mt-2 text-sm leading-6 text-slate-300">
-              Early shell for agents, calls, and runtime operations.
-            </p>
-          </Link>
+    <div className="flex min-h-screen bg-[var(--canvas)] text-[var(--foreground)]">
+      <AppNavRail userEmail={userEmail} />
+      <Suspense fallback={null}>
+        <AppContextPane
+          title={contextPane.title}
+          description={contextPane.description}
+          items={contextPane.items}
+          actions={contextPane.actions}
+        />
+      </Suspense>
 
-          <nav className="mt-6 space-y-2">
-            {navItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="block rounded-2xl border border-white/8 px-4 py-3 text-sm font-medium text-slate-200 transition hover:border-violet-400/35 hover:bg-violet-500/10"
-              >
-                {item.label}
-              </Link>
-            ))}
-          </nav>
-        </aside>
-
-        <section className="rounded-[32px] border border-white/10 bg-[linear-gradient(180deg,rgba(15,23,42,0.84),rgba(8,15,31,0.92))] p-8 shadow-[0_24px_100px_rgba(3,7,18,0.35)]">
-          <div className="flex flex-col gap-4 border-b border-white/10 pb-6 sm:flex-row sm:items-start sm:justify-between">
-            <div>
-              <p className="text-sm font-medium uppercase tracking-[0.28em] text-violet-200/80">
+      <main className="min-w-0 flex-1 overflow-auto pt-14 md:pt-0">
+        <div className="p-5 sm:p-8">
+          <div className="mx-auto max-w-[1180px]">
+            <header className="mb-8 rounded-[var(--radius-panel)] border border-[var(--border-soft)] bg-[var(--surface-panel)] px-5 py-5 shadow-[var(--shadow-sm)] sm:px-6 sm:py-6">
+              <p className="text-[0.68rem] font-medium uppercase tracking-[0.18em] text-[var(--text-subtle)]">
                 {eyebrow}
               </p>
-              <h1 className="mt-4 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-                {title}
-              </h1>
-              <p className="mt-4 max-w-3xl text-base leading-7 text-slate-300">
-                {description}
-              </p>
-            </div>
+              <div className="mt-3 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+                <div className="max-w-3xl">
+                  <h1 className="font-display text-[1.55rem] font-semibold tracking-[-0.03em] text-[var(--text-strong)] sm:text-[1.82rem]">
+                    {title}
+                  </h1>
+                  <p className="mt-3 max-w-3xl text-[0.9rem] leading-7 text-[var(--text-body)]">
+                    {description}
+                  </p>
+                </div>
 
-            <div className="flex flex-col gap-3 rounded-3xl border border-white/10 bg-slate-950/45 p-4 sm:min-w-[240px]">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
-                Session
-              </p>
-              <div>
-                <p className="text-sm font-medium text-white">
-                  {userEmail || "Demo session"}
-                </p>
-                <p className="mt-1 text-sm leading-6 text-slate-300">
-                  Cookie-backed auth scaffold for Milestone A. Replace with production auth next.
-                </p>
+                <div className="rounded-[20px] bg-[var(--surface-subtle)] px-4 py-3 text-sm text-[var(--text-body)]">
+                  <p className="text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-[var(--text-subtle)]">
+                    Session
+                  </p>
+                  <p className="mt-1 text-[0.8rem] font-medium text-[var(--text-strong)]">
+                    {userEmail || "Demo workspace"}
+                  </p>
+                </div>
               </div>
-              <form action={signOutAction}>
-                <button
-                  type="submit"
-                  className="rounded-2xl border border-white/10 px-4 py-3 text-sm font-medium text-slate-100 transition hover:border-violet-400/35 hover:bg-violet-500/10"
-                >
-                  Sign out
-                </button>
-              </form>
-            </div>
-          </div>
+              <Suspense fallback={null}>
+                <ConsoleShellSectionStrip items={contextPane.items} actions={contextPane.actions} />
+              </Suspense>
+            </header>
 
-          <div className="mt-8 grid gap-4 md:grid-cols-3">
-            <article className="rounded-3xl border border-white/10 bg-white/5 p-5">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
-                Milestone
-              </p>
-              <p className="mt-2 text-lg font-semibold text-white">A · Foundation</p>
-              <p className="mt-2 text-sm leading-6 text-slate-300">
-                Establishing the shell before auth, schema, and runtime integration.
-              </p>
-            </article>
-            <article className="rounded-3xl border border-white/10 bg-white/5 p-5">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
-                Priority
-              </p>
-              <p className="mt-2 text-lg font-semibold text-white">Critical path only</p>
-              <p className="mt-2 text-sm leading-6 text-slate-300">
-                Keep the demo path moving: agent → number → call → transcript.
-              </p>
-            </article>
-            <article className="rounded-3xl border border-white/10 bg-white/5 p-5">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
-                Status
-              </p>
-              <p className="mt-2 text-lg font-semibold text-white">Scaffolded</p>
-              <p className="mt-2 text-sm leading-6 text-slate-300">
-                These screens are intentionally thin but now give the app a navigable skeleton.
-              </p>
-            </article>
+            {children}
           </div>
-
-          {children ? <div className="mt-8">{children}</div> : null}
-        </section>
-      </div>
-    </main>
+        </div>
+      </main>
+    </div>
   );
 }

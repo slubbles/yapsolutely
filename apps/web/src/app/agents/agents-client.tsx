@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo, useRef, Suspense } from "react";
-import { Search, Plus, Download, Upload, Bot } from "lucide-react";
+import { Search, Plus, Upload, Bot } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
@@ -9,12 +9,6 @@ import OnboardingModal from "@/components/dashboard/OnboardingModal";
 import EmptyState from "@/components/dashboard/EmptyState";
 import { importAgentAction } from "@/app/_actions/agents";
 import type { AgentListItem } from "@/lib/agent-data";
-
-const templates = [
-  { name: "Front Desk", description: "Greets callers, routes to the right department, and takes messages." },
-  { name: "Lead Qualifier", description: "Qualifies inbound leads by asking discovery questions and booking demos." },
-  { name: "Appointment Booking", description: "Helps callers schedule, reschedule, or cancel appointments." },
-];
 
 const statusLabel = (status: string) => {
   switch (status) {
@@ -26,7 +20,15 @@ const statusLabel = (status: string) => {
   }
 };
 
-const statusStyle = (status: string) => {
+const statusDot = (status: string) => {
+  switch (status) {
+    case "ACTIVE": return "bg-emerald-400";
+    case "PAUSED": return "bg-accent-warm";
+    default: return "bg-text-subtle/25";
+  }
+};
+
+const statusPill = (status: string) => {
   switch (status) {
     case "ACTIVE": return "bg-emerald-400/10 text-emerald-600";
     case "PAUSED": return "bg-accent-warm/10 text-accent-warm-dim";
@@ -59,6 +61,14 @@ function AgentsClientInner({ agents }: { agents: AgentListItem[] }) {
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const counts = useMemo(() => {
+    const all = agents.length;
+    const active = agents.filter((a) => a.status === "ACTIVE").length;
+    const paused = agents.filter((a) => a.status === "PAUSED").length;
+    const draft = agents.filter((a) => a.status === "DRAFT").length;
+    return { all, active, paused, draft };
+  }, [agents]);
 
   const filtered = useMemo(() => {
     let result = agents;
@@ -96,14 +106,26 @@ function AgentsClientInner({ agents }: { agents: AgentListItem[] }) {
     e.target.value = "";
   };
 
+  const filterTabs: { key: string; label: string; count: number }[] = [
+    { key: "all", label: "All", count: counts.all },
+    { key: "ACTIVE", label: "Active", count: counts.active },
+    { key: "PAUSED", label: "Paused", count: counts.paused },
+    { key: "DRAFT", label: "Draft", count: counts.draft },
+  ];
+
   return (
     <DashboardLayout>
       {showOnboarding && <OnboardingModal onComplete={handleOnboardingComplete} />}
-      <div className="p-5 sm:p-8 max-w-[1200px]">
-        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-8">
-          <div>
-            <h1 className="font-display text-[1.5rem] font-semibold tracking-[-0.025em] text-text-strong mb-1">Agents</h1>
-            <p className="font-body text-[0.82rem] text-text-subtle">Create, configure, and manage your voice agents.</p>
+      <div className="p-5 sm:p-6 lg:p-8 max-w-[1200px]">
+        {/* ── Header ── */}
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-baseline gap-3">
+            <h1 className="font-display text-[1.25rem] font-semibold tracking-[-0.02em] text-text-strong">
+              Agents
+            </h1>
+            <span className="font-body text-[0.72rem] text-text-subtle tabular-nums">
+              {counts.all} total
+            </span>
           </div>
           <div className="flex items-center gap-2">
             <input
@@ -113,11 +135,23 @@ function AgentsClientInner({ agents }: { agents: AgentListItem[] }) {
               onChange={handleImportFile}
               className="hidden"
             />
-            <Button onClick={() => fileInputRef.current?.click()} variant="ghost" size="sm" className="font-body text-text-subtle text-[0.78rem] gap-1.5">
-              <Upload className="w-3.5 h-3.5" />Import
+            <Button
+              onClick={() => fileInputRef.current?.click()}
+              variant="ghost"
+              size="sm"
+              className="font-body text-text-subtle text-[0.75rem] gap-1.5 h-8"
+            >
+              <Upload className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Import</span>
             </Button>
-            <Button onClick={() => router.push("/agents/new")} variant="hero" size="default" className="rounded-lg gap-1.5 text-[0.8rem]">
-              <Plus className="w-3.5 h-3.5" />Create agent
+            <Button
+              onClick={() => router.push("/agents/new")}
+              variant="hero"
+              size="sm"
+              className="rounded-lg gap-1.5 text-[0.78rem] h-8"
+            >
+              <Plus className="w-3.5 h-3.5" />
+              Create agent
             </Button>
           </div>
         </div>
@@ -127,7 +161,7 @@ function AgentsClientInner({ agents }: { agents: AgentListItem[] }) {
             <EmptyState
               icon={Bot}
               title="No agents yet"
-              description="Create your first voice agent to start handling calls. Use AI to generate a system prompt in seconds."
+              description="Create your first voice agent to start handling calls."
               actionLabel="Create your first agent"
               onAction={() => router.push("/agents/new")}
               secondaryLabel="Browse templates"
@@ -135,92 +169,100 @@ function AgentsClientInner({ agents }: { agents: AgentListItem[] }) {
           </div>
         ) : (
           <>
-            <div className="flex items-center gap-3 mb-5">
-              <div className="relative flex-1 max-w-xs">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-text-subtle" />
+            {/* ── Control row ── */}
+            <div className="flex items-center justify-between gap-3 mb-4">
+              <div className="flex items-center gap-1">
+                {filterTabs.map((tab) => (
+                  <button
+                    key={tab.key}
+                    onClick={() => setStatusFilter(tab.key)}
+                    className={`h-7 px-2.5 rounded-md font-body text-[0.72rem] transition-all flex items-center gap-1.5 ${
+                      statusFilter === tab.key
+                        ? "bg-foreground text-background font-medium"
+                        : "text-text-subtle hover:text-text-body hover:bg-surface-subtle"
+                    }`}
+                  >
+                    {tab.label}
+                    <span className={`text-[0.62rem] tabular-nums ${
+                      statusFilter === tab.key ? "text-background/60" : "text-text-subtle/50"
+                    }`}>
+                      {tab.count}
+                    </span>
+                  </button>
+                ))}
+              </div>
+              <div className="relative w-56">
+                <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-text-subtle/50" />
                 <input
                   type="text"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder="Search agents..."
-                  className="w-full h-9 pl-9 pr-3 rounded-lg border border-border-soft bg-surface-panel font-body text-[0.8rem] text-text-strong placeholder:text-text-subtle/50 focus:outline-none focus:ring-1 focus:ring-text-strong/10 transition-shadow"
+                  className="w-full h-7 pl-8 pr-3 rounded-md border border-border-soft/60 bg-transparent font-body text-[0.75rem] text-text-strong placeholder:text-text-subtle/40 focus:outline-none focus:border-foreground/20 transition-colors"
                 />
-              </div>
-              <div className="flex items-center gap-1.5">
-                {["all", "ACTIVE", "PAUSED", "DRAFT"].map((s) => (
-                  <button
-                    key={s}
-                    onClick={() => setStatusFilter(s)}
-                    className={`h-9 px-3 rounded-lg border font-body text-[0.78rem] transition-all ${
-                      statusFilter === s
-                        ? "border-foreground bg-foreground text-background"
-                        : "border-border-soft bg-surface-panel text-text-subtle hover:text-text-body hover:border-foreground/15"
-                    }`}
-                  >
-                    {s === "all" ? "All" : statusLabel(s)}
-                  </button>
-                ))}
               </div>
             </div>
 
+            {/* ── Table ── */}
             {filtered.length === 0 ? (
-              <div className="bg-surface-panel rounded-card border border-border-soft p-8 text-center mb-6">
-                <p className="font-body text-[0.85rem] text-text-subtle">No agents match your search.</p>
+              <div className="bg-surface-panel rounded-card border border-border-soft p-8 text-center">
+                <p className="font-body text-[0.82rem] text-text-subtle">No agents match your filters.</p>
               </div>
             ) : (
-            <div className="bg-surface-panel rounded-card border border-border-soft overflow-hidden mb-6">
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead>
-                    <tr className="border-b border-border-soft">
-                      <th className="text-left px-5 py-2.5 font-body text-[0.65rem] font-medium text-text-subtle uppercase tracking-[0.1em]">Agent</th>
-                      <th className="text-left px-5 py-2.5 font-body text-[0.65rem] font-medium text-text-subtle uppercase tracking-[0.1em]">Status</th>
-                      <th className="text-left px-5 py-2.5 font-body text-[0.65rem] font-medium text-text-subtle uppercase tracking-[0.1em]">Number</th>
-                      <th className="text-left px-5 py-2.5 font-body text-[0.65rem] font-medium text-text-subtle uppercase tracking-[0.1em]">Voice</th>
-                      <th className="text-left px-5 py-2.5 font-body text-[0.65rem] font-medium text-text-subtle uppercase tracking-[0.1em]">Calls</th>
-                      <th className="text-right px-5 py-2.5 font-body text-[0.65rem] font-medium text-text-subtle uppercase tracking-[0.1em]">Updated</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {filtered.map((agent) => (
-                      <tr key={agent.id} onClick={() => router.push(`/agents/${agent.slug ?? agent.id}`)} className="border-b border-border-soft last:border-0 hover:bg-surface-subtle/40 transition-colors cursor-pointer group">
-                        <td className="px-5 py-3.5">
-                          <div className="flex items-center gap-3">
-                            <span className={`w-1.5 h-1.5 rounded-full ${agent.status === "ACTIVE" ? "bg-emerald-400" : agent.status === "PAUSED" ? "bg-accent-warm" : "bg-text-subtle/20"}`} />
-                            <span className="font-body text-[0.82rem] font-medium text-text-strong group-hover:text-text-strong/90">{agent.name}</span>
-                          </div>
-                        </td>
-                        <td className="px-5 py-3.5">
-                          <span className={`inline-flex px-2 py-0.5 rounded-md text-[0.68rem] font-body font-medium ${statusStyle(agent.status)}`}>{statusLabel(agent.status)}</span>
-                        </td>
-                        <td className="px-5 py-3.5 font-mono text-xs text-text-subtle">{agent.phoneNumber ?? "—"}</td>
-                        <td className="px-5 py-3.5 font-body text-[0.78rem] text-text-body">{agent.voiceModel ?? "Default"}</td>
-                        <td className="px-5 py-3.5 font-mono text-xs text-text-subtle">{agent.callCount}</td>
-                        <td className="px-5 py-3.5 text-right font-body text-[0.75rem] text-text-subtle">{timeAgo(agent.updatedAt)}</td>
+              <div className="bg-surface-panel rounded-card border border-border-soft overflow-hidden">
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead>
+                      <tr className="border-b border-border-soft/80">
+                        <th className="text-left pl-4 pr-3 py-2 font-body text-[0.62rem] font-medium text-text-subtle/70 uppercase tracking-[0.08em]">Name</th>
+                        <th className="text-left px-3 py-2 font-body text-[0.62rem] font-medium text-text-subtle/70 uppercase tracking-[0.08em]">Status</th>
+                        <th className="text-left px-3 py-2 font-body text-[0.62rem] font-medium text-text-subtle/70 uppercase tracking-[0.08em]">Phone</th>
+                        <th className="text-left px-3 py-2 font-body text-[0.62rem] font-medium text-text-subtle/70 uppercase tracking-[0.08em]">Voice</th>
+                        <th className="text-right px-3 py-2 font-body text-[0.62rem] font-medium text-text-subtle/70 uppercase tracking-[0.08em]">Calls</th>
+                        <th className="text-right pl-3 pr-4 py-2 font-body text-[0.62rem] font-medium text-text-subtle/70 uppercase tracking-[0.08em]">Updated</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      {filtered.map((agent) => (
+                        <tr
+                          key={agent.id}
+                          onClick={() => router.push(`/agents/${agent.slug ?? agent.id}`)}
+                          className="border-b border-border-soft/50 last:border-0 hover:bg-surface-subtle/30 transition-colors cursor-pointer group"
+                        >
+                          <td className="pl-4 pr-3 py-2.5">
+                            <div className="flex items-center gap-2.5">
+                              <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${statusDot(agent.status)}`} />
+                              <span className="font-body text-[0.78rem] font-medium text-text-strong group-hover:text-text-strong/80 truncate max-w-[200px]">
+                                {agent.name}
+                              </span>
+                            </div>
+                          </td>
+                          <td className="px-3 py-2.5">
+                            <span className={`inline-flex px-1.5 py-px rounded text-[0.64rem] font-body font-medium ${statusPill(agent.status)}`}>
+                              {statusLabel(agent.status)}
+                            </span>
+                          </td>
+                          <td className="px-3 py-2.5 font-mono text-[0.7rem] text-text-subtle">
+                            {agent.phoneNumber ?? "—"}
+                          </td>
+                          <td className="px-3 py-2.5 font-body text-[0.72rem] text-text-body">
+                            {agent.voiceModel ?? "Default"}
+                          </td>
+                          <td className="px-3 py-2.5 text-right font-mono text-[0.7rem] text-text-subtle tabular-nums">
+                            {agent.callCount}
+                          </td>
+                          <td className="pl-3 pr-4 py-2.5 text-right font-body text-[0.68rem] text-text-subtle/70">
+                            {timeAgo(agent.updatedAt)}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
-            </div>
             )}
           </>
         )}
-
-        <div className="bg-surface-panel rounded-card border border-border-soft">
-          <div className="px-5 py-4 border-b border-border-soft flex items-center justify-between">
-            <h3 className="font-display text-sm font-medium text-text-strong">Templates</h3>
-            <button onClick={() => router.push("/agents/new")} className="font-body text-[0.72rem] text-text-subtle hover:text-text-body transition-colors">Browse all &rarr;</button>
-          </div>
-          <div className="p-4 grid grid-cols-1 sm:grid-cols-3 gap-3">
-            {templates.map((t) => (
-              <div key={t.name} onClick={() => router.push("/agents/new")} className="p-4 rounded-lg border border-border-soft hover:bg-surface-subtle/40 hover:border-foreground/15 transition-all cursor-pointer">
-                <div className="font-body text-[0.8rem] font-medium text-text-strong mb-1">{t.name}</div>
-                <p className="font-body text-[0.72rem] text-text-subtle leading-relaxed">{t.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
       </div>
     </DashboardLayout>
   );

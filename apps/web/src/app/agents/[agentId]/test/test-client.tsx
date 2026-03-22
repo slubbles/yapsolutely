@@ -5,6 +5,7 @@ import { ArrowLeft, Send, RotateCcw, Bot, User, Loader2, Mic, MicOff, MessageSqu
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
+import AgentWorkspaceTabs from "@/components/dashboard/AgentWorkspaceTabs";
 
 type AgentSummary = {
   id: string;
@@ -379,45 +380,39 @@ export default function AgentTestClient({ agent }: { agent: AgentSummary }) {
     <DashboardLayout>
       <div className="flex flex-col h-[calc(100vh-3.5rem)]">
         {/* Header */}
-        <div className="shrink-0 border-b border-border-soft bg-surface-panel px-5 py-4">
-          <div className="flex items-center justify-between max-w-[900px] mx-auto">
-            <div className="flex items-center gap-3">
-              <Link
-                href={`/agents/${slug}`}
-                className="inline-flex items-center gap-1.5 font-body text-[0.75rem] text-text-subtle hover:text-text-body transition-colors"
-              >
-                <ArrowLeft className="w-3.5 h-3.5" />
-                Back
-              </Link>
-              <div className="h-4 w-px bg-border-soft" />
+        <div className="shrink-0 border-b border-border-soft bg-surface-panel px-5 pt-3 pb-0">
+          <div className="max-w-[900px] mx-auto">
+            <Link
+              href={`/agents/${slug}`}
+              className="inline-flex font-body text-[0.7rem] text-text-subtle hover:text-text-body transition-colors mb-2"
+            >
+              &larr; {agent.name}
+            </Link>
+            <div className="flex items-center justify-between mb-3">
               <div>
-                <h1 className="font-display text-sm font-semibold text-text-strong">
-                  Test: {agent.name}
+                <h1 className="font-display text-[1rem] font-semibold text-text-strong tracking-[-0.02em]">
+                  Test agent
                 </h1>
-                <p className="font-body text-[0.68rem] text-text-subtle">
-                  {mode === "text" ? "Chat with your agent" : "Talk to your agent"}
-                </p>
               </div>
-            </div>
-            <div className="flex items-center gap-2">
-              {/* Mode toggle */}
-              <div className="flex items-center bg-surface-subtle rounded-lg p-0.5 gap-0.5">
-                <button
-                  onClick={() => handleModeSwitch("text")}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md font-body text-[0.72rem] transition-all ${
-                    mode === "text"
-                      ? "bg-surface-panel text-text-strong shadow-sm"
-                      : "text-text-subtle hover:text-text-body"
-                  }`}
-                >
-                  <MessageSquare className="w-3.5 h-3.5" />
-                  Text
-                </button>
-                <button
-                  onClick={() => handleModeSwitch("voice")}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md font-body text-[0.72rem] transition-all ${
-                    mode === "voice"
-                      ? "bg-surface-panel text-text-strong shadow-sm"
+              <div className="flex items-center gap-2">
+                {/* Mode toggle */}
+                <div className="flex items-center bg-surface-subtle rounded-md p-0.5 gap-0.5">
+                  <button
+                    onClick={() => handleModeSwitch("text")}
+                    className={`flex items-center gap-1.5 px-2.5 py-1 rounded font-body text-[0.7rem] transition-all ${
+                      mode === "text"
+                        ? "bg-surface-panel text-text-strong shadow-sm"
+                        : "text-text-subtle hover:text-text-body"
+                    }`}
+                  >
+                    <MessageSquare className="w-3 h-3" />
+                    Text
+                  </button>
+                  <button
+                    onClick={() => handleModeSwitch("voice")}
+                    className={`flex items-center gap-1.5 px-2.5 py-1 rounded font-body text-[0.7rem] transition-all ${
+                      mode === "voice"
+                        ? "bg-surface-panel text-text-strong shadow-sm"
                       : "text-text-subtle hover:text-text-body"
                   }`}
                 >
@@ -429,12 +424,14 @@ export default function AgentTestClient({ agent }: { agent: AgentSummary }) {
                 variant="ghost"
                 size="sm"
                 onClick={resetConversation}
-                className="font-body text-[0.75rem] text-text-subtle gap-1.5"
+                className="font-body text-[0.72rem] text-text-subtle gap-1.5 h-7"
               >
-                <RotateCcw className="w-3.5 h-3.5" />
+                <RotateCcw className="w-3 h-3" />
                 Reset
               </Button>
             </div>
+            </div>
+            <AgentWorkspaceTabs slug={slug} />
           </div>
         </div>
 

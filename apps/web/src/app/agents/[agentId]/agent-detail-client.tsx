@@ -1,10 +1,10 @@
 "use client";
 
-import { ArrowLeft, Pencil, Pause, Play, Copy, Phone, ExternalLink, MessageSquare, Workflow, Download } from "lucide-react";
+import { Pause, Play, Copy, Phone, Download } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
+import AgentWorkspaceTabs from "@/components/dashboard/AgentWorkspaceTabs";
 import { toggleAgentStatusAction, duplicateAgentAction } from "@/app/_actions/agents";
 
 type AgentCall = {
@@ -50,21 +50,11 @@ const statusLabel = (s: string) => {
   }
 };
 
-const statusStyle = (s: string) => {
+const statusPill = (s: string) => {
   switch (s) {
     case "ACTIVE": return "bg-emerald-400/10 text-emerald-600";
     case "PAUSED": return "bg-accent-warm/10 text-accent-warm-dim";
     default: return "bg-surface-subtle text-text-subtle";
-  }
-};
-
-const callStatusLabel = (s: string) => {
-  switch (s) {
-    case "COMPLETED": return "Completed";
-    case "IN_PROGRESS": return "In progress";
-    case "FAILED": return "Failed";
-    case "NO_ANSWER": return "No answer";
-    default: return s.toLowerCase().replace(/_/g, " ");
   }
 };
 
@@ -102,9 +92,12 @@ function timeAgo(dateStr: string) {
 }
 
 export default function AgentDetailClient({ agent }: { agent: AgentDetail }) {
-  const router = useRouter();
   const slug = agent.slug ?? agent.id;
   const primaryNumber = agent.phoneNumbers[0]?.phoneNumber ?? "—";
+  const avgDuration =
+    agent.calls.length > 0
+      ? formatDuration(Math.round(agent.calls.reduce((sum, c) => sum + (c.durationSeconds ?? 0), 0) / agent.calls.length))
+      : "—";
 
   const handleExport = () => {
     const exportData = {
@@ -126,197 +119,227 @@ export default function AgentDetailClient({ agent }: { agent: AgentDetail }) {
 
   return (
     <DashboardLayout>
-      <div className="p-5 sm:p-8 max-w-[1200px]">
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-8 sm:mb-10">
-          <div>
-            <Link href="/agents" className="inline-flex items-center gap-1.5 font-body text-[0.75rem] text-text-subtle hover:text-text-body transition-colors mb-4">
-              <ArrowLeft className="w-3.5 h-3.5" />
-              Back to agents
-            </Link>
-            <div className="flex items-center gap-3 mb-1.5">
-              <h1 className="font-display text-[1.35rem] sm:text-[1.65rem] font-semibold tracking-[-0.03em] text-text-strong">
-                {agent.name}
-              </h1>
-              <span className={`inline-flex px-2.5 py-0.5 rounded-md text-[0.7rem] font-body font-medium ${statusStyle(agent.status)}`}>
-                {statusLabel(agent.status)}
-              </span>
+      <div className="p-5 sm:p-6 lg:p-8 max-w-[1200px]">
+        {/* ── Workspace header ── */}
+        <div className="mb-6">
+          <Link
+            href="/agents"
+            className="inline-flex font-body text-[0.7rem] text-text-subtle hover:text-text-body transition-colors mb-3"
+          >
+            &larr; Agents
+          </Link>
+
+          <div className="flex items-start justify-between gap-4 mb-4">
+            <div className="min-w-0">
+              <div className="flex items-center gap-2.5 mb-1">
+                <h1 className="font-display text-[1.2rem] font-semibold tracking-[-0.02em] text-text-strong truncate">
+                  {agent.name}
+                </h1>
+                <span className={`inline-flex px-1.5 py-px rounded text-[0.64rem] font-body font-medium shrink-0 ${statusPill(agent.status)}`}>
+                  {statusLabel(agent.status)}
+                </span>
+              </div>
+              {agent.description && (
+                <p className="font-body text-[0.78rem] text-text-subtle leading-relaxed max-w-lg truncate">
+                  {agent.description}
+                </p>
+              )}
             </div>
-            <p className="font-body text-[0.82rem] sm:text-[0.85rem] text-text-subtle leading-relaxed max-w-xl">
-              {agent.description ?? "No description set."}
-            </p>
-          </div>
-          <div className="flex items-center gap-2 shrink-0">
-            <Button onClick={handleExport} variant="ghost" size="sm" className="font-body text-text-subtle text-[0.78rem] gap-1.5">
-              <Download className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Export</span>
-            </Button>
-            <form action={duplicateAgentAction}>
-              <input type="hidden" name="agentId" value={agent.id} />
-              <Button type="submit" variant="ghost" size="sm" className="font-body text-text-subtle text-[0.78rem] gap-1.5">
-                <Copy className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">Duplicate</span>
+
+            <div className="flex items-center gap-1.5 shrink-0">
+              <Button onClick={handleExport} variant="ghost" size="sm" className="font-body text-text-subtle text-[0.72rem] gap-1 h-7 px-2">
+                <Download className="w-3 h-3" />
+                <span className="hidden sm:inline">Export</span>
               </Button>
-            </form>
-            <form action={toggleAgentStatusAction}>
-              <input type="hidden" name="agentId" value={agent.id} />
-              <input type="hidden" name="newStatus" value={agent.status === "ACTIVE" ? "PAUSED" : "ACTIVE"} />
-              <Button type="submit" variant="outline" size="sm" className="font-body text-[0.78rem] gap-1.5 rounded-lg border-border-soft">
-                {agent.status === "ACTIVE" ? (
-                  <>
-                    <Pause className="w-3.5 h-3.5" />
-                    <span className="hidden sm:inline">Pause</span>
-                  </>
-                ) : (
-                  <>
-                    <Play className="w-3.5 h-3.5" />
-                    <span className="hidden sm:inline">Activate</span>
-                  </>
-                )}
-              </Button>
-            </form>
-            <Button onClick={() => router.push(`/agents/${slug}/flow`)} variant="outline" size="default" className="rounded-lg gap-1.5 text-[0.8rem] border-border-soft">
-              <Workflow className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Flow builder</span>
-            </Button>
-            <Button onClick={() => router.push(`/agents/${slug}/test`)} variant="outline" size="default" className="rounded-lg gap-1.5 text-[0.8rem] border-border-soft">
-              <MessageSquare className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Test agent</span>
-            </Button>
-            <Button onClick={() => router.push(`/agents/${slug}/edit`)} variant="hero" size="default" className="rounded-lg gap-1.5 text-[0.8rem]">
-              <Pencil className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Edit prompt</span>
-            </Button>
+              <form action={duplicateAgentAction}>
+                <input type="hidden" name="agentId" value={agent.id} />
+                <Button type="submit" variant="ghost" size="sm" className="font-body text-text-subtle text-[0.72rem] gap-1 h-7 px-2">
+                  <Copy className="w-3 h-3" />
+                  <span className="hidden sm:inline">Duplicate</span>
+                </Button>
+              </form>
+              <form action={toggleAgentStatusAction}>
+                <input type="hidden" name="agentId" value={agent.id} />
+                <input type="hidden" name="newStatus" value={agent.status === "ACTIVE" ? "PAUSED" : "ACTIVE"} />
+                <Button type="submit" variant="outline" size="sm" className="font-body text-[0.72rem] gap-1 h-7 px-2.5 rounded-md border-border-soft">
+                  {agent.status === "ACTIVE" ? (
+                    <><Pause className="w-3 h-3" />Pause</>
+                  ) : (
+                    <><Play className="w-3 h-3" />Activate</>
+                  )}
+                </Button>
+              </form>
+            </div>
           </div>
+
+          <AgentWorkspaceTabs slug={slug} />
         </div>
 
-        {/* Performance strip */}
-        <div className="bg-surface-panel rounded-card border border-border-soft p-4 sm:p-5 mb-6">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6">
-            {[
-              { label: "Calls handled", value: agent.totalCalls.toString() },
-              { label: "Avg. duration", value: agent.calls.length > 0 ? formatDuration(Math.round(agent.calls.reduce((sum, c) => sum + (c.durationSeconds ?? 0), 0) / agent.calls.length)) : "—" },
-              { label: "Completed", value: agent.completedCalls.toString() },
-              { label: "Numbers assigned", value: agent.phoneNumbers.length.toString() },
-            ].map((stat) => (
-              <div key={stat.label}>
-                <div className="font-body text-[0.6rem] text-text-subtle uppercase tracking-[0.12em] mb-1">{stat.label}</div>
-                <div className="text-[1.05rem] sm:text-[1.1rem] font-semibold text-text-strong font-mono">{stat.value}</div>
-              </div>
-            ))}
-          </div>
+        {/* ── Metrics strip ── */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
+          {[
+            { label: "Calls handled", value: agent.totalCalls.toString() },
+            { label: "Avg. duration", value: avgDuration },
+            { label: "Completed", value: agent.completedCalls.toString() },
+            { label: "Numbers", value: agent.phoneNumbers.length.toString() },
+          ].map((stat) => (
+            <div key={stat.label} className="bg-surface-panel rounded-lg border border-border-soft/60 px-4 py-3">
+              <div className="font-body text-[0.58rem] text-text-subtle/70 uppercase tracking-[0.1em] mb-0.5">{stat.label}</div>
+              <div className="font-mono text-[1rem] font-semibold text-text-strong">{stat.value}</div>
+            </div>
+          ))}
         </div>
 
-        {/* Two-column layout */}
-        <div className="grid grid-cols-1 xl:grid-cols-3 gap-5">
-          <div className="xl:col-span-2 space-y-5">
-            {/* Prompt */}
+        {/* ── Two-column content ── */}
+        <div className="grid grid-cols-1 xl:grid-cols-12 gap-5">
+          {/* Left — primary */}
+          <div className="xl:col-span-8 space-y-4">
+            {/* Prompt preview */}
             <div className="bg-surface-panel rounded-card border border-border-soft">
-              <div className="px-4 sm:px-5 py-4 border-b border-border-soft flex items-center justify-between">
-                <h3 className="font-display text-sm font-medium text-text-strong">Prompt</h3>
-                <button className="font-body text-[0.72rem] text-text-subtle hover:text-text-body transition-colors flex items-center gap-1">
-                  <ExternalLink className="w-3 h-3" />
-                  View full
-                </button>
+              <div className="px-4 py-3 border-b border-border-soft/60 flex items-center justify-between">
+                <h3 className="font-display text-[0.8rem] font-medium text-text-strong">System prompt</h3>
+                <Link
+                  href={`/agents/${slug}/edit`}
+                  className="font-body text-[0.68rem] text-text-subtle hover:text-text-body transition-colors"
+                >
+                  Edit &rarr;
+                </Link>
               </div>
-              <div className="p-4 sm:p-5">
-                <p className="font-body text-[0.82rem] text-text-body leading-[1.75] whitespace-pre-wrap">{agent.systemPrompt}</p>
+              <div className="p-4">
+                <p className="font-body text-[0.78rem] text-text-body leading-[1.7] whitespace-pre-wrap line-clamp-6">
+                  {agent.systemPrompt}
+                </p>
               </div>
             </div>
 
-            {/* Voice and behavior */}
+            {/* Configuration */}
             <div className="bg-surface-panel rounded-card border border-border-soft">
-              <div className="px-4 sm:px-5 py-4 border-b border-border-soft">
-                <h3 className="font-display text-sm font-medium text-text-strong">Voice &amp; behavior</h3>
+              <div className="px-4 py-3 border-b border-border-soft/60">
+                <h3 className="font-display text-[0.8rem] font-medium text-text-strong">Configuration</h3>
               </div>
-              <div className="p-4 sm:p-5">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-8">
+              <div className="p-4">
+                <div className="grid grid-cols-2 gap-x-8 gap-y-3">
                   {[
                     { label: "Voice model", value: agent.voiceModel ?? "Default" },
                     { label: "First message", value: agent.firstMessage ?? "Not set" },
+                    { label: "Assigned number", value: primaryNumber, mono: true },
+                    { label: "Transfer number", value: agent.transferNumber ?? "Not set", mono: true },
                   ].map((item) => (
                     <div key={item.label}>
-                      <div className="font-body text-[0.65rem] text-text-subtle uppercase tracking-[0.1em] mb-1">{item.label}</div>
-                      <div className="font-body text-[0.82rem] text-text-body">{item.value}</div>
+                      <div className="font-body text-[0.6rem] text-text-subtle/70 uppercase tracking-[0.08em] mb-0.5">{item.label}</div>
+                      <div className={`font-body text-[0.78rem] text-text-body ${item.mono ? "font-mono text-[0.74rem]" : ""}`}>{item.value}</div>
                     </div>
                   ))}
                 </div>
               </div>
             </div>
 
-            {/* Routing */}
+            {/* Recent calls */}
             <div className="bg-surface-panel rounded-card border border-border-soft">
-              <div className="px-4 sm:px-5 py-4 border-b border-border-soft">
-                <h3 className="font-display text-sm font-medium text-text-strong">Routing</h3>
-              </div>
-              <div className="p-4 sm:p-5 space-y-3">
-                {[
-                  { label: "Assigned number", value: primaryNumber, mono: true },
-                  { label: "Transfer number", value: agent.transferNumber ?? "Not set", mono: true },
-                ].map((item) => (
-                  <div key={item.label} className="flex flex-col sm:flex-row sm:items-start sm:justify-between py-1 gap-1">
-                    <span className="font-body text-[0.75rem] text-text-subtle sm:w-32 shrink-0">{item.label}</span>
-                    <span className={`font-body text-[0.82rem] text-text-body sm:text-right ${item.mono ? "font-mono text-[0.78rem]" : ""}`}>{item.value}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Right column */}
-          <div className="space-y-5">
-            <div className="bg-surface-panel rounded-card border border-border-soft">
-              <div className="px-4 sm:px-5 py-4 border-b border-border-soft">
-                <h3 className="font-display text-sm font-medium text-text-strong">Details</h3>
-              </div>
-              <div className="p-4 space-y-2">
-                {[
-                  { label: "Agent ID", value: agent.id, mono: true },
-                  { label: "Status", value: statusLabel(agent.status), mono: false },
-                  { label: "Voice", value: agent.voiceModel ?? "Default", mono: false },
-                  { label: "Number", value: primaryNumber, mono: true },
-                  { label: "Created", value: formatDate(agent.createdAt), mono: false },
-                  { label: "Last updated", value: timeAgo(agent.updatedAt), mono: false },
-                ].map((item) => (
-                  <div key={item.label} className="flex items-center justify-between py-1.5 px-1">
-                    <span className="font-body text-[0.72rem] text-text-subtle">{item.label}</span>
-                    <span className={`text-[0.72rem] text-text-body ${item.mono ? "font-mono" : "font-body"}`}>{item.value}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="bg-surface-panel rounded-card border border-border-soft">
-              <div className="px-4 sm:px-5 py-4 border-b border-border-soft flex items-center justify-between">
-                <h3 className="font-display text-sm font-medium text-text-strong">Recent calls</h3>
-                <Link href="/calls" className="font-body text-[0.72rem] text-text-subtle hover:text-text-body transition-colors">
+              <div className="px-4 py-3 border-b border-border-soft/60 flex items-center justify-between">
+                <h3 className="font-display text-[0.8rem] font-medium text-text-strong">Recent calls</h3>
+                <Link href="/calls" className="font-body text-[0.68rem] text-text-subtle hover:text-text-body transition-colors">
                   View all &rarr;
                 </Link>
               </div>
               {agent.calls.length === 0 ? (
-                <div className="p-4 text-center">
+                <div className="p-6 text-center">
                   <p className="font-body text-[0.78rem] text-text-subtle">No calls yet.</p>
                 </div>
               ) : (
-                <div className="divide-y divide-border-soft">
+                <div className="divide-y divide-border-soft/50">
                   {agent.calls.map((call) => (
-                    <Link key={call.id} href={`/calls/${call.id}`} className="px-4 sm:px-5 py-3 hover:bg-surface-subtle/40 transition-colors cursor-pointer flex items-center justify-between block">
-                      <div className="flex items-center gap-2.5">
-                        <Phone className="w-3 h-3 text-text-subtle/30" />
+                    <Link
+                      key={call.id}
+                      href={`/calls/${call.id}`}
+                      className="px-4 py-2.5 hover:bg-surface-subtle/30 transition-colors flex items-center justify-between"
+                    >
+                      <div className="flex items-center gap-2">
+                        <Phone className="w-3 h-3 text-text-subtle/25" />
                         <div>
-                          <div className="font-mono text-[0.72rem] text-text-body">{call.callerNumber ?? "Unknown"}</div>
-                          <div className="font-body text-[0.65rem] text-text-subtle">{formatTime(call.createdAt)}</div>
+                          <div className="font-mono text-[0.7rem] text-text-body">{call.callerNumber ?? "Unknown"}</div>
+                          <div className="font-body text-[0.62rem] text-text-subtle">{formatTime(call.createdAt)}</div>
                         </div>
                       </div>
                       <div className="text-right">
-                        <div className="font-mono text-[0.68rem] text-text-subtle">{formatDuration(call.durationSeconds)}</div>
-                        <div className={`font-body text-[0.65rem] font-medium ${callStatusStyle(call.status)}`}>{callStatusLabel(call.status)}</div>
+                        <div className="font-mono text-[0.66rem] text-text-subtle">{formatDuration(call.durationSeconds)}</div>
+                        <div className={`font-body text-[0.6rem] font-medium ${callStatusStyle(call.status)}`}>
+                          {call.status === "COMPLETED" ? "Completed" : call.status === "IN_PROGRESS" ? "In progress" : call.status.toLowerCase().replace(/_/g, " ")}
+                        </div>
                       </div>
                     </Link>
                   ))}
                 </div>
               )}
             </div>
+          </div>
+
+          {/* Right — sidecar */}
+          <div className="xl:col-span-4 space-y-4">
+            <div className="bg-surface-panel rounded-card border border-border-soft">
+              <div className="px-4 py-3 border-b border-border-soft/60">
+                <h3 className="font-display text-[0.8rem] font-medium text-text-strong">Details</h3>
+              </div>
+              <div className="p-4 space-y-1">
+                {[
+                  { label: "Agent ID", value: agent.id, mono: true },
+                  { label: "Status", value: statusLabel(agent.status) },
+                  { label: "Voice", value: agent.voiceModel ?? "Default" },
+                  { label: "Number", value: primaryNumber, mono: true },
+                  { label: "Created", value: formatDate(agent.createdAt) },
+                  { label: "Updated", value: timeAgo(agent.updatedAt) },
+                ].map((item) => (
+                  <div key={item.label} className="flex items-center justify-between py-1.5">
+                    <span className="font-body text-[0.68rem] text-text-subtle">{item.label}</span>
+                    <span className={`text-[0.68rem] text-text-body truncate max-w-[160px] text-right ${item.mono ? "font-mono" : "font-body"}`}>
+                      {item.value}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Quick actions */}
+            <div className="bg-surface-panel rounded-card border border-border-soft">
+              <div className="px-4 py-3 border-b border-border-soft/60">
+                <h3 className="font-display text-[0.8rem] font-medium text-text-strong">Quick actions</h3>
+              </div>
+              <div className="p-3 space-y-1">
+                {[
+                  { label: "Edit prompt", href: `/agents/${slug}/edit` },
+                  { label: "Flow builder", href: `/agents/${slug}/flow` },
+                  { label: "Test agent", href: `/agents/${slug}/test` },
+                ].map((action) => (
+                  <Link
+                    key={action.label}
+                    href={action.href}
+                    className="flex items-center justify-between px-3 py-2 rounded-lg font-body text-[0.75rem] text-text-body hover:bg-surface-subtle/40 transition-colors"
+                  >
+                    {action.label}
+                    <span className="text-text-subtle/40">&rarr;</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            {/* Numbers */}
+            {agent.phoneNumbers.length > 0 && (
+              <div className="bg-surface-panel rounded-card border border-border-soft">
+                <div className="px-4 py-3 border-b border-border-soft/60">
+                  <h3 className="font-display text-[0.8rem] font-medium text-text-strong">Assigned numbers</h3>
+                </div>
+                <div className="p-3 space-y-1">
+                  {agent.phoneNumbers.map((p) => (
+                    <div key={p.id} className="flex items-center justify-between px-3 py-1.5">
+                      <span className="font-mono text-[0.7rem] text-text-body">{p.phoneNumber}</span>
+                      {p.friendlyName && (
+                        <span className="font-body text-[0.64rem] text-text-subtle">{p.friendlyName}</span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -45,6 +45,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
+import AgentWorkspaceTabs from "@/components/dashboard/AgentWorkspaceTabs";
 import { saveFlowAction, generatePromptFromFlowAction } from "@/app/_actions/agents";
 
 // ─── Block type definitions ──────────────────────────
@@ -489,46 +490,48 @@ export default function FlowBuilderClient({
 
   return (
     <DashboardLayout>
-      <div className="p-5 sm:p-8 max-w-[1200px]">
+      <div className="p-5 sm:p-6 lg:p-8 max-w-[1200px]">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-8">
-          <div>
-            <Link
-              href={`/agents/${slug}`}
-              className="inline-flex items-center gap-1.5 font-body text-[0.75rem] text-text-subtle hover:text-text-body transition-colors mb-4"
-            >
-              <ArrowLeft className="w-3.5 h-3.5" />
-              Back to {agent.name}
-            </Link>
-            <h1 className="font-display text-[1.35rem] sm:text-[1.65rem] font-semibold tracking-[-0.03em] text-text-strong mb-1">
-              Flow builder
-            </h1>
-            <p className="font-body text-[0.82rem] sm:text-[0.85rem] text-text-subtle leading-relaxed max-w-xl">
-              Design your agent&apos;s conversation flow visually. Add blocks, configure each step, then generate a system prompt.
-            </p>
+        <div className="mb-6">
+          <Link
+            href={`/agents/${slug}`}
+            className="inline-flex font-body text-[0.7rem] text-text-subtle hover:text-text-body transition-colors mb-3"
+          >
+            &larr; {agent.name}
+          </Link>
+          <div className="flex items-start justify-between gap-4 mb-4">
+            <div>
+              <h1 className="font-display text-[1.2rem] font-semibold tracking-[-0.02em] text-text-strong mb-0.5">
+                Flow builder
+              </h1>
+              <p className="font-body text-[0.75rem] text-text-subtle max-w-lg">
+                Design your agent&apos;s conversation flow visually, then generate a system prompt.
+              </p>
+            </div>
+            <div className="flex items-center gap-2 shrink-0">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleSave}
+                disabled={isSaving || blocks.length === 0}
+                className="rounded-md gap-1.5 text-[0.72rem] border-border-soft h-8"
+              >
+                {isSaving ? <Loader2 className="w-3 h-3 animate-spin" /> : saved ? <Check className="w-3 h-3" /> : <Save className="w-3 h-3" />}
+                {saved ? "Saved" : "Save flow"}
+              </Button>
+              <Button
+                variant="hero"
+                size="sm"
+                onClick={handleGeneratePrompt}
+                disabled={isGenerating || blocks.length === 0}
+                className="rounded-md gap-1.5 text-[0.72rem] h-8"
+              >
+                {isGenerating ? <Loader2 className="w-3 h-3 animate-spin" /> : <Sparkles className="w-3 h-3" />}
+                Generate prompt
+              </Button>
+            </div>
           </div>
-          <div className="flex items-center gap-2 shrink-0">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleSave}
-              disabled={isSaving || blocks.length === 0}
-              className="rounded-lg gap-1.5 text-[0.78rem] border-border-soft"
-            >
-              {isSaving ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : saved ? <Check className="w-3.5 h-3.5" /> : <Save className="w-3.5 h-3.5" />}
-              {saved ? "Saved" : "Save flow"}
-            </Button>
-            <Button
-              variant="hero"
-              size="default"
-              onClick={handleGeneratePrompt}
-              disabled={isGenerating || blocks.length === 0}
-              className="rounded-lg gap-1.5 text-[0.8rem]"
-            >
-              {isGenerating ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Sparkles className="w-3.5 h-3.5" />}
-              Generate prompt
-            </Button>
-          </div>
+          <AgentWorkspaceTabs slug={slug} />
         </div>
 
         <div className="grid grid-cols-1 xl:grid-cols-4 gap-5">

@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
+import AgentWorkspaceTabs from "@/components/dashboard/AgentWorkspaceTabs";
 import PromptComposer from "@/components/dashboard/PromptComposer";
 import { updateAgentAction, createAgentAction } from "@/app/_actions/agents";
 
@@ -82,43 +83,45 @@ export default function AgentEditorClient({ agent, isNew }: { agent: AgentEditDa
 
   return (
     <DashboardLayout>
-      <div className="p-5 sm:p-8 max-w-[920px]">
+      <div className="p-5 sm:p-6 lg:p-8 max-w-[1000px]">
         {/* Header */}
-        <div className="flex items-start justify-between mb-10">
-          <div>
-            <Link
-              href={isNew ? "/agents" : `/agents/${slug}`}
-              className="inline-flex items-center gap-1.5 font-body text-[0.75rem] text-text-subtle hover:text-text-body transition-colors mb-4"
-            >
-              <ArrowLeft className="w-3.5 h-3.5" />
-              {isNew ? "Back to agents" : `Back to ${agent.name}`}
-            </Link>
-            <h1 className="font-display text-[1.65rem] font-semibold tracking-[-0.03em] text-text-strong mb-1">
-              {isNew ? "Create agent" : `Edit ${name}`}
-            </h1>
-            <p className="font-body text-[0.85rem] text-text-subtle">
-              {isNew
-                ? "Configure your agent\u2019s identity, behavior, and system prompt."
-                : "Modify configuration, prompt, and behavior settings."}
-            </p>
-          </div>
+        <div className="mb-6">
+          <Link
+            href={isNew ? "/agents" : `/agents/${slug}`}
+            className="inline-flex font-body text-[0.7rem] text-text-subtle hover:text-text-body transition-colors mb-3"
+          >
+            &larr; {isNew ? "Agents" : agent.name}
+          </Link>
+          <div className="flex items-start justify-between gap-4 mb-4">
+            <div>
+              <h1 className="font-display text-[1.2rem] font-semibold tracking-[-0.02em] text-text-strong mb-0.5">
+                {isNew ? "Create agent" : `Build — ${name}`}
+              </h1>
+              <p className="font-body text-[0.75rem] text-text-subtle">
+                {isNew
+                  ? "Configure your agent\u2019s identity, behavior, and system prompt."
+                  : "Edit configuration, prompt, and behavior."}
+              </p>
+            </div>
           <Button
             onClick={handleSave}
             disabled={isSaving}
-            className="bg-foreground text-background hover:bg-foreground/90 font-display font-medium tracking-[-0.01em] text-[0.82rem] h-10 rounded-lg px-6 gap-2 mt-8"
+            className="bg-foreground text-background hover:bg-foreground/90 font-display font-medium tracking-[-0.01em] text-[0.78rem] h-8 rounded-lg px-5 gap-1.5"
           >
             {isSaving ? (
               <>
-                <span className="w-3.5 h-3.5 border-2 border-background/30 border-t-background rounded-full animate-spin" />
+                <span className="w-3 h-3 border-2 border-background/30 border-t-background rounded-full animate-spin" />
                 {isNew ? "Creating\u2026" : "Saving\u2026"}
               </>
             ) : (
               <>
-                <Save className="w-3.5 h-3.5" />
+                <Save className="w-3 h-3" />
                 {isNew ? "Create agent" : "Save changes"}
               </>
             )}
           </Button>
+          </div>
+          {!isNew && <AgentWorkspaceTabs slug={slug} />}
         </div>
 
         {/* Identity */}

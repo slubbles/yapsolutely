@@ -129,7 +129,7 @@ export default function DashboardHome({ metrics }: DashboardProps) {
         {/* ── Header ── */}
         <div className="mb-5">
           <h1 className="font-display text-[1.38rem] font-semibold tracking-[-0.02em] text-text-strong">Dashboard</h1>
-          <p className="font-body text-[0.89rem] text-text-subtle mt-0.5">Your workspace at a glance — agents, calls, and activity.</p>
+          <p className="font-body text-[0.89rem] text-text-subtle mt-0.5">Your workspace at a glance. Agents, calls, and activity.</p>
         </div>
 
         {/* ── Metrics strip ── */}

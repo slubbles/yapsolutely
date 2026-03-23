@@ -2,7 +2,7 @@ import PublicPageShell from "@/components/landing/PublicPageShell";
 import { Sparkles, Bug, Zap, Lock } from "lucide-react";
 
 export const metadata = {
-  title: "Changelog — Yapsolutely",
+  title: "Changelog | Yapsolutely",
   description: "Product updates, new features, and improvements to the Yapsolutely platform.",
 };
 

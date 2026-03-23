@@ -2,9 +2,10 @@ import PublicPageShell from "@/components/landing/PublicPageShell";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ArrowRight, Check } from "lucide-react";
+import { getSession } from "@/lib/auth";
 
 export const metadata = {
-  title: "Pricing — Yapsolutely",
+  title: "Pricing | Yapsolutely",
   description: "Simple, transparent pricing for AI voice agents. Start free, scale as you grow.",
 };
 
@@ -65,7 +66,10 @@ const plans = [
   },
 ];
 
-export default function PricingPage() {
+export default async function PricingPage() {
+  const session = await getSession();
+  const isLoggedIn = !!session;
+
   return (
     <PublicPageShell>
       <div className="max-w-5xl mx-auto px-5 sm:px-6">
@@ -137,8 +141,8 @@ export default function PricingPage() {
                     <ArrowRight className="w-4 h-4 ml-1.5" />
                   </a>
                 ) : (
-                  <Link href="/sign-up">
-                    {plan.cta}
+                  <Link href={isLoggedIn ? "/dashboard" : "/sign-up"}>
+                    {isLoggedIn ? "Go to dashboard" : plan.cta}
                     <ArrowRight className="w-4 h-4 ml-1.5" />
                   </Link>
                 )}

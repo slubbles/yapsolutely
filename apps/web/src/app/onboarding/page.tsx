@@ -17,8 +17,8 @@ const ROLE_OPTIONS = [
 
 const AGENT_COUNT_OPTIONS = [
   { value: "1", label: "Just 1", desc: "Starting with a single agent" },
-  { value: "2-5", label: "2–5 agents", desc: "Small team of voice agents" },
-  { value: "6-20", label: "6–20 agents", desc: "Growing operation" },
+  { value: "2-5", label: "2-5 agents", desc: "Small team of voice agents" },
+  { value: "6-20", label: "6-20 agents", desc: "Growing operation" },
   { value: "20+", label: "20+ agents", desc: "Enterprise scale" },
 ];
 

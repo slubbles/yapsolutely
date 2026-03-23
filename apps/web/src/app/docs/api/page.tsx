@@ -3,7 +3,7 @@ import Link from "next/link";
 import { ArrowRight, Lock, Key, Phone, Bot, FileText, Webhook, Zap } from "lucide-react";
 
 export const metadata = {
-  title: "API Reference — Yapsolutely",
+  title: "API Reference | Yapsolutely",
   description: "Complete REST API reference for the Yapsolutely voice agent platform.",
 };
 

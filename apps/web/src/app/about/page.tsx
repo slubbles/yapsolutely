@@ -4,8 +4,8 @@ import Link from "next/link";
 import { ArrowRight, Target, Zap, Shield, Users } from "lucide-react";
 
 export const metadata = {
-  title: "About — Yapsolutely",
-  description: "The story behind Yapsolutely — building the future of AI voice agents.",
+  title: "About | Yapsolutely",
+  description: "The story behind Yapsolutely. Building the future of AI voice agents.",
 };
 
 const values = [
@@ -22,7 +22,7 @@ const values = [
   {
     icon: Target,
     title: "Operator confidence",
-    description: "We build for the people running the system — not just the end callers. Dashboards, quality review, and monitoring tools that give you real-time control.",
+    description: "We build for the people running the system, not just the end callers. Dashboards, quality review, and monitoring tools that give you real-time control.",
   },
   {
     icon: Users,
@@ -43,7 +43,7 @@ export default function AboutPage() {
             for real business calls
           </h1>
           <p className="font-body text-[0.95rem] sm:text-[1.05rem] text-text-subtle max-w-2xl leading-[1.7] mb-4">
-            Yapsolutely is a platform for building and deploying AI-powered phone agents that handle real inbound calls. We give businesses the tools to create agents that sound natural, follow instructions precisely, and handle conversations autonomously — while providing complete visibility through transcripts, call logs, and quality monitoring.
+            Yapsolutely is a platform for building and deploying AI-powered phone agents that handle real inbound calls. We give businesses the tools to create agents that sound natural, follow instructions precisely, and handle conversations autonomously while providing complete visibility through transcripts, call logs, and quality monitoring.
           </p>
           <p className="font-body text-[0.95rem] sm:text-[1.05rem] text-text-subtle max-w-2xl leading-[1.7]">
             We believe the future of business phone communication is intelligent, transparent, and always available. Our platform makes it possible for any team to deploy production-grade voice agents without building telephony infrastructure from scratch.

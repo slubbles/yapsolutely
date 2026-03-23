@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Book, Code2, Wrench, Zap, ArrowRight, Terminal, FileText, Webhook } from "lucide-react";
 
 export const metadata = {
-  title: "Documentation — Yapsolutely",
+  title: "Documentation | Yapsolutely",
   description: "Learn how to build, deploy, and manage AI voice agents with Yapsolutely.",
 };
 
@@ -64,7 +64,7 @@ const sections = [
   {
     icon: FileText,
     title: "Guides & Tutorials",
-    description: "Step-by-step walkthroughs for common use cases — appointment booking, customer support, lead qualification, and more.",
+    description: "Step-by-step walkthroughs for common use cases: appointment booking, customer support, lead qualification, and more.",
     links: [
       { label: "Appointment booking agent", href: "/docs#appointment" },
       { label: "Customer support agent", href: "/docs#support" },

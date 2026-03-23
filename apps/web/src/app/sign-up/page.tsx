@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { signUpAction } from "@/app/_actions/auth";
 import { Separator } from "@/components/ui/separator";
-import { ArrowLeft, Bot, Headphones, FileText } from "lucide-react";
+import { ArrowLeft, Bot, Headphones, FileText, Eye, EyeOff } from "lucide-react";
 
 export default function SignUpPage() {
   const [fullName, setFullName] = useState("");
@@ -15,6 +15,7 @@ export default function SignUpPage() {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState<{ fullName?: string; email?: string; password?: string }>({});
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const validate = () => {
     const e: typeof errors = {};
@@ -103,15 +104,25 @@ export default function SignUpPage() {
               </div>
               <div className="space-y-1.5">
                 <Label className="font-body text-body-sm text-text-body">Password</Label>
-                <Input
-                  type="password"
-                  value={password}
-                  onChange={(e) => { setPassword(e.target.value); if (errors.password) setErrors(prev => ({ ...prev, password: undefined })); }}
-                  placeholder="At least 8 characters"
-                  className={`h-11 rounded-xl ${errors.password ? "border-destructive ring-1 ring-destructive/20" : ""}`}
-                />
+                <div className="relative">
+                  <Input
+                    type={showPassword ? "text" : "password"}
+                    value={password}
+                    onChange={(e) => { setPassword(e.target.value); if (errors.password) setErrors(prev => ({ ...prev, password: undefined })); }}
+                    placeholder="At least 8 characters"
+                    className={`h-11 rounded-xl pr-10 ${errors.password ? "border-destructive ring-1 ring-destructive/20" : ""}`}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-text-subtle hover:text-foreground transition-colors"
+                    tabIndex={-1}
+                  >
+                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
                 {errors.password && <p className="font-body text-label text-destructive animate-slide-down">{errors.password}</p>}
-                <p className="font-body text-[0.65rem] text-text-subtle">Optional — leave blank for passwordless sign-up</p>
+                <p className="font-body text-[0.65rem] text-text-subtle">Optional. Leave blank for passwordless sign-up</p>
               </div>
               <Button
                 type="submit"
@@ -148,7 +159,7 @@ export default function SignUpPage() {
             Your voice operations workspace, ready in minutes.
           </p>
           <p className="font-body text-body-md text-surface-dark-foreground/35 leading-relaxed mb-10">
-            Create agents, assign numbers, and start handling calls — all from one dashboard.
+            Create agents, assign numbers, and start handling calls. All from one dashboard.
           </p>
 
           {/* Setup journey */}

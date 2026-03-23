@@ -113,7 +113,7 @@ const Hero = () => {
                 <div className="space-y-2">
                   {[
                     { name: "Inbound Sales", active: true },
-                    { name: "Support — Tier 1", active: true },
+                    { name: "Support - Tier 1", active: true },
                     { name: "Appointment Booking", active: false },
                   ].map((agent, i) => (
                     <div key={agent.name} className={`flex items-center gap-3 p-3 rounded-xl text-sm font-body transition-colors ${i === 0 ? "bg-surface-dark-foreground/8 text-surface-dark-foreground" : "text-surface-dark-foreground/35"}`}>

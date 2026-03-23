@@ -671,7 +671,7 @@ function buildPromptGenerationRequest(agent: AgentSummary, blocks: FlowBlock[]):
         .filter(([, v]) => v.trim())
         .map(([k, v]) => `  ${k}: ${v}`)
         .join("\n");
-      return `Step ${i + 1} — ${def.label}:\n${fieldSummary || "  (no details provided)"}`;
+      return `Step ${i + 1}: ${def.label}:\n${fieldSummary || "  (no details provided)"}`;
     })
     .join("\n\n");
 

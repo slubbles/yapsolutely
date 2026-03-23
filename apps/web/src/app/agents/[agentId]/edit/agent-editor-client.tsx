@@ -94,7 +94,7 @@ export default function AgentEditorClient({ agent, isNew }: { agent: AgentEditDa
           <div className="flex items-start justify-between gap-4 mb-4">
             <div>
               <h1 className="font-display text-[1.38rem] font-semibold tracking-[-0.02em] text-text-strong mb-0.5">
-                {isNew ? "Create agent" : `Build — ${name}`}
+                {isNew ? "Create agent" : `Build: ${name}`}
               </h1>
               <p className="font-body text-[0.84rem] text-text-subtle">
                 {isNew

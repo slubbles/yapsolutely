@@ -7,13 +7,14 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 import { signInAction } from "@/app/_actions/auth";
-import { ArrowLeft, Phone, Shield, BarChart3 } from "lucide-react";
+import { ArrowLeft, Phone, Shield, BarChart3, Eye, EyeOff } from "lucide-react";
 
 export default function SignInPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const validate = () => {
     const e: typeof errors = {};
@@ -89,13 +90,23 @@ export default function SignInPage() {
               </div>
               <div className="space-y-1.5">
                 <Label className="font-body text-body-sm text-text-body">Password</Label>
-                <Input
-                  type="password"
-                  value={password}
-                  onChange={(e) => { setPassword(e.target.value); if (errors.password) setErrors(prev => ({ ...prev, password: undefined })); }}
-                  placeholder="Enter your password"
-                  className="h-11 rounded-xl"
-                />
+                <div className="relative">
+                  <Input
+                    type={showPassword ? "text" : "password"}
+                    value={password}
+                    onChange={(e) => { setPassword(e.target.value); if (errors.password) setErrors(prev => ({ ...prev, password: undefined })); }}
+                    placeholder="Enter your password"
+                    className="h-11 rounded-xl pr-10"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-text-subtle hover:text-foreground transition-colors"
+                    tabIndex={-1}
+                  >
+                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
                 <p className="font-body text-[0.65rem] text-text-subtle">Leave blank for passwordless sign-in</p>
               </div>
               <Button

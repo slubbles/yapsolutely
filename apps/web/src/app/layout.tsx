@@ -58,22 +58,22 @@ const satoshi = localFont({
 
 export const metadata: Metadata = {
   title: {
-    default: "Yapsolutely — AI Voice Agent Platform",
+    default: "Yapsolutely | AI Voice Agent Platform",
     template: "%s | Yapsolutely",
   },
   description:
-    "Build, deploy, and manage AI voice agents for inbound phone calls. Configure agents, assign numbers, view transcripts, and test conversations — all from one dashboard.",
+    "Build, deploy, and manage AI voice agents for inbound phone calls. Configure agents, assign numbers, view transcripts, and test conversations, all from one dashboard.",
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://yapsolutely.com"),
   openGraph: {
-    title: "Yapsolutely — AI Voice Agent Platform",
+    title: "Yapsolutely | AI Voice Agent Platform",
     description:
-      "Build, deploy, and manage AI voice agents for inbound phone calls. Configure agents, assign numbers, view transcripts, and test conversations — all from one dashboard.",
+      "Build, deploy, and manage AI voice agents for inbound phone calls. Configure agents, assign numbers, view transcripts, and test conversations, all from one dashboard.",
     siteName: "Yapsolutely",
     type: "website",
   },
   twitter: {
     card: "summary",
-    title: "Yapsolutely — AI Voice Agent Platform",
+    title: "Yapsolutely | AI Voice Agent Platform",
     description:
       "Build, deploy, and manage AI voice agents for inbound phone calls.",
   },

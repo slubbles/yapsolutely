@@ -76,9 +76,8 @@ const Navbar = () => {
             ))}
           </div>
           <div className="flex flex-col gap-2">
-            <div className="flex items-center gap-2 py-1.5">
+            <div className="flex items-center py-1.5">
               <ThemeToggle />
-              <span className="font-body text-[0.95rem] text-text-subtle">Toggle theme</span>
             </div>
             <Button variant="ghost" size="default" className="font-body text-[0.95rem] text-text-subtle justify-start" asChild>
               <Link href="/sign-in" onClick={() => setMobileOpen(false)}>Sign in</Link>

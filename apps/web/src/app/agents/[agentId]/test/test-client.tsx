@@ -553,7 +553,7 @@ export default function AgentTestClient({ agent }: { agent: AgentSummary }) {
                   </Button>
                 </form>
                 <p className="font-body text-[0.82rem] text-text-subtle/60 mt-2 text-center">
-                  Text mode — tests the agent&apos;s prompt and behavior. Switch to Voice to test with your microphone.
+                  Text mode tests the agent&apos;s prompt and behavior. Switch to Voice to test with your microphone.
                 </p>
               </>
             ) : (
@@ -580,7 +580,7 @@ export default function AgentTestClient({ agent }: { agent: AgentSummary }) {
                   {voiceState === "idle"
                     ? "Click the microphone to start a voice conversation with your agent."
                     : voiceState === "listening"
-                      ? "Speak naturally — your agent will respond when you pause."
+                      ? "Speak naturally. Your agent will respond when you pause."
                       : voiceState === "connecting"
                         ? "Setting up the voice pipeline…"
                         : voiceState === "processing"

@@ -1,7 +1,7 @@
 import PublicPageShell from "@/components/landing/PublicPageShell";
 
 export const metadata = {
-  title: "Terms of Service — Yapsolutely",
+  title: "Terms of Service | Yapsolutely",
   description: "Terms and conditions for using the Yapsolutely voice agent platform.",
 };
 

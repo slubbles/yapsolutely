@@ -55,7 +55,7 @@ Rules:
 - If you don't know the answer, offer to connect them with someone who does
 - Keep conversations efficient but never rush the caller
 - Always confirm spelling of names and repeat phone numbers back`,
-      firstMessage: "Thank you for calling! This is the front desk — how can I help you today?",
+      firstMessage: "Thank you for calling! This is the front desk. How can I help you today?",
       voiceModel: "Nova",
     },
   },
@@ -93,11 +93,11 @@ Qualification criteria:
 
 Rules:
 - Never pressure the caller
-- Don't discuss specific pricing — save that for the demo
+- Don't discuss specific pricing. Save that for the demo
 - Capture their contact information: name, email, phone, company
 - If they need to go, offer to send a follow-up email
 - Be genuinely curious about their situation`,
-      firstMessage: "Hi there! Thanks for reaching out — I'd love to learn more about what you're looking for. Can you tell me a bit about your company?",
+      firstMessage: "Hi there! Thanks for reaching out. I'd love to learn more about what you're looking for. Can you tell me a bit about your company?",
       voiceModel: "Aria",
     },
   },
@@ -185,7 +185,7 @@ Rules:
 - Capture the customer's name and issue summary for records
 - If transferring, brief the customer on what will happen next
 - Stay calm and empathetic even if the customer is frustrated`,
-      firstMessage: "Hi! Welcome to support — I'm here to help. What can I assist you with today?",
+      firstMessage: "Hi! Welcome to support. I'm here to help. What can I assist you with today?",
       voiceModel: "Ember",
     },
   },
@@ -218,11 +218,11 @@ Call structure:
 Rules:
 - If someone asks to be removed from the call list, comply immediately and politely
 - Don't be pushy or aggressive
-- Respect "now is not a good time" — offer to call back at a better time
+- Respect "now is not a good time" and offer to call back at a better time
 - Keep the call concise (aim for under 3 minutes)
 - Always identify yourself and the company at the start
 - If you reach voicemail, leave a brief, professional message`,
-      firstMessage: "Hi, this is your company calling — I hope I'm not catching you at a bad time. I wanted to quickly follow up with you about something.",
+      firstMessage: "Hi, this is your company calling. I hope I'm not catching you at a bad time. I wanted to quickly follow up with you about something.",
       voiceModel: "Sage",
     },
   },
@@ -267,7 +267,7 @@ Escalation criteria:
 - Caller requests a specialist
 
 Rules:
-- Never assume the caller's technical level — start simple and adjust
+- Never assume the caller's technical level. Start simple and adjust
 - Use plain language, avoid jargon
 - Be patient if they need extra time
 - Confirm each step is complete before moving on

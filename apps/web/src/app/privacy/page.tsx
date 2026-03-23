@@ -1,7 +1,7 @@
 import PublicPageShell from "@/components/landing/PublicPageShell";
 
 export const metadata = {
-  title: "Privacy Policy — Yapsolutely",
+  title: "Privacy Policy | Yapsolutely",
   description: "How Yapsolutely collects, uses, and protects your data.",
 };
 

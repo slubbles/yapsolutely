@@ -12,9 +12,9 @@ const ClosingCTA = () => {
             <div className="lg:col-span-7 p-10 sm:p-14 lg:p-16 flex flex-col justify-center">
               <span className="font-body text-[0.6rem] text-surface-dark-foreground/20 uppercase tracking-[0.2em] block mb-6">Get started</span>
               <h2 className="font-display text-[1.75rem] sm:text-[2.5rem] font-semibold tracking-[-0.03em] text-surface-dark-foreground mb-4 leading-[1.08]">
-                Your first agent can be
+                Your first agent can
                 <br className="hidden sm:block" />
-                live in minutes
+                go live in minutes
               </h2>
               <p className="font-body text-surface-dark-foreground/35 text-[0.9rem] max-w-md mb-10 leading-[1.65]">
                 Configure an agent, assign a number, and start taking calls. Review every transcript and monitor performance from day one.

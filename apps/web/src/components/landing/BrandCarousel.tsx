@@ -1,145 +1,20 @@
 "use client";
 
-/* Recognizable SVG brand marks — icon + wordmark, monochrome via currentColor */
-const BrandLogo = ({ name }: { name: string }) => {
-  const cls = "h-6 sm:h-7 w-auto text-text-subtle/40";
-  switch (name) {
-    case "Zendesk":
-      return (
-        <svg className={cls} viewBox="0 0 120 28" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12.6 7.2L0 22.8h12.6V7.2zm0-7.2H0v5.4l12.6 0V0zm2.8 22.8h12.6V0H15.4l0 22.8zm0 5.2h12.6L15.4 13.4V28zM40 9.8c0-2.8 1.6-4.2 3.6-4.2 2 0 3.4 1.4 3.4 4v.4h-4.2c.1 1.4 1 2.2 2.4 2.2 1 0 1.8-.3 2.6-.8l.8 1.6c-1 .7-2.2 1.1-3.6 1.1C41.8 14.1 40 12.4 40 9.8zm5.2-.8c-.1-1.2-.7-1.8-1.7-1.8-.9 0-1.6.7-1.7 1.8h3.4zM49 5.8h2.4l.2 1.2c.8-.8 1.8-1.4 3-1.4 2.2 0 3.2 1.4 3.2 3.8V14h-2.6V9.8c0-1.4-.5-2-1.5-2-.8 0-1.4.4-2.1 1V14H49V5.8zM65.2 0h2.6v14h-2.4l-.2-1.2c-.8.8-1.7 1.4-3 1.4-2.4 0-4-1.8-4-4.4s1.6-4.4 4-4.4c1 0 1.9.4 2.6 1l.4-.1V0zm-2 12.2c.9 0 1.5-.4 2-1V8.4c-.5-.6-1.1-.9-2-.9-1.3 0-2.1 1-2.1 2.4 0 1.3.8 2.3 2.1 2.3zM69.8 9.8c0-2.8 1.6-4.2 3.6-4.2 2 0 3.4 1.4 3.4 4v.4h-4.2c.1 1.4 1 2.2 2.4 2.2 1 0 1.8-.3 2.6-.8l.8 1.6c-1 .7-2.2 1.1-3.6 1.1C71.6 14.1 69.8 12.4 69.8 9.8zm5.2-.8c-.1-1.2-.7-1.8-1.7-1.8-.9 0-1.6.7-1.7 1.8h3.4zM78.6 11.6l1.6-1.4c.8.9 1.8 1.6 3.2 1.6 1.1 0 1.7-.5 1.7-1.1 0-.8-.8-1-2-1.4-1.6-.5-3.4-1-3.4-3.2 0-1.8 1.5-3.2 3.8-3.2 1.6 0 3 .7 3.8 1.6l-1.4 1.4c-.7-.7-1.5-1.1-2.5-1.1-.9 0-1.4.4-1.4 1 0 .7.7 1 1.8 1.3 1.7.5 3.6 1 3.6 3.2 0 1.8-1.4 3.4-4 3.4-1.8 0-3.4-.8-4.4-2zM90 5.8h2.6l.8 3.6.6 2.6.8-2.6 1.2-3.6h1.8l1.2 3.6.8 2.6.6-2.6.8-3.6h2.4L100.8 14h-2.4l-1.2-3.8-.6-2-.6 2L94.8 14h-2.4L90 5.8z"/>
-        </svg>
-      );
-    case "HubSpot":
-      return (
-        <svg className={cls} viewBox="0 0 140 28" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-          {/* Sprocket icon */}
-          <circle cx="14" cy="14" r="5" fill="none" stroke="currentColor" strokeWidth="2.2"/>
-          <circle cx="14" cy="14" r="1.8"/>
-          <circle cx="14" cy="5" r="2"/>
-          <circle cx="14" cy="23" r="2"/>
-          <circle cx="6.2" cy="9.5" r="2"/>
-          <circle cx="21.8" cy="9.5" r="2"/>
-          <circle cx="6.2" cy="18.5" r="2"/>
-          <circle cx="21.8" cy="18.5" r="2"/>
-          {/* Wordmark */}
-          <text x="32" y="20" fontSize="17" fontWeight="700" fontFamily="system-ui" letterSpacing="-0.5">HubSpot</text>
-        </svg>
-      );
-    case "Calendly":
-      return (
-        <svg className={cls} viewBox="0 0 140 28" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-          {/* Calendar icon */}
-          <rect x="3" y="6" width="20" height="18" rx="3" fill="none" stroke="currentColor" strokeWidth="2"/>
-          <line x1="3" y1="12" x2="23" y2="12" stroke="currentColor" strokeWidth="2"/>
-          <line x1="9" y1="3" x2="9" y2="8" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-          <line x1="17" y1="3" x2="17" y2="8" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-          <circle cx="13" cy="19" r="2.5"/>
-          {/* Wordmark */}
-          <text x="30" y="20" fontSize="17" fontWeight="600" fontFamily="system-ui" letterSpacing="-0.3">Calendly</text>
-        </svg>
-      );
-    case "Zocdoc":
-      return (
-        <svg className={cls} viewBox="0 0 130 28" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-          {/* Heart/plus health icon */}
-          <circle cx="14" cy="14" r="12" fill="none" stroke="currentColor" strokeWidth="2"/>
-          <path d="M9 14h10M14 9v10" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"/>
-          {/* Wordmark */}
-          <text x="32" y="20" fontSize="17" fontWeight="700" fontFamily="system-ui" letterSpacing="-0.5">Zocdoc</text>
-        </svg>
-      );
-    case "Freshworks":
-      return (
-        <svg className={cls} viewBox="0 0 160 28" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-          {/* Leaf/F icon */}
-          <path d="M4 24C4 24 4 4 18 4C18 4 18 14 8 18C18 16 22 10 22 4" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
-          {/* Wordmark */}
-          <text x="28" y="20" fontSize="16" fontWeight="600" fontFamily="system-ui" letterSpacing="-0.3">Freshworks</text>
-        </svg>
-      );
-    case "Toast":
-      return (
-        <svg className={cls} viewBox="0 0 110 28" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-          {/* Toast slice icon */}
-          <rect x="4" y="6" width="18" height="16" rx="6" fill="none" stroke="currentColor" strokeWidth="2.2"/>
-          <path d="M9 12h8M9 16h5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
-          {/* Wordmark */}
-          <text x="28" y="20" fontSize="17" fontWeight="700" fontFamily="system-ui" letterSpacing="-0.5">Toast</text>
-        </svg>
-      );
-    case "Dialpad":
-      return (
-        <svg className={cls} viewBox="0 0 130 28" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-          {/* Dialpad diamond dots */}
-          <circle cx="13" cy="6" r="2.5"/>
-          <circle cx="7" cy="14" r="2.5"/>
-          <circle cx="19" cy="14" r="2.5"/>
-          <circle cx="13" cy="22" r="2.5"/>
-          {/* Wordmark */}
-          <text x="28" y="20" fontSize="16" fontWeight="600" fontFamily="system-ui" letterSpacing="-0.3">Dialpad</text>
-        </svg>
-      );
-    case "Lemonade":
-      return (
-        <svg className={cls} viewBox="0 0 150 28" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-          {/* Lemon wedge icon */}
-          <path d="M14 2A12 12 0 0 1 14 26" fill="none" stroke="currentColor" strokeWidth="2.2"/>
-          <path d="M14 2L14 26" stroke="currentColor" strokeWidth="2"/>
-          <path d="M14 8L7 14M14 14L5 14M14 20L7 14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-          {/* Wordmark */}
-          <text x="24" y="20" fontSize="16" fontWeight="600" fontFamily="system-ui" letterSpacing="-0.3">Lemonade</text>
-        </svg>
-      );
-    case "ServiceTitan":
-      return (
-        <svg className={cls} viewBox="0 0 170 28" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-          {/* Shield/bolt icon */}
-          <path d="M13 2L4 6V14C4 20 13 26 13 26C13 26 22 20 22 14V6L13 2Z" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round"/>
-          <path d="M15 9L11 15H15L11 21" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-          {/* Wordmark */}
-          <text x="28" y="20" fontSize="15" fontWeight="700" fontFamily="system-ui" letterSpacing="-0.3">ServiceTitan</text>
-        </svg>
-      );
-    case "Opendoor":
-      return (
-        <svg className={cls} viewBox="0 0 150 28" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-          {/* Door icon */}
-          <rect x="5" y="4" width="16" height="22" rx="2" fill="none" stroke="currentColor" strokeWidth="2.2"/>
-          <rect x="9" y="4" width="8" height="22" rx="1" fillOpacity="0.15"/>
-          <circle cx="18" cy="16" r="1.5"/>
-          {/* Wordmark */}
-          <text x="28" y="20" fontSize="16" fontWeight="700" fontFamily="system-ui" letterSpacing="-0.5">Opendoor</text>
-        </svg>
-      );
-    case "Better.com":
-      return (
-        <svg className={cls} viewBox="0 0 150 28" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-          {/* Arrow/house icon */}
-          <path d="M4 16L13 5L22 16" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M8 13V24H18V13" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinejoin="round"/>
-          {/* Wordmark */}
-          <text x="28" y="20" fontSize="16" fontWeight="700" fontFamily="system-ui" letterSpacing="-0.5">Better.com</text>
-        </svg>
-      );
-    case "Mindbody":
-      return (
-        <svg className={cls} viewBox="0 0 150 28" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-          {/* Person/lotus icon */}
-          <circle cx="13" cy="7" r="4" fill="none" stroke="currentColor" strokeWidth="2"/>
-          <path d="M4 25C4 19 8 15 13 15C18 15 22 19 22 25" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"/>
-          {/* Wordmark */}
-          <text x="28" y="20" fontSize="14" fontWeight="700" fontFamily="system-ui" letterSpacing="0.5">MINDBODY</text>
-        </svg>
-      );
-    default:
-      return <span className="font-display text-[0.95rem] font-semibold text-text-subtle/40 whitespace-nowrap">{name}</span>;
-  }
-};
+import Image from "next/image";
 
 const brands = [
-  "Zendesk", "HubSpot", "Calendly", "Zocdoc", "Freshworks", "Toast",
-  "Dialpad", "Lemonade", "ServiceTitan", "Opendoor", "Better.com", "Mindbody",
+  { name: "HubSpot", file: "hubspot.svg" },
+  { name: "Zendesk", file: "zendesk.svg" },
+  { name: "Calendly", file: "calendly.svg" },
+  { name: "Stripe", file: "stripe.svg" },
+  { name: "Shopify", file: "shopify.svg" },
+  { name: "Intercom", file: "intercom.svg" },
+  { name: "Notion", file: "notion.svg" },
+  { name: "Asana", file: "asana.svg" },
+  { name: "Linear", file: "linear.svg" },
+  { name: "Figma", file: "figma.svg" },
+  { name: "Airtable", file: "airtable.svg" },
+  { name: "Dropbox", file: "dropbox.svg" },
 ];
 
 const BrandCarousel = () => {
@@ -158,9 +33,18 @@ const BrandCarousel = () => {
         <div className="flex w-max animate-scroll-left">
           {[0, 1].map((copy) => (
             <div key={copy} className="flex items-center gap-10 sm:gap-14 px-5 sm:px-7 shrink-0">
-              {brands.map((name) => (
-                <div key={`${name}-${copy}`} className="shrink-0 opacity-90 hover:opacity-100 transition-opacity">
-                  <BrandLogo name={name} />
+              {brands.map((brand) => (
+                <div key={`${brand.name}-${copy}`} className="shrink-0 flex items-center gap-2.5 opacity-40 hover:opacity-60 transition-opacity grayscale">
+                  <Image
+                    src={`/logos/${brand.file}`}
+                    alt={brand.name}
+                    width={24}
+                    height={24}
+                    className="h-5 w-5 sm:h-6 sm:w-6"
+                  />
+                  <span className="font-display text-[0.85rem] sm:text-[0.95rem] font-semibold text-foreground whitespace-nowrap">
+                    {brand.name}
+                  </span>
                 </div>
               ))}
             </div>

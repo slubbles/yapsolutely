@@ -128,6 +128,13 @@ export default function SignInPage() {
               Don&apos;t have an account?{" "}
               <Link href="/sign-up" className="text-text-strong font-medium hover:underline underline-offset-4 transition-colors">Create one</Link>
             </p>
+
+            <p className="font-body text-[0.68rem] text-text-subtle/60 text-center mt-4 leading-[1.6]">
+              By signing in you agree to our{" "}
+              <Link href="/terms" className="underline underline-offset-2 hover:text-text-subtle transition-colors">Terms of Service</Link>{" "}
+              and{" "}
+              <Link href="/privacy" className="underline underline-offset-2 hover:text-text-subtle transition-colors">Privacy Policy</Link>.
+            </p>
           </div>
         </div>
 

@@ -143,6 +143,13 @@ export default function SignUpPage() {
               Already have an account?{" "}
               <Link href="/sign-in" className="text-text-strong font-medium hover:underline underline-offset-4 transition-colors">Sign in</Link>
             </p>
+
+            <p className="font-body text-[0.68rem] text-text-subtle/60 text-center mt-4 leading-[1.6]">
+              By creating an account you agree to our{" "}
+              <Link href="/terms" className="underline underline-offset-2 hover:text-text-subtle transition-colors">Terms of Service</Link>{" "}
+              and{" "}
+              <Link href="/privacy" className="underline underline-offset-2 hover:text-text-subtle transition-colors">Privacy Policy</Link>.
+            </p>
           </div>
         </div>
 

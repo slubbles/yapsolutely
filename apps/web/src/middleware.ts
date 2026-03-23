@@ -12,6 +12,8 @@ const PUBLIC_PATHS = new Set([
   "/changelog",
   "/terms",
   "/privacy",
+  "/support",
+  "/compliance",
 ]);
 
 const PUBLIC_PREFIXES = [

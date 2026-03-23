@@ -42,11 +42,48 @@ enum PhoneNumberProvider {
   TWILIO
 }
 
+enum UserPlan {
+  FREE_TRIAL
+  STARTER
+  PRO
+  ENTERPRISE
+}
+
+enum AgentType {
+  VOICE
+  CHAT
+}
+
+model Workspace {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  ownerId   String
+  settings  Json?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  members   WorkspaceMember[]
+}
+
+model WorkspaceMember {
+  id          String    @id @default(cuid())
+  workspaceId String
+  userId      String
+  role        String    @default("member")
+  joinedAt    DateTime  @default(now())
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@unique([workspaceId, userId])
+  @@index([userId])
+}
+
 model User {
   id                String        @id @default(cuid())
   email             String        @unique
   name              String?
   passwordHash      String?
+  plan              UserPlan      @default(FREE_TRIAL)
+  trialEndsAt       DateTime?
   workspaceSettings Json?
   createdAt         DateTime      @default(now())
   updatedAt         DateTime      @updatedAt
@@ -61,6 +98,7 @@ model Agent {
   name           String
   slug           String?       @unique
   description    String?
+  agentType      AgentType     @default(VOICE)
   systemPrompt   String        @db.Text
   firstMessage   String?
   voiceProvider  String        @default("deepgram")

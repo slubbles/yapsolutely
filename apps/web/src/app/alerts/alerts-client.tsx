@@ -1,13 +1,22 @@
 "use client";
 
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
-import { CheckCircle2 } from "lucide-react";
+import { CheckCircle2, AlertTriangle, XCircle, Info, Bell } from "lucide-react";
 
 const metrics = [
   { label: "Active", value: "0", sub: "Unresolved" },
   { label: "Critical", value: "0", sub: "Immediate" },
   { label: "Warning", value: "0", sub: "Needs attention" },
   { label: "Resolved", value: "—", sub: "Last 30d" },
+];
+
+const alertCategories = [
+  { icon: XCircle, color: "text-red-500", bg: "bg-red-500/10", label: "Error logs", desc: "Runtime failures, unhandled exceptions, and agent crashes during active calls." },
+  { icon: AlertTriangle, color: "text-amber-500", bg: "bg-amber-500/10", label: "Rate limits", desc: "API rate limit warnings from Twilio, Deepgram, or Anthropic when usage approaches thresholds." },
+  { icon: XCircle, color: "text-red-500", bg: "bg-red-500/10", label: "Payment failures", desc: "Failed subscription payments, expired cards, or billing issues that may interrupt service." },
+  { icon: AlertTriangle, color: "text-amber-500", bg: "bg-amber-500/10", label: "TTS provider errors", desc: "High error rates or latency spikes from the text-to-speech provider affecting call quality." },
+  { icon: Info, color: "text-blue-500", bg: "bg-blue-500/10", label: "Agent misconfigurations", desc: "Missing prompts, unassigned numbers, or agents with incomplete setup that may fail on inbound calls." },
+  { icon: Bell, color: "text-purple-500", bg: "bg-purple-500/10", label: "Usage thresholds", desc: "Approaching monthly minute limits, call volume spikes, or storage capacity warnings." },
 ];
 
 const emptyRows = Array.from({ length: 4 }, (_, i) => i);
@@ -74,12 +83,33 @@ export default function AlertsClient() {
         </div>
 
         {/* ── All-clear state ── */}
-        <div className="bg-surface-panel rounded-card border border-border-soft px-6 py-10 text-center">
+        <div className="bg-surface-panel rounded-card border border-border-soft px-6 py-10 text-center mb-5">
           <CheckCircle2 className="w-5 h-5 text-emerald-500/60 mx-auto mb-2" />
           <h3 className="font-display text-[1.02rem] font-medium text-text-strong mb-0.5">All clear</h3>
           <p className="font-body text-[0.89rem] text-text-subtle max-w-xs mx-auto">
             No active alerts. Failed calls, runtime errors, and agent misconfigurations will appear here.
           </p>
+        </div>
+
+        {/* ── Alert categories ── */}
+        <div className="bg-surface-panel rounded-card border border-border-soft overflow-hidden">
+          <div className="px-4 py-3 border-b border-border-soft/60">
+            <h3 className="font-display text-[0.89rem] font-medium text-text-strong">What we monitor</h3>
+            <p className="font-body text-[0.72rem] text-text-subtle mt-0.5">Alerts are triggered automatically when issues are detected.</p>
+          </div>
+          <div className="divide-y divide-border-soft/30">
+            {alertCategories.map((cat) => (
+              <div key={cat.label} className="flex items-start gap-3.5 px-4 py-3.5">
+                <div className={`w-8 h-8 rounded-lg ${cat.bg} flex items-center justify-center shrink-0 mt-0.5`}>
+                  <cat.icon className={`w-4 h-4 ${cat.color}`} />
+                </div>
+                <div>
+                  <span className="font-display text-[0.84rem] font-medium text-text-strong block">{cat.label}</span>
+                  <span className="font-body text-[0.78rem] text-text-subtle leading-[1.6]">{cat.desc}</span>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </DashboardLayout>

@@ -6,7 +6,7 @@ import { useUser } from "@/components/user-context";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
-  user?: { name?: string | null; email?: string | null };
+  user?: { name?: string | null; email?: string | null; plan?: string | null };
 }
 
 const DashboardLayout = ({ children, user: userProp }: DashboardLayoutProps) => {

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowLeft, Phone, Users, Calendar, HelpCircle, Megaphone, Wrench, FileText } from "lucide-react";
+import { ArrowLeft, Phone, Users, Calendar, HelpCircle, Megaphone, Wrench, FileText, Mic, MessageCircle } from "lucide-react";
 import Link from "next/link";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import AgentEditorClient from "../[agentId]/edit/agent-editor-client";
@@ -281,6 +281,7 @@ Rules:
 export default function NewAgentRouter() {
   const [selectedTemplate, setSelectedTemplate] = useState<AgentTemplate | null>(null);
   const [showTemplates, setShowTemplates] = useState(true);
+  const [agentType, setAgentType] = useState<"VOICE" | "CHAT">("VOICE");
 
   if (!showTemplates || selectedTemplate) {
     const agent = selectedTemplate?.agent;
@@ -321,6 +322,53 @@ export default function NewAgentRouter() {
           <p className="font-body text-[1.05rem] text-text-subtle">
             Start from a template or build from scratch.
           </p>
+        </div>
+
+        {/* Agent type selector */}
+        <div className="mb-6">
+          <h2 className="font-display text-[0.84rem] font-medium text-text-body mb-3">Agent type</h2>
+          <div className="grid grid-cols-2 gap-3">
+            <button
+              onClick={() => setAgentType("VOICE")}
+              className={`p-4 rounded-xl border-2 transition-all text-left ${
+                agentType === "VOICE"
+                  ? "border-foreground/30 bg-surface-elevated shadow-sm"
+                  : "border-border-soft bg-surface-panel hover:border-border-soft/80"
+              }`}
+            >
+              <div className="flex items-center gap-3">
+                <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${
+                  agentType === "VOICE" ? "bg-blue-500/10" : "bg-secondary"
+                }`}>
+                  <Mic className={`w-4.5 h-4.5 ${agentType === "VOICE" ? "text-blue-600" : "text-text-subtle"}`} />
+                </div>
+                <div>
+                  <span className="font-display text-[0.88rem] font-semibold text-text-strong block">Voice Agent</span>
+                  <span className="font-body text-[0.72rem] text-text-subtle">Handles phone calls with real-time voice</span>
+                </div>
+              </div>
+            </button>
+            <button
+              onClick={() => setAgentType("CHAT")}
+              className={`p-4 rounded-xl border-2 transition-all text-left ${
+                agentType === "CHAT"
+                  ? "border-foreground/30 bg-surface-elevated shadow-sm"
+                  : "border-border-soft bg-surface-panel hover:border-border-soft/80"
+              }`}
+            >
+              <div className="flex items-center gap-3">
+                <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${
+                  agentType === "CHAT" ? "bg-purple-500/10" : "bg-secondary"
+                }`}>
+                  <MessageCircle className={`w-4.5 h-4.5 ${agentType === "CHAT" ? "text-purple-600" : "text-text-subtle"}`} />
+                </div>
+                <div>
+                  <span className="font-display text-[0.88rem] font-semibold text-text-strong block">Chat Agent</span>
+                  <span className="font-body text-[0.72rem] text-text-subtle">Text-based conversations via web or API</span>
+                </div>
+              </div>
+            </button>
+          </div>
         </div>
 
         {/* Start from scratch */}

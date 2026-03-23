@@ -24,7 +24,7 @@ const Hero = () => {
             <div className="flex flex-col sm:flex-row items-start gap-3">
               <Button variant="hero" size="xl" className="btn-press" asChild>
                 <Link href="/sign-up">
-                  Start building
+                  Start building free
                   <ArrowRight className="w-4 h-4 ml-1.5 transition-transform group-hover:translate-x-0.5" />
                 </Link>
               </Button>
@@ -32,6 +32,10 @@ const Hero = () => {
                 <a href="#workflow">See how it works</a>
               </Button>
             </div>
+            <p className="mt-4 font-body text-[0.75rem] text-text-subtle/60 flex items-center gap-1.5">
+              <span className="w-1 h-1 rounded-full bg-emerald-400" />
+              No credit card required. Free plan available.
+            </p>
           </div>
 
           {/* Right column — embedded voice agent illustration */}

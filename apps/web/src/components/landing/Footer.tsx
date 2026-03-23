@@ -30,6 +30,8 @@ const Footer = () => {
             <div className="font-body text-[0.65rem] text-text-subtle/40 uppercase tracking-[0.12em] mb-3">Company</div>
             <div className="flex flex-col gap-2">
               <Link href="/about" className="font-body text-[0.78rem] text-text-subtle hover:text-foreground transition-colors">About</Link>
+              <Link href="/support" className="font-body text-[0.78rem] text-text-subtle hover:text-foreground transition-colors">Support</Link>
+              <Link href="/compliance" className="font-body text-[0.78rem] text-text-subtle hover:text-foreground transition-colors">Compliance</Link>
               <a href="mailto:hello@yapsolutely.com" className="font-body text-[0.78rem] text-text-subtle hover:text-foreground transition-colors">Contact</a>
             </div>
           </div>
@@ -44,12 +46,8 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="pt-6 border-t border-border/30 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div className="pt-6 border-t border-border/30 flex items-center justify-center">
           <span className="font-body text-xs text-text-subtle/50">© {new Date().getFullYear()} Yapsolutely, Inc.</span>
-          <div className="flex items-center gap-5">
-            <Link href="/terms" className="font-body text-[0.7rem] text-text-subtle/40 hover:text-text-subtle transition-colors">Terms</Link>
-            <Link href="/privacy" className="font-body text-[0.7rem] text-text-subtle/40 hover:text-text-subtle transition-colors">Privacy</Link>
-          </div>
         </div>
       </div>
     </footer>

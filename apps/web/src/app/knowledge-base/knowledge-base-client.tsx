@@ -72,13 +72,34 @@ export default function KnowledgeBaseClient() {
           </div>
         </div>
 
-        {/* ── Empty state ── */}
+        {/* ── Empty state with tips ── */}
         <div className="bg-surface-panel rounded-card border border-border-soft px-6 py-10 text-center">
           <BookOpen className="w-5 h-5 text-text-subtle/30 mx-auto mb-2" />
           <h3 className="font-display text-[1.02rem] font-medium text-text-strong mb-0.5">No sources yet</h3>
-          <p className="font-body text-[0.89rem] text-text-subtle max-w-xs mx-auto">
+          <p className="font-body text-[0.89rem] text-text-subtle max-w-xs mx-auto mb-6">
             Add webpages, documents, or custom data to build context that flows into your agents automatically.
           </p>
+
+          <div className="bg-secondary/40 rounded-xl p-5 max-w-md mx-auto text-left">
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-[0.95rem]">💡</span>
+              <span className="font-display text-[0.82rem] font-medium text-text-strong">Getting started tips</span>
+            </div>
+            <ul className="space-y-2">
+              <li className="font-body text-[0.78rem] text-text-subtle leading-[1.6] flex items-start gap-2">
+                <span className="text-emerald-500 font-semibold mt-px">1.</span>
+                <span><strong className="text-text-body">Upload your FAQ document</strong> — paste your website FAQ or support docs so agents can answer common questions.</span>
+              </li>
+              <li className="font-body text-[0.78rem] text-text-subtle leading-[1.6] flex items-start gap-2">
+                <span className="text-emerald-500 font-semibold mt-px">2.</span>
+                <span><strong className="text-text-body">Add your website URL</strong> — we&apos;ll crawl and index key pages so your agents stay up to date with your content.</span>
+              </li>
+              <li className="font-body text-[0.78rem] text-text-subtle leading-[1.6] flex items-start gap-2">
+                <span className="text-emerald-500 font-semibold mt-px">3.</span>
+                <span><strong className="text-text-body">Import custom data</strong> — add pricing tables, product specs, or any structured data your agents need.</span>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </DashboardLayout>

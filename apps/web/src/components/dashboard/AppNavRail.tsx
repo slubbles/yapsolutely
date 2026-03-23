@@ -110,7 +110,7 @@ function GroupedNav({ onClick, pathname }: { onClick?: () => void; pathname: str
   );
 }
 
-const AppNavRail = ({ user }: { user?: { name?: string | null; email?: string | null } }) => {
+const AppNavRail = ({ user }: { user?: { name?: string | null; email?: string | null; plan?: string | null } }) => {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -158,6 +158,30 @@ const AppNavRail = ({ user }: { user?: { name?: string | null; email?: string | 
         <nav className="flex-1 px-3 py-1 overflow-y-auto">
           <GroupedNav pathname={pathname} />
         </nav>
+
+        {/* Plan indicator */}
+        <div className="px-3 pb-2">
+          <Link
+            href="/billing"
+            className="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-canvas/80 border border-border-soft/40 hover:border-border-soft transition-colors group"
+          >
+            <div className={`w-2 h-2 rounded-full shrink-0 ${
+              user?.plan === "PRO" || user?.plan === "ENTERPRISE" ? "bg-emerald-400" :
+              user?.plan === "STARTER" ? "bg-blue-400" : "bg-amber-400 animate-pulse"
+            }`} />
+            <div className="flex-1 min-w-0">
+              <span className="font-body text-[0.72rem] font-medium text-text-strong block truncate">
+                {user?.plan === "PRO" ? "Pro plan" :
+                 user?.plan === "ENTERPRISE" ? "Enterprise" :
+                 user?.plan === "STARTER" ? "Starter plan" : "Free trial"}
+              </span>
+              <span className="font-body text-[0.62rem] text-text-subtle/60 block">
+                {user?.plan === "PRO" || user?.plan === "ENTERPRISE" ? "Active subscription" :
+                 user?.plan === "STARTER" ? "Basic features" : "Upgrade for more"}
+              </span>
+            </div>
+          </Link>
+        </div>
 
         {/* Account footer */}
         <div className="relative px-3 pb-3 pt-2 border-t border-border-soft/40" ref={menuRef}>

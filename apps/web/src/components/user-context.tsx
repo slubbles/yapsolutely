@@ -5,6 +5,7 @@ import { createContext, useContext } from "react";
 type UserInfo = {
   email: string;
   name?: string;
+  plan?: string;
 } | null;
 
 const UserContext = createContext<UserInfo>(null);

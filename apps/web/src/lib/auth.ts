@@ -7,6 +7,7 @@ export const SESSION_COOKIE_NAME = "yapsolutely_session";
 export type SessionUser = {
   email: string;
   name?: string;
+  plan?: string;
 };
 
 export async function ensureWorkspaceUser(session: SessionUser) {
@@ -42,7 +43,18 @@ export async function getSession(): Promise<SessionUser | null> {
   }
 
   try {
-    return JSON.parse(sessionCookie) as SessionUser;
+    const base = JSON.parse(sessionCookie) as SessionUser;
+    // Enrich with plan from DB if available
+    try {
+      const dbUser = await prisma.user.findUnique({
+        where: { email: base.email },
+        select: { plan: true },
+      });
+      if (dbUser?.plan) base.plan = dbUser.plan;
+    } catch {
+      // DB not available, use cookie data only
+    }
+    return base;
   } catch {
     return null;
   }

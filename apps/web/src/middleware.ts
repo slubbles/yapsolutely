@@ -19,6 +19,7 @@ const PUBLIC_PREFIXES = [
   "/_next/",
   "/favicon.ico",
   "/docs",
+  "/features",
 ];
 
 function isPublicPath(pathname: string) {

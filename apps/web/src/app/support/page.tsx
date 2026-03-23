@@ -58,7 +58,7 @@ export default function SupportPage() {
             How can we help?
           </h1>
           <p className="font-body text-[0.95rem] text-text-subtle max-w-lg mx-auto leading-[1.65]">
-            Reach out through any channel below. Whether it's a quick question or a complex integration issue, we're here to help.
+            Reach out through any channel below. Whether it&apos;s a quick question or a complex integration issue, we&apos;re here to help.
           </p>
         </div>
 
@@ -102,7 +102,7 @@ export default function SupportPage() {
             Still need help?
           </h2>
           <p className="font-body text-[0.88rem] text-surface-dark-foreground/40 max-w-md mx-auto mb-8 leading-[1.65]">
-            Our team is available Monday through Friday. Drop us an email and we'll get back to you as soon as possible.
+            Our team is available Monday through Friday. Drop us an email and we&apos;ll get back to you as soon as possible.
           </p>
           <Button size="xl" className="bg-surface-dark-foreground text-surface-dark hover:bg-surface-dark-foreground/90 rounded-full font-display font-medium btn-press" asChild>
             <a href="mailto:hello@yapsolutely.com">

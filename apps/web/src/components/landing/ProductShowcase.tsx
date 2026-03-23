@@ -82,7 +82,7 @@ const ProductShowcase = () => {
                   <div className="flex items-center gap-1.5">
                     <span className="w-1 h-1 rounded-full bg-blue-400/60" />
                     <span className="font-mono text-[0.6rem] text-text-subtle/50">0:08</span>
-                    <span className="font-body text-[0.62rem] text-text-body">I'd like to book an appointment...</span>
+                    <span className="font-body text-[0.62rem] text-text-body">I&apos;d like to book an appointment...</span>
                   </div>
                 </div>
               </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { Bot, Shield, Zap, BarChart3, Phone, Workflow, Globe, Clock, Headphones, Lock, FileText, Sparkles } from "lucide-react";
+import { Bot, Shield, Zap, BarChart3, Phone, Workflow } from "lucide-react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import ScrollReveal from "@/components/landing/ScrollReveal";

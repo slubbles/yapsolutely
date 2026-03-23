@@ -50,7 +50,8 @@ export default function OnboardingPage() {
       if (sessionCookie) {
         const value = decodeURIComponent(sessionCookie.split("=").slice(1).join("="));
         const parsed = JSON.parse(value);
-        if (parsed.email) setSessionEmail(parsed.email);
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- reading cookie once on mount
+        if (parsed.email) { setSessionEmail(parsed.email); }
       }
     } catch { /* ignore */ }
   }, []);

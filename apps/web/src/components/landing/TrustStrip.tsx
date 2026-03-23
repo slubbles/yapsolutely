@@ -1,10 +1,10 @@
 const TrustStrip = () => {
   const capabilities = [
-    { label: "Sub-second voice latency", detail: "< 800ms" },
+    { label: "Voice response latency", detail: "< 800ms" },
     { label: "Full transcript review", detail: "100%" },
     { label: "Dedicated phone numbers", detail: "Real lines" },
-    { label: "Always-on availability", detail: "24/7" },
-    { label: "Zero integration work", detail: "Instant" },
+    { label: "Agent availability", detail: "24/7" },
+    { label: "Setup time", detail: "Minutes" },
   ];
 
   return (

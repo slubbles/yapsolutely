@@ -66,7 +66,7 @@ export default function AIPromptsPage() {
           <h1 className="font-display text-[2rem] sm:text-[3.25rem] font-semibold tracking-[-0.03em] text-foreground mb-6 leading-[1.08]">
             Let AI write your
             <br className="hidden sm:block" />
-            agent's instructions
+            agent&apos;s instructions
           </h1>
           <p className="font-body text-[1rem] sm:text-[1.1rem] text-text-subtle max-w-2xl leading-[1.75] mb-8">
             Stop spending hours crafting system prompts. Describe what your agent should do — or design a visual flow — and let AI generate production-ready instructions optimized for phone conversations.
